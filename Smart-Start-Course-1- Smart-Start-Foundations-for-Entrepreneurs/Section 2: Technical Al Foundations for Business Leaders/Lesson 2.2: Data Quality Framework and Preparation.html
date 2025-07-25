@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section 2: Technical AI Foundations for Business Leaders - Lesson 2.2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        .lesson-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .lesson-header {
+            background: #28263a;
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px 12px 0 0;
+            margin-bottom: 0;
+        }
+
+        .lesson-meta {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .lesson-title {
+            font-size: clamp(24px, 4vw, 36px);
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .lesson-subtitle {
+            font-size: clamp(16px, 2.5vw, 20px);
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .lesson-body {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .objectives-section {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .objectives-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .objectives-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .objectives-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .objectives-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 12px;
+            background: rgba(255,255,255,0.2);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .content-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #06b6d4;
+        }
+
+        .subsection-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #334155;
+            margin: 30px 0 15px 0;
+        }
+
+        .content-text {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: #475569;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border-left: 5px solid rgba(255,255,255,0.3);
+        }
+
+        .highlight-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .data-quality-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .quality-metric-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid #06b6d4;
+            transition: transform 0.3s ease;
+        }
+
+        .quality-metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .metric-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+
+        .metric-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .metric-description {
+            font-size: 15px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .metric-examples {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .example-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .example-icon {
+            color: #10b981;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        .interactive-element {
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-element:hover {
+            border-color: #06b6d4;
+            box-shadow: 0 5px 20px rgba(6, 182, 212, 0.1);
+        }
+
+        .activity-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .activity-description {
+            font-size: 16px;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #0891b2);
+            width: 28.6%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .completion-section {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .completion-section h3 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .completion-section p {
+            color: #64748b;
+            margin-bottom: 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        .audit-tool {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .audit-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #06b6d4;
+        }
+
+        .audit-section h4 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .audit-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .data-pipeline-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .pipeline-step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .pipeline-step:not(:last-child)::after {
+            content: "→";
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: #06b6d4;
+            font-weight: bold;
+        }
+
+        .step-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin: 0 auto 10px;
+        }
+
+        .step-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .step-description {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .quality-checklist {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f8fafc;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            background: #e2e8f0;
+        }
+
+        .checklist-item.completed {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+        }
+
+        .checklist-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 4px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item.completed .checklist-checkbox {
+            background: #10b981;
+            border-color: #10b981;
+            color: white;
+        }
+
+        .checklist-text {
+            flex: 1;
+            font-size: 15px;
+            color: #475569;
+        }
+
+        .data-source-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .data-source-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .source-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .source-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .source-description {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-container {
+                padding: 10px;
+            }
+            
+            .lesson-header, .lesson-body {
+                padding: 20px;
+            }
+            
+            .data-quality-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .data-pipeline-flow {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .pipeline-step:not(:last-child)::after {
+                content: "↓";
+                position: static;
+                transform: none;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-container">
+        <header class="lesson-header">
+            <div class="lesson-meta">Section 2 • Lesson 2.2 • 90-105 minutes</div>
+            <h1 class="lesson-title">Data Quality Framework and Preparation</h1>
+            <p class="lesson-subtitle">Establishing comprehensive data collection, cleaning, and quality assurance methodologies for successful AI implementation</p>
+        </header>
+
+        <div class="lesson-body">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+
+            <section class="objectives-section">
+                <h2 class="objectives-title">
+                    🎯 Learning Objectives
+                </h2>
+                <ul class="objectives-list">
+                    <li>Master data collection strategies from diverse sources including databases, APIs, sensors, and cloud platforms</li>
+                    <li>Implement systematic data cleaning techniques for accuracy, consistency, and completeness</li>
+                    <li>Establish quality metrics frameworks including completeness, accuracy, consistency, and relevance standards</li>
+                    <li>Design robust data preparation workflows that ensure AI-ready datasets for business applications</li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">The Foundation of AI Success: Data Quality</h2>
+                
+                <p class="content-text">
+                    Data quality represents the foundation of successful AI implementation, directly impacting model performance, business insights, and strategic decision-making capabilities. Poor data quality can undermine even the most sophisticated AI algorithms, while high-quality data enables accurate predictions and reliable automation.
+                </p>
+
+                <div class="highlight-box">
+                    <h3 class="highlight-title">Data Quality Impact</h3>
+                    <p>Research demonstrates that organizations with high-quality data achieve 23% higher revenue growth and 19% lower operational costs compared to those with poor data management practices. AI models trained on clean, well-structured data consistently outperform those using raw, unprocessed datasets by 30-50% in accuracy metrics.</p>
+                </div>
+
+                <div class="data-pipeline-flow">
+                    <div class="pipeline-step">
+                        <div class="step-icon">📥</div>
+                        <div class="step-title">Collection</div>
+                        <div class="step-description">Gather data from multiple sources</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-icon">🧹</div>
+                        <div class="step-title">Cleaning</div>
+                        <div class="step-description">Remove errors and inconsistencies</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-icon">✅</div>
+                        <div class="step-title">Validation</div>
+                        <div class="step-description">Ensure quality standards</div>
+                    </div>
+                    <div class="pipeline-step">
+                        <div class="step-icon">🚀</div>
+                        <div class="step-title">Deployment</div>
+                        <div class="step-description">AI-ready datasets</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Comprehensive Data Collection Strategy</h2>
+                
+                <p class="content-text">
+                    Effective data collection requires systematic approaches that ensure diversity, completeness, and relevance for AI applications. Modern businesses must leverage multiple data sources to create comprehensive datasets that support robust AI model training and deployment.
+                </p>
+
+                <h3 class="subsection-title">Primary Data Sources</h3>
+
+                <div class="data-source-grid">
+                    <div class="data-source-card">
+                        <div class="source-icon">🗄️</div>
+                        <div class="source-title">Databases</div>
+                        <div class="source-description">Structured data from CRM, ERP, and operational systems providing historical business information</div>
+                    </div>
+                    <div class="data-source-card">
+                        <div class="source-icon">🔌</div>
+                        <div class="source-title">APIs</div>
+                        <div class="source-description">Real-time data feeds from external services, social media platforms, and third-party providers</div>
+                    </div>
+                    <div class="data-source-card">
+                        <div class="source-icon">📡</div>
+                        <div class="source-title">IoT Sensors</div>
+                        <div class="source-description">Continuous monitoring data from devices, equipment, and environmental sensors</div>
+                    </div>
+                    <div class="data-source-card">
+                        <div class="source-icon">☁️</div>
+                        <div class="source-title">Cloud Platforms</div>
+                        <div class="source-description">Scalable data storage and processing through Snowflake, Databricks, and cloud providers</div>
+                    </div>
+                </div>
+
+                <div class="content-text">
+                    <strong>Data Diversity Strategies</strong> strengthen model learning capabilities and improve generalization across different scenarios. Collecting data from multiple sources, time periods, and contexts ensures AI models can handle real-world variability and edge cases effectively.
+                </div>
+
+                <div class="content-text">
+                    <strong>Automated Collection Systems</strong> reduce manual effort while ensuring consistent data gathering. Modern platforms like Snowflake and Databricks provide automated ingestion capabilities that can process structured and unstructured data from diverse sources simultaneously.
+                </div>
+
+                <div class="interactive-element">
+                    <h3 class="activity-title">🔍 Activity 2.2.1: Data Audit Exercise</h3>
+                    <p class="activity-description">
+                        Conduct a systematic evaluation of your existing business data for AI readiness using standardized assessment criteria. This comprehensive audit will identify data quality gaps and improvement opportunities.
+                    </p>
+                    <button type="button" class="btn-primary" id="start-data-audit">Start Data Audit Tool</button>
+                </div>
+
+                <div id="data-audit" class="hidden">
+                    <div class="audit-tool">
+                        <h4>Comprehensive Data Audit Framework</h4>
+                        
+                        <div class="audit-section">
+                            <h4>Step 1: Data Source Inventory</h4>
+                            <p>List all current data sources and their characteristics:</p>
+                            <textarea class="audit-input" placeholder="Data Source 1: [Name] | Type: [Database/API/File] | Volume: [Records/Size] | Update Frequency: [Real-time/Daily/Weekly]&#10;Data Source 2: [Name] | Type: [Database/API/File] | Volume: [Records/Size] | Update Frequency: [Real-time/Daily/Weekly]&#10;Data Source 3: [Name] | Type: [Database/API/File] | Volume: [Records/Size] | Update Frequency: [Real-time/Daily/Weekly]"></textarea>
+                        </div>
+                        
+                        <div class="audit-section">
+                            <h4>Step 2: Data Quality Assessment</h4>
+                            <p>Evaluate current data quality across key metrics:</p>
+                            <textarea class="audit-input" placeholder="Completeness: [Percentage of missing values] | Issues: [Specific gaps identified]&#10;Accuracy: [Error rate percentage] | Issues: [Types of inaccuracies found]&#10;Consistency: [Format standardization level] | Issues: [Inconsistencies across sources]&#10;Timeliness: [Data freshness] | Issues: [Outdated information problems]"></textarea>
+                        </div>
+                        
+                        <div class="audit-section">
+                            <h4>Step 3: Integration Challenges</h4>
+                            <p>Identify obstacles to data integration and AI readiness:</p>
+                            <textarea class="audit-input" placeholder="Technical challenges: [API limitations, format incompatibilities, access restrictions]&#10;Quality challenges: [Data silos, inconsistent schemas, missing documentation]&#10;Organizational challenges: [Data ownership, privacy concerns, resource constraints]"></textarea>
+                        </div>
+                        
+                        <div class="audit-section">
+                            <h4>Step 4: AI Readiness Score</h4>
+                            <p>Rate your data readiness for AI implementation (1-5 scale):</p>
+                            <textarea class="audit-input" placeholder="Data Volume: [1-5] | Sufficient data for model training&#10;Data Quality: [1-5] | Clean, accurate, and consistent&#10;Data Accessibility: [1-5] | Easy to access and integrate&#10;Data Governance: [1-5] | Proper policies and procedures&#10;Technical Infrastructure: [1-5] | Systems capable of AI workloads"></textarea>
+                        </div>
+                        
+                        <button type="button" class="btn-primary" onclick="generateAuditReport()">Generate Audit Report</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Data Quality Metrics Framework</h2>
+                
+                <p class="content-text">
+                    Establishing clear quality metrics enables systematic evaluation and improvement of data assets. These metrics provide objective standards for assessing AI readiness and guiding data preparation efforts.
+                </p>
+
+                <div class="data-quality-grid">
+                    <div class="quality-metric-card">
+                        <div class="metric-header">
+                            <div class="metric-icon">📊</div>
+                            <div class="metric-title">Completeness</div>
+                        </div>
+                        <p class="metric-description">
+                            Measures the extent to which all required data elements are present and populated. Complete datasets enable comprehensive analysis and reduce model bias from missing information.
+                        </p>
+                        <div class="metric-examples">
+                            <div class="example-item">
+                                <span class="example-icon">✓</span>
+                                All customer records have contact information
+                            </div>
+                            <div class="example-item">
+                                <span class="example-icon">✓</span>
+                                Transaction data includes timestamps and amounts
+                            </div>
+                            <div class="example-item">
+                                <span class="example-icon">✓</span>
+                                Product catalogs have complete specifications
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quality-metric-card">
+                        <div class="metric-header">
+                            <div class="metric-icon">🎯</div>
+                            <div class="metric-title">Accuracy</div>
+                        </div>
+                        <p class="metric-description">
+                            Evaluates how closely data values match real-world conditions and business requirements. Accurate data ensures AI models learn correct patterns and make reliable predictions.
+                        </p>
+                        <div class="metric-examples">
+                            <div class="example-item">
+                                <span class="example-icon">✓</span>
+                                Customer addresses match postal records
+                            </div>
+                            <div class="example-item">
+                                <span class="example-icon">✓</span>
+                                Financial amounts reconcile with source systems
+                            </div>
+                            <div class="example-item">
+                                <span class="example-icon">✓</span>
+                                Product prices reflect current market values
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quality-metric-card">
+                        <div class="metric-header">
+                            <div class="metric-icon">🔄</div>
+                            <div class="metric-title">Consistency</div>
+                        </div>
+                        <p class="metric-description">
+                            Ensures data follows standardized formats, naming conventions, and business rules across all sources. Consistent data enables seamless integration and reliable processing.
+                        </p>
+                        <div class="metric-examples">
+                            <div class="example-item">
+                                <span class="example-icon">✓</span>
+                                Date formats standardized across systems
+                            </div>
+                            <div class="example-item">
+                                <span class="example-icon">✓</span>
+                                Product codes follow unified naming scheme
+                            </div>
+                            <div class="example-item">
+                                <span class="example-icon">✓</span>
+                                Currency values use consistent decimal places
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quality-metric-card">
+                        <div class="metric-header">
+                            <div class="metric-icon">🎪</div>
+                            <div class="metric-title">Relevance</div>
+                        </div>
+                        <p class="metric-description">
+                            Assesses whether data elements directly support business objectives and AI model requirements. Relevant data focuses analysis efforts and improves model performance.
+                        </p>
+                        <div class="metric-examples">
+                            <div class="example-item">
+                                <span class="example-icon">✓</span>
+                                Customer behavior data for churn prediction
+                            </div>
+                            <div class="example-item">
+                                <span class="example-icon">✓</span>
+                                Sales history for demand forecasting
+                            </div>
+                            <div class="example-item">
+                                <span class="example-icon">✓</span>
+                                Operational metrics for efficiency optimization
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Data Cleaning and Preparation Techniques</h2>
+                
+                <p class="content-text">
+                    Systematic data cleaning transforms raw datasets into AI-ready formats through standardized techniques that address common quality issues. These methodologies ensure consistent, reliable data that supports accurate model training and deployment.
+                </p>
+
+                <h3 class="subsection-title">Core Cleaning Techniques</h3>
+                
+                <div class="content-text">
+                    <strong>Outlier Detection and Treatment</strong> identifies extreme values that may skew analysis results. Statistical methods like Z-score analysis (values beyond ±3 standard deviations) and Interquartile Range (IQR) techniques help identify outliers for review, correction, or removal.
+                </div>
+
+                <div class="content-text">
+                    <strong>Missing Value Imputation</strong> addresses incomplete datasets through statistical methods including mean/median replacement for numerical data, mode substitution for categorical variables, and advanced techniques like regression-based imputation for complex scenarios.
+                </div>
+
+                <div class="content-text">
+                    <strong>Data Normalization and Standardization</strong> ensures consistent scales and formats across datasets. Normalization adjusts values to common ranges (0-1), while standardization transforms data to standard normal distribution (mean=0, std=1).
+                </div>
+
+                <div class="interactive-element">
+                    <h3 class="activity-title">🛠️ Activity 2.2.2: Data Preparation Tools Setup</h3>
+                    <p class="activity-description">
+                        Configure and practice with data cleaning and transformation platforms through hands-on exercises. Learn to implement quality assurance workflows using industry-standard tools.
+                    </p>
+                    <button type="button" class="btn-primary" id="start-preparation-tools">Launch Preparation Tools Lab</button>
+                </div>
+
+                <div id="preparation-tools" class="hidden">
+                    <div class="quality-checklist">
+                        <h4>Data Preparation Quality Checklist</h4>
+                        
+                        <div class="checklist-item" onclick="toggleChecklist(this)">
+                            <div class="checklist-checkbox"></div>
+                            <div class="checklist-text">
+                                <strong>Data Profiling Complete:</strong> Analyzed data distribution, identified patterns, and documented anomalies across all datasets
+                            </div>
+                        </div>
+                        
+                        <div class="checklist-item" onclick="toggleChecklist(this)">
+                            <div class="checklist-checkbox"></div>
+                            <div class="checklist-text">
+                                <strong>Missing Value Strategy:</strong> Implemented appropriate imputation methods based on data type and business context
+                            </div>
+                        </div>
+                        
+                        <div class="checklist-item" onclick="toggleChecklist(this)">
+                            <div class="checklist-checkbox"></div>
+                            <div class="checklist-text">
+                                <strong>Outlier Treatment:</strong> Identified and addressed extreme values using statistical methods and business logic
+                            </div>
+                        </div>
+                        
+                        <div class="checklist-item" onclick="toggleChecklist(this)">
+                            <div class="checklist-checkbox"></div>
+                            <div class="checklist-text">
+                                <strong>Format Standardization:</strong> Unified date formats, currency representations, and categorical value encoding
+                            </div>
+                        </div>
+                        
+                        <div class="checklist-item" onclick="toggleChecklist(this)">
+                            <div class="checklist-checkbox"></div>
+                            <div class="checklist-text">
+                                <strong>Data Validation Rules:</strong> Established automated checks for data quality monitoring and ongoing maintenance
+                            </div>
+                        </div>
+                        
+                        <div class="checklist-item" onclick="toggleChecklist(this)">
+                            <div class="checklist-checkbox"></div>
+                            <div class="checklist-text">
+                                <strong>Documentation Updated:</strong> Created comprehensive data dictionary and transformation documentation
+                            </div>
+                        </div>
+                        
+                        <div class="checklist-item" onclick="toggleChecklist(this)">
+                            <div class="checklist-checkbox"></div>
+                            <div class="checklist-text">
+                                <strong>Quality Metrics Baseline:</strong> Established measurable quality standards and monitoring procedures
+                            </div>
+                        </div>
+                        
+                        <div class="checklist-item" onclick="toggleChecklist(this)">
+                            <div class="checklist-checkbox"></div>
+                            <div class="checklist-text">
+                                <strong>AI Readiness Validation:</strong> Confirmed datasets meet requirements for planned AI applications
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="btn-primary" onclick="generatePreparationReport()" style="margin-top: 20px;">Generate Preparation Report</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Advanced Data Quality Assurance</h2>
+                
+                <p class="content-text">
+                    Implementing robust quality assurance processes ensures ongoing data reliability and AI model performance. These advanced techniques provide continuous monitoring and automated quality control for production AI systems.
+                </p>
+
+                <h3 class="subsection-title">Automated Quality Monitoring</h3>
+                
+                <div class="content-text">
+                    <strong>Real-Time Quality Dashboards</strong> provide continuous visibility into data quality metrics, enabling immediate response to quality degradation. These systems track completeness rates, accuracy scores, and consistency measures across all data sources.
+                </div>
+
+                <div class="content-text">
+                    <strong>Anomaly Detection Systems</strong> automatically identify unusual patterns that may indicate data quality issues. Machine learning algorithms can detect subtle changes in data distribution that might affect AI model performance.
+                </div>
+
+                <div class="content-text">
+                    <strong>Data Lineage Tracking</strong> maintains comprehensive records of data transformation and movement, enabling rapid identification of quality issue sources and impact assessment across downstream systems.
+                </div>
+
+                <div class="highlight-box">
+                    <h3 class="highlight-title">Quality Assurance Best Practices</h3>
+                    <p>Establish data quality as a shared responsibility across all team members, implement automated validation rules that run continuously, maintain comprehensive documentation of quality standards and procedures, and create feedback loops that enable continuous improvement of data processes.</p>
+                </div>
+            </section>
+
+            <div class="completion-section">
+                <h3>Lesson 2.2 Complete</h3>
+                <p>You've successfully mastered data quality frameworks and preparation methodologies essential for AI implementation. Continue to the next lesson to explore ethical AI implementation and bias mitigation strategies.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Function to show data audit tool
+            function showDataAudit() {
+                const auditTool = document.getElementById('data-audit');
+                auditTool.classList.remove('hidden');
+                auditTool.classList.add('visible');
+            }
+
+            // Function to show preparation tools
+            function showPreparationTools() {
+                const preparationTools = document.getElementById('preparation-tools');
+                preparationTools.classList.remove('hidden');
+                preparationTools.classList.add('visible');
+            }
+
+            // Event listener for data audit button
+            const auditButton = document.getElementById('start-data-audit');
+            if (auditButton) {
+                auditButton.addEventListener('click', showDataAudit);
+            }
+
+            // Event listener for preparation tools button
+            const preparationButton = document.getElementById('start-preparation-tools');
+            if (preparationButton) {
+                preparationButton.addEventListener('click', showPreparationTools);
+            }
+
+            // Progress tracking
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const rate = scrolled / (document.body.offsetHeight - window.innerHeight);
+                const progressFill = document.querySelector('.progress-fill');
+                if (progressFill) {
+                    progressFill.style.width = Math.min(rate * 100, 100) + '%';
+                }
+            });
+        });
+
+        // Function to toggle checklist items
+        function toggleChecklist(item) {
+            item.classList.toggle('completed');
+            const checkbox = item.querySelector('.checklist-checkbox');
+            if (item.classList.contains('completed')) {
+                checkbox.innerHTML = '✓';
+            } else {
+                checkbox.innerHTML = '';
+            }
+        }
+
+        // Function to generate audit report
+        function generateAuditReport() {
+            alert('Data Audit Report Generated!\n\nYour comprehensive audit includes:\n• Data source inventory and characteristics\n• Quality assessment across key metrics\n• Integration challenges and solutions\n• AI readiness score and recommendations\n• Action plan for data quality improvement\n\nThis report provides a roadmap for preparing your data for AI implementation.');
+        }
+
+        // Function to generate preparation report
+        function generatePreparationReport() {
+            const completedItems = document.querySelectorAll('.checklist-item.completed').length;
+            const totalItems = document.querySelectorAll('.checklist-item').length;
+            const completionRate = Math.round((completedItems / totalItems) * 100);
+            
+            alert(`Data Preparation Report Generated!\n\nCompletion Rate: ${completionRate}%\nCompleted Tasks: ${completedItems}/${totalItems}\n\nYour data preparation includes:\n• Quality assurance procedures implemented\n• Cleaning and transformation workflows established\n• Validation rules and monitoring systems active\n• Documentation and standards updated\n\nYour data is ${completionRate >= 80 ? 'ready' : 'progressing toward readiness'} for AI implementation.`);
+        }
+    </script>
+</body>
+</html>

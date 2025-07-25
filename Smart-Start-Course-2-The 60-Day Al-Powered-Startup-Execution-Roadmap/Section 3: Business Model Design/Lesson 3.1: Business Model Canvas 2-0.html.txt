@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 3.1: Business Model Canvas 2.0 | Smart Start</title>
+    <style>
+        :root {
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-600: #475569;
+            --slate-500: #64748b;
+            --slate-400: #94a3b8;
+            --slate-300: #cbd5e1;
+            --slate-200: #e2e8f0;
+            --slate-100: #f1f5f9;
+            --slate-50: #f8fafc;
+            --cyan-600: #0891b2;
+            --cyan-500: #06b6d4;
+            --cyan-400: #22d3ee;
+            --cyan-300: #67e8f9;
+            --cyan-100: #cffafe;
+            --green-500: #10b981;
+            --red-500: #ef4444;
+            --yellow-500: #f59e0b;
+            --purple-500: #8b5cf6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--slate-800);
+            background: linear-gradient(135deg, var(--slate-50) 0%, var(--slate-200) 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: clamp(1rem, 4vw, 2rem);
+        }
+
+        /* Header Styles */
+        .lesson-header {
+            background: linear-gradient(135deg, var(--slate-800) 0%, var(--slate-700) 100%);
+            color: white;
+            padding: clamp(2rem, 6vw, 3rem);
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .lesson-title {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, white 0%, var(--cyan-300) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .lesson-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: var(--slate-300);
+            margin-bottom: 1.5rem;
+        }
+
+        .lesson-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .lesson-number {
+            color: white;
+            font-weight: 600;
+        }
+
+        .progress-container {
+            margin-top: 1rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--slate-300);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyan-500) 0%, var(--cyan-400) 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 45%;
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: white;
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-left: 4px solid var(--cyan-500);
+        }
+
+        .section-title {
+            font-size: clamp(1.25rem, 3vw, 1.5rem);
+            font-weight: 600;
+            color: var(--slate-800);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--cyan-500);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.875rem;
+        }
+
+        /* Learning Objectives */
+        .objectives-list {
+            list-style: none;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .objective-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: var(--slate-50);
+            border-radius: 8px;
+            border-left: 3px solid var(--cyan-500);
+        }
+
+        .objective-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--cyan-500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Interactive Canvas Builder */
+        .canvas-builder {
+            background: linear-gradient(135deg, var(--slate-50) 0%, white 100%);
+            border: 2px dashed var(--cyan-300);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .canvas-builder:hover {
+            border-color: var(--cyan-500);
+            box-shadow: 0 8px 25px -8px rgba(6, 182, 212, 0.3);
+        }
+
+        .canvas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .canvas-block {
+            background: white;
+            border: 2px solid var(--slate-200);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .canvas-block:hover {
+            border-color: var(--cyan-500);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -8px rgba(6, 182, 212, 0.2);
+        }
+
+        .canvas-block.completed {
+            border-color: var(--green-500);
+            background: linear-gradient(135deg, white 0%, #f0fdf4 100%);
+        }
+
+        .block-title {
+            font-weight: 600;
+            color: var(--slate-800);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .block-status {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--slate-300);
+            transition: all 0.3s ease;
+        }
+
+        .canvas-block.completed .block-status {
+            background: var(--green-500);
+        }
+
+        .block-description {
+            font-size: 0.875rem;
+            color: var(--slate-600);
+            margin-bottom: 1rem;
+        }
+
+        .block-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--slate-300);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .block-input:focus {
+            outline: none;
+            border-color: var(--cyan-500);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        /* AI Assistant Panel */
+        .ai-assistant {
+            background: linear-gradient(135deg, var(--cyan-50) 0%, white 100%);
+            border: 1px solid var(--cyan-200);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-assistant::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--cyan-500) 0%, var(--cyan-400) 100%);
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .ai-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--cyan-500) 0%, var(--cyan-400) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .ai-name {
+            font-weight: 600;
+            color: var(--slate-800);
+        }
+
+        .ai-status {
+            font-size: 0.75rem;
+            color: var(--green-500);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green-500);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .ai-prompt {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .prompt-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--cyan-300);
+            border-radius: 8px;
+            font-size: 0.875rem;
+        }
+
+        .prompt-input:focus {
+            outline: none;
+            border-color: var(--cyan-500);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        .prompt-button {
+            padding: 0.75rem 1.5rem;
+            background: var(--cyan-500);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .prompt-button:hover {
+            background: var(--cyan-600);
+            transform: translateY(-1px);
+        }
+
+        /* Interactive Tools */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .tool-card {
+            background: white;
+            border: 1px solid var(--slate-200);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tool-card:hover {
+            border-color: var(--cyan-500);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -8px rgba(6, 182, 212, 0.2);
+        }
+
+        .tool-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--cyan-500) 0%, var(--cyan-400) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .tool-title {
+            font-weight: 600;
+            color: var(--slate-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-description {
+            font-size: 0.875rem;
+            color: var(--slate-600);
+        }
+
+        /* Completion Checklist */
+        .checklist {
+            background: var(--slate-50);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--slate-200);
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--slate-300);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .checkbox.checked {
+            background: var(--green-500);
+            border-color: var(--green-500);
+        }
+
+        .checkbox.checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .checklist-text {
+            flex: 1;
+            font-size: 0.875rem;
+            color: var(--slate-700);
+        }
+
+        .checklist-item.completed .checklist-text {
+            text-decoration: line-through;
+            color: var(--slate-500);
+        }
+
+        /* Next Lesson Preview */
+        .next-lesson {
+            background: linear-gradient(135deg, var(--slate-800) 0%, var(--slate-700) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+
+        .next-lesson-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .next-lesson-description {
+            color: var(--slate-300);
+            margin-bottom: 1.5rem;
+        }
+
+        .next-lesson-button {
+            background: var(--cyan-500);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .next-lesson-button:hover {
+            background: var(--cyan-600);
+            transform: translateY(-1px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .canvas-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tool-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .lesson-info {
+                flex-direction: column;
+            }
+            
+            .ai-prompt {
+                flex-direction: column;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-in {
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Lesson Header -->
+        <header class="lesson-header fade-in">
+            <h1 class="lesson-title">Lesson 3.1: Business Model Canvas 2.0</h1>
+            <p class="lesson-subtitle">Design Your Startup's Blueprint with AI-Powered Insights</p>
+            
+            <div class="lesson-info">
+                <div class="info-item">
+                    <span>📚</span>
+                    <span class="lesson-number">Lesson 3.1</span>
+                </div>
+                <div class="info-item">
+                    <span>⏱️</span>
+                    <span>45 minutes</span>
+                </div>
+                <div class="info-item">
+                    <span>📅</span>
+                    <span>Day 12 of 60</span>
+                </div>
+                <div class="info-item">
+                    <span>🎯</span>
+                    <span>Phase II: Development</span>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-label">
+                    <span>Course Progress</span>
+                    <span>45% Complete</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Learning Objectives -->
+        <section class="content-section slide-in">
+            <h2 class="section-title">
+                <span class="section-icon">🎯</span>
+                Learning Objectives
+            </h2>
+            <ul class="objectives-list">
+                <li class="objective-item">
+                    <span class="objective-icon">1</span>
+                    <span><strong>Master the Business Model Canvas 2.0</strong> framework enhanced with AI-driven insights and modern startup methodologies</span>
+                </li>
+                <li class="objective-item">
+                    <span class="objective-icon">2</span>
+                    <span><strong>Build an interactive business model</strong> using AI tools for value proposition design, customer segmentation, and revenue optimization</span>
+                </li>
+                <li class="objective-item">
+                    <span class="objective-icon">3</span>
+                    <span><strong>Validate your business model components</strong> through AI-powered market analysis and competitive positioning frameworks</span>
+                </li>
+                <li class="objective-item">
+                    <span class="objective-icon">4</span>
+                    <span><strong>Create a comprehensive business blueprint</strong> that serves as the foundation for MVP development and investor presentations</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Introduction -->
+        <section class="content-section fade-in">
+            <h2 class="section-title">
+                <span class="section-icon">🚀</span>
+                From Idea to Business Model
+            </h2>
+            <p>Congratulations on completing your startup validation in Phase I! Now we transition from <strong>what</strong> you're building to <strong>how</strong> you'll build a sustainable business around it. The Business Model Canvas 2.0 combines the proven framework created by Alexander Osterwalder with cutting-edge AI capabilities to help you design, validate, and optimize your business model in real-time.</p>
+            
+            <p>Unlike traditional business planning, this AI-enhanced approach allows you to:</p>
+            <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                <li>Generate data-driven insights for each canvas component</li>
+                <li>Validate assumptions with AI-powered market analysis</li>
+                <li>Optimize revenue streams through predictive modeling</li>
+                <li>Identify competitive advantages using AI positioning tools</li>
+            </ul>
+
+            <div class="ai-assistant">
+                <div class="ai-header">
+                    <div class="ai-avatar">AI</div>
+                    <div>
+                        <div class="ai-name">Business Model Assistant</div>
+                        <div class="ai-status">
+                            <span class="status-dot"></span>
+                            Ready to help design your business model
+                        </div>
+                    </div>
+                </div>
+                <p>I'll guide you through each component of your business model canvas, providing insights, suggestions, and validation as we build your startup's blueprint together.</p>
+                <div class="ai-prompt">
+                    <input type="text" class="prompt-input" placeholder="Ask me anything about business model design..." id="aiPrompt">
+                    <button class="prompt-button" onclick="processAIPrompt()">Ask AI</button>
+                </div>
+                <div id="aiResponse" style="margin-top: 1rem; padding: 1rem; background: white; border-radius: 8px; display: none;"></div>
+            </div>
+        </section>
+
+        <!-- Interactive Canvas Builder -->
+        <section class="content-section fade-in">
+            <h2 class="section-title">
+                <span class="section-icon">🎨</span>
+                Interactive Business Model Canvas Builder
+            </h2>
+            <p>Build your business model by completing each component below. The AI assistant will provide real-time feedback and suggestions as you work.</p>
+            
+            <div class="canvas-builder">
+                <h3 style="text-align: center; margin-bottom: 1rem; color: var(--slate-700);">Your Business Model Canvas 2.0</h3>
+                <div class="canvas-grid">
+                    <!-- Key Partners -->
+                    <div class="canvas-block" data-component="partners">
+                        <div class="block-title">
+                            Key Partners
+                            <span class="block-status"></span>
+                        </div>
+                        <div class="block-description">Who are your key partners and suppliers? What key resources are you acquiring from partners?</div>
+                        <textarea class="block-input" placeholder="List your key partners, suppliers, and strategic alliances..." rows="3" onchange="updateCanvasBlock('partners', this.value)"></textarea>
+                    </div>
+
+                    <!-- Key Activities -->
+                    <div class="canvas-block" data-component="activities">
+                        <div class="block-title">
+                            Key Activities
+                            <span class="block-status"></span>
+                        </div>
+                        <div class="block-description">What key activities does your value proposition require?</div>
+                        <textarea class="block-input" placeholder="Describe your most important activities..." rows="3" onchange="updateCanvasBlock('activities', this.value)"></textarea>
+                    </div>
+
+                    <!-- Key Resources -->
+                    <div class="canvas-block" data-component="resources">
+                        <div class="block-title">
+                            Key Resources
+                            <span class="block-status"></span>
+                        </div>
+                        <div class="block-description">What key resources does your value proposition require?</div>
+                        <textarea class="block-input" placeholder="List your key resources (physical, intellectual, human, financial)..." rows="3" onchange="updateCanvasBlock('resources', this.value)"></textarea>
+                    </div>
+
+                    <!-- Value Propositions -->
+                    <div class="canvas-block" data-component="value">
+                        <div class="block-title">
+                            Value Propositions
+                            <span class="block-status"></span>
+                        </div>
+                        <div class="block-description">What value do you deliver to customers? Which problems are you solving?</div>
+                        <textarea class="block-input" placeholder="Describe your unique value proposition..." rows="3" onchange="updateCanvasBlock('value', this.value)"></textarea>
+                    </div>
+
+                    <!-- Customer Relationships -->
+                    <div class="canvas-block" data-component="relationships">
+                        <div class="block-title">
+                            Customer Relationships
+                            <span class="block-status"></span>
+                        </div>
+                        <div class="block-description">What type of relationship does each customer segment expect?</div>
+                        <textarea class="block-input" placeholder="Describe how you'll acquire, retain, and grow customers..." rows="3" onchange="updateCanvasBlock('relationships', this.value)"></textarea>
+                    </div>
+
+                    <!-- Channels -->
+                    <div class="canvas-block" data-component="channels">
+                        <div class="block-title">
+                            Channels
+                            <span class="block-status"></span>
+                        </div>
+                        <div class="block-description">Through which channels do you reach your customer segments?</div>
+                        <textarea class="block-input" placeholder="List your distribution and communication channels..." rows="3" onchange="updateCanvasBlock('channels', this.value)"></textarea>
+                    </div>
+
+                    <!-- Customer Segments -->
+                    <div class="canvas-block" data-component="segments">
+                        <div class="block-title">
+                            Customer Segments
+                            <span class="block-status"></span>
+                        </div>
+                        <div class="block-description">For whom are you creating value? Who are your most important customers?</div>
+                        <textarea class="block-input" placeholder="Define your target customer segments..." rows="3" onchange="updateCanvasBlock('segments', this.value)"></textarea>
+                    </div>
+
+                    <!-- Cost Structure -->
+                    <div class="canvas-block" data-component="costs">
+                        <div class="block-title">
+                            Cost Structure
+                            <span class="block-status"></span>
+                        </div>
+                        <div class="block-description">What are the most important costs inherent in your business model?</div>
+                        <textarea class="block-input" placeholder="List your key costs and cost drivers..." rows="3" onchange="updateCanvasBlock('costs', this.value)"></textarea>
+                    </div>
+
+                    <!-- Revenue Streams -->
+                    <div class="canvas-block" data-component="revenue">
+                        <div class="block-title">
+                            Revenue Streams
+                            <span class="block-status"></span>
+                        </div>
+                        <div class="block-description">For what value are your customers willing to pay?</div>
+                        <textarea class="block-input" placeholder="Describe your revenue streams and pricing strategy..." rows="3" onchange="updateCanvasBlock('revenue', this.value)"></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI-Powered Tools -->
+        <section class="content-section fade-in">
+            <h2 class="section-title">
+                <span class="section-icon">🤖</span>
+                AI-Powered Business Model Tools
+            </h2>
+            <p>Enhance your business model with these AI-powered analysis and optimization tools:</p>
+            
+            <div class="tool-grid">
+                <div class="tool-card" onclick="launchTool('competitor')">
+                    <div class="tool-icon">🔍</div>
+                    <div class="tool-title">Competitive Analysis</div>
+                    <div class="tool-description">AI-powered competitive positioning and market gap analysis</div>
+                </div>
+                
+                <div class="tool-card" onclick="launchTool('revenue')">
+                    <div class="tool-icon">💰</div>
+                    <div class="tool-title">Revenue Optimizer</div>
+                    <div class="tool-description">Optimize pricing strategies and revenue stream combinations</div>
+                </div>
+                
+                <div class="tool-card" onclick="launchTool('validation')">
+                    <div class="tool-icon">✅</div>
+                    <div class="tool-title">Model Validator</div>
+                    <div class="tool-description">Validate business model assumptions with market data</div>
+                </div>
+                
+                <div class="tool-card" onclick="launchTool('journey')">
+                    <div class="tool-icon">🗺️</div>
+                    <div class="tool-title">Customer Journey Mapper</div>
+                    <div class="tool-description">Map and optimize customer touchpoints and experiences</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Validation Framework -->
+        <section class="content-section fade-in">
+            <h2 class="section-title">
+                <span class="section-icon">🎯</span>
+                Business Model Validation Framework
+            </h2>
+            <p>Use this AI-enhanced validation framework to test your business model assumptions:</p>
+            
+            <div style="background: var(--slate-50); padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                <h4 style="color: var(--slate-800); margin-bottom: 1rem;">Validation Checklist</h4>
+                <div style="display: grid; gap: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <input type="checkbox" id="val1" style="transform: scale(1.2);">
+                        <label for="val1">Customer problem validation through interviews and surveys</label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <input type="checkbox" id="val2" style="transform: scale(1.2);">
+                        <label for="val2">Value proposition-market fit confirmation</label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <input type="checkbox" id="val3" style="transform: scale(1.2);">
+                        <label for="val3">Revenue model feasibility and pricing validation</label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <input type="checkbox" id="val4" style="transform: scale(1.2);">
+                        <label for="val4">Competitive advantage sustainability assessment</label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <input type="checkbox" id="val5" style="transform: scale(1.2);">
+                        <label for="val5">Resource and partnership viability verification</label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Completion Checklist -->
+        <section class="content-section fade-in">
+            <h2 class="section-title">
+                <span class="section-icon">✅</span>
+                Lesson Completion Checklist
+            </h2>
+            <div class="checklist">
+                <div class="checklist-item" onclick="toggleChecklistItem(this)">
+                    <div class="checkbox"></div>
+                    <div class="checklist-text">Complete all 9 components of the Business Model Canvas</div>
+                </div>
+                <div class="checklist-item" onclick="toggleChecklistItem(this)">
+                    <div class="checkbox"></div>
+                    <div class="checklist-text">Use AI tools to analyze competitive positioning</div>
+                </div>
+                <div class="checklist-item" onclick="toggleChecklistItem(this)">
+                    <div class="checkbox"></div>
+                    <div class="checklist-text">Validate at least 3 key business model assumptions</div>
+                </div>
+                <div class="checklist-item" onclick="toggleChecklistItem(this)">
+                    <div class="checkbox"></div>
+                    <div class="checklist-text">Optimize revenue streams using AI recommendations</div>
+                </div>
+                <div class="checklist-item" onclick="toggleChecklistItem(this)">
+                    <div class="checkbox"></div>
+                    <div class="checklist-text">Export and save your completed business model canvas</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Next Lesson Preview -->
+        <section class="next-lesson fade-in">
+            <h3 class="next-lesson-title">🔮 Next: Lesson 3.2 - Revenue Model Architecture</h3>
+            <p class="next-lesson-description">
+                Build sophisticated revenue models with AI-powered pricing strategies, subscription optimization, and multi-stream revenue architectures that scale with your startup's growth.
+            </p>
+            <a href="#" class="next-lesson-button" onclick="completeLesson()">Continue to Lesson 3.2 →</a>
+        </section>
+    </div>
+
+    <script>
+        // Progress tracking
+        let currentProgress = 45;
+        const totalSteps = 100;
+        let canvasData = {};
+        let completedComponents = 0;
+
+        // Initialize lesson
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProgress();
+            initializeCanvas();
+        });
+
+        // Canvas management
+        function updateCanvasBlock(component, value) {
+            canvasData[component] = value;
+            const block = document.querySelector(`[data-component="${component}"]`);
+            
+            if (value.trim().length > 10) {
+                block.classList.add('completed');
+                if (!block.dataset.completed) {
+                    block.dataset.completed = 'true';
+                    completedComponents++;
+                    updateProgress();
+                }
+            } else {
+                block.classList.remove('completed');
+                if (block.dataset.completed) {
+                    block.dataset.completed = 'false';
+                    completedComponents--;
+                    updateProgress();
+                }
+            }
+            
+            saveProgress();
+        }
+
+        function initializeCanvas() {
+            const components = ['partners', 'activities', 'resources', 'value', 'relationships', 'channels', 'segments', 'costs', 'revenue'];
+            components.forEach(component => {
+                canvasData[component] = '';
+            });
+        }
+
+        // AI Assistant
+        function processAIPrompt() {
+            const prompt = document.getElementById('aiPrompt').value;
+            const responseDiv = document.getElementById('aiResponse');
+            
+            if (!prompt.trim()) return;
+            
+            // Simulate AI response
+            responseDiv.style.display = 'block';
+            responseDiv.innerHTML = '<div style="color: var(--slate-600); font-style: italic;">AI is analyzing your question...</div>';
+            
+            setTimeout(() => {
+                const responses = [
+                    "For your value proposition, focus on the specific pain point you're solving and quantify the benefit. Consider using the formula: 'We help [target customer] achieve [desired outcome] by [unique approach].'",
+                    "Your customer segments should be specific enough to target but large enough to be viable. Consider demographics, psychographics, and behavioral patterns when defining segments.",
+                    "Revenue streams work best when they align with customer preferences. Consider freemium models for digital products or subscription models for ongoing value delivery.",
+                    "Key partnerships should provide strategic value beyond cost savings. Look for partners who can help you reach new markets, enhance your offering, or provide critical resources.",
+                    "Your cost structure should distinguish between fixed and variable costs. Focus on understanding your unit economics and path to profitability."
+                ];
+                
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                responseDiv.innerHTML = `<div style="color: var(--slate-700);">${randomResponse}</div>`;
+            }, 1500);
+            
+            document.getElementById('aiPrompt').value = '';
+        }
+
+        // Tool launcher
+        function launchTool(toolType) {
+            const tools = {
+                competitor: "Launching competitive analysis tool...",
+                revenue: "Opening revenue optimization dashboard...",
+                validation: "Starting business model validation...",
+                journey: "Loading customer journey mapper..."
+            };
+            
+            alert(tools[toolType] || "Tool launching...");
+        }
+
+        // Checklist management
+        function toggleChecklistItem(item) {
+            const checkbox = item.querySelector('.checkbox');
+            const isChecked = checkbox.classList.contains('checked');
+            
+            if (isChecked) {
+                checkbox.classList.remove('checked');
+                item.classList.remove('completed');
+            } else {
+                checkbox.classList.add('checked');
+                item.classList.add('completed');
+            }
+            
+            updateProgress();
+            saveProgress();
+        }
+
+        // Progress management
+        function updateProgress() {
+            const canvasProgress = (completedComponents / 9) * 30;
+            const checklistItems = document.querySelectorAll('.checklist-item.completed').length;
+            const checklistProgress = (checklistItems / 5) * 20;
+            
+            currentProgress = 45 + canvasProgress + checklistProgress;
+            
+            const progressFill = document.querySelector('.progress-fill');
+            const progressLabel = document.querySelector('.progress-label span:last-child');
+            
+            progressFill.style.width = `${currentProgress}%`;
+            progressLabel.textContent = `${Math.round(currentProgress)}% Complete`;
+        }
+
+        function saveProgress() {
+            const progressData = {
+                currentProgress,
+                canvasData,
+                completedComponents,
+                checklistStates: Array.from(document.querySelectorAll('.checklist-item')).map(item => 
+                    item.classList.contains('completed')
+                )
+            };
+            localStorage.setItem('smartstart_lesson_3_1', JSON.stringify(progressData));
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('smartstart_lesson_3_1');
+            if (saved) {
+                const data = JSON.parse(saved);
+                currentProgress = data.currentProgress || 45;
+                canvasData = data.canvasData || {};
+                completedComponents = data.completedComponents || 0;
+                
+                // Restore checklist states
+                if (data.checklistStates) {
+                    const checklistItems = document.querySelectorAll('.checklist-item');
+                    data.checklistStates.forEach((isCompleted, index) => {
+                        if (isCompleted && checklistItems[index]) {
+                            checklistItems[index].classList.add('completed');
+                            checklistItems[index].querySelector('.checkbox').classList.add('checked');
+                        }
+                    });
+                }
+                
+                updateProgress();
+            }
+        }
+
+        function completeLesson() {
+            const completedItems = document.querySelectorAll('.checklist-item.completed').length;
+            if (completedItems < 3) {
+                alert('Please complete at least 3 checklist items before proceeding to the next lesson.');
+                return;
+            }
+            
+            // Mark lesson as completed
+            currentProgress = Math.max(currentProgress, 50);
+            saveProgress();
+            
+            alert('Congratulations! You\'ve completed Lesson 3.1. Moving to Lesson 3.2...');
+            // In a real implementation, this would navigate to the next lesson
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target.classList.contains('prompt-input')) {
+                processAIPrompt();
+            }
+        });
+
+        // Animation triggers
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all content sections
+        document.querySelectorAll('.content-section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Prompting Techniques and Frameworks</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #334155;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        .header {
+            background: #28263a;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(6, 182, 212, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .lesson-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .lesson-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #10b981);
+            width: 57.1%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .interactive-button {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .interactive-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3);
+        }
+        
+        .interactive-button.secondary {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .interactive-button.secondary:hover {
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .hidden-content {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #06b6d4;
+        }
+        
+        .technique-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .technique-card:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .technique-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .accuracy-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .prompt-example {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .comparison-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .lab-interface {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 2px dashed #06b6d4;
+        }
+        
+        .prompt-input {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            resize: vertical;
+            margin: 0.5rem 0;
+        }
+        
+        .metric-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #06b6d4;
+        }
+        
+        .metric-label {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+        
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid;
+        }
+        
+        .alert.success {
+            background: #f0fdf4;
+            border-color: #10b981;
+            color: #065f46;
+        }
+        
+        .alert.warning {
+            background: #fffbeb;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+        
+        .alert.info {
+            background: #eff6ff;
+            border-color: #06b6d4;
+            color: #0c4a6e;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="lesson-title">Advanced Prompting Techniques and Frameworks</h1>
+            <p class="lesson-subtitle">Section 4.1 • Master sophisticated prompt engineering methods for maximum AI performance</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">Progress: 57.1% Complete</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Learning Objectives -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2 class="section-title">Learning Objectives</h2>
+            </div>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Master few-shot prompting techniques achieving 68-74% performance improvements
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Implement meta-prompting frameworks for complex task orchestration (84% accuracy)
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Apply DSPy optimization methods for automated prompt refinement (94% accuracy)
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Design chain-of-thought workflows for enhanced reasoning capabilities
+                </li>
+            </ul>
+        </div>
+
+        <!-- Conceptual Foundation -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🧠</div>
+                <h2 class="section-title">Advanced Prompting Frameworks</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Advanced prompt engineering has evolved beyond simple question-and-answer interactions to sophisticated techniques that significantly enhance AI model performance. Research demonstrates that strategic prompting can improve accuracy from baseline 68% to 94% depending on the technique employed.</p>
+
+            <div class="framework-grid">
+                <div class="technique-card">
+                    <h3 class="technique-title">Few-Shot Prompting <span class="accuracy-badge">68-74% Accuracy</span></h3>
+                    <p>Provides examples within the prompt to guide model behavior, improving accuracy through pattern recognition and contextual learning.</p>
+                    <button class="interactive-button" onclick="toggleContent('few-shot-details')">Explore Technique</button>
+                    <div id="few-shot-details" class="hidden-content">
+                        <h4>How Few-Shot Prompting Works:</h4>
+                        <ol>
+                            <li><strong>Example Selection:</strong> Choose 2-5 representative examples that demonstrate the desired behavior</li>
+                            <li><strong>Format Consistency:</strong> Maintain uniform formatting across all examples</li>
+                            <li><strong>Pattern Recognition:</strong> AI learns from the input-output patterns shown</li>
+                        </ol>
+                        <div class="prompt-example">
+Example 1:
+Input: "Analyze customer feedback: 'Great product but shipping was slow'"
+Output: Sentiment: Mixed | Product: Positive | Service: Negative
+
+Example 2:
+Input: "Analyze customer feedback: 'Fast delivery and excellent quality'"
+Output: Sentiment: Positive | Product: Positive | Service: Positive
+
+Now analyze: "Product works well but customer service was unhelpful"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="technique-card">
+                    <h3 class="technique-title">Meta-Prompting <span class="accuracy-badge">Up to 84% Accuracy</span></h3>
+                    <p>Uses AI as a conductor to manage complex tasks by leveraging multiple expert AI agents for specialized subtasks.</p>
+                    <button class="interactive-button" onclick="toggleContent('meta-prompting-details')">Explore Technique</button>
+                    <div id="meta-prompting-details" class="hidden-content">
+                        <h4>Meta-Prompting Architecture:</h4>
+                        <ol>
+                            <li><strong>Central Conductor:</strong> Main AI breaks down complex tasks into subtasks</li>
+                            <li><strong>Expert Agents:</strong> Specialized AIs handle specific domain tasks</li>
+                            <li><strong>Synthesis:</strong> Central AI combines expert outputs into final solution</li>
+                        </ol>
+                        <div class="prompt-example">
+You are a meta-prompt conductor. Break down this business analysis task:
+"Evaluate market entry strategy for AI startup in healthcare"
+
+Assign subtasks to experts:
+- Market Research Expert: Analyze healthcare AI market size and trends
+- Competitive Analysis Expert: Identify key competitors and positioning
+- Financial Expert: Assess investment requirements and ROI projections
+- Risk Assessment Expert: Evaluate regulatory and market risks
+
+Synthesize their findings into strategic recommendations.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="technique-card">
+                    <h3 class="technique-title">DSPy Optimization <span class="accuracy-badge">94% Accuracy</span></h3>
+                    <p>Automated prompt optimization framework that programmatically refines prompts through iterative testing and feedback loops.</p>
+                    <button class="interactive-button" onclick="toggleContent('dspy-details')">Explore Technique</button>
+                    <div id="dspy-details" class="hidden-content">
+                        <h4>DSPy Optimization Process:</h4>
+                        <ol>
+                            <li><strong>Module Definition:</strong> Define specific tasks with input/output signatures</li>
+                            <li><strong>Training Data:</strong> Provide examples for optimization</li>
+                            <li><strong>Metric Definition:</strong> Establish success criteria</li>
+                            <li><strong>Automated Refinement:</strong> System iteratively improves prompts</li>
+                        </ol>
+                        <div class="alert info">
+                            <strong>DSPy Benefits:</strong> Reduces manual prompt engineering time by 70% while achieving superior performance through systematic optimization.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="technique-card">
+                    <h3 class="technique-title">Chain-of-Thought <span class="accuracy-badge">300% Improvement</span></h3>
+                    <p>Breaks complex reasoning into sequential steps, dramatically improving problem-solving accuracy for multi-step tasks.</p>
+                    <button class="interactive-button" onclick="toggleContent('cot-details')">Explore Technique</button>
+                    <div id="cot-details" class="hidden-content">
+                        <h4>Chain-of-Thought Structure:</h4>
+                        <ol>
+                            <li><strong>Problem Decomposition:</strong> Break complex tasks into logical steps</li>
+                            <li><strong>Sequential Reasoning:</strong> Process each step systematically</li>
+                            <li><strong>Intermediate Validation:</strong> Verify logic at each stage</li>
+                            <li><strong>Final Synthesis:</strong> Combine step results into solution</li>
+                        </ol>
+                        <div class="prompt-example">
+Let's solve this step by step:
+
+Problem: Calculate ROI for AI implementation project
+
+Step 1: Identify all costs
+- Software licenses: $50,000
+- Implementation: $30,000
+- Training: $15,000
+- Total Investment: $95,000
+
+Step 2: Calculate benefits
+- Labor cost savings: $80,000/year
+- Efficiency gains: $40,000/year
+- Error reduction: $20,000/year
+- Total Annual Benefits: $140,000
+
+Step 3: Calculate ROI
+ROI = (Benefits - Investment) / Investment × 100
+ROI = ($140,000 - $95,000) / $95,000 × 100 = 47.4%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Comparison -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <h2 class="section-title">Technique Performance Comparison</h2>
+            </div>
+            
+            <button class="interactive-button secondary" onclick="toggleContent('performance-analysis')">View Performance Data</button>
+            
+            <div id="performance-analysis" class="hidden-content">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Technique</th>
+                            <th>Accuracy Range</th>
+                            <th>Best Use Cases</th>
+                            <th>Implementation Complexity</th>
+                            <th>Resource Requirements</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Few-Shot Prompting</strong></td>
+                            <td>68-74%</td>
+                            <td>Classification, Pattern Recognition</td>
+                            <td>Low</td>
+                            <td>Minimal</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Meta-Prompting</strong></td>
+                            <td>Up to 84%</td>
+                            <td>Complex Multi-Domain Tasks</td>
+                            <td>Medium</td>
+                            <td>Multiple API Calls</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DSPy Optimization</strong></td>
+                            <td>Up to 94%</td>
+                            <td>Systematic Performance Improvement</td>
+                            <td>High</td>
+                            <td>Training Data Required</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chain-of-Thought</strong></td>
+                            <td>300% Improvement</td>
+                            <td>Multi-Step Reasoning</td>
+                            <td>Medium</td>
+                            <td>Longer Context Windows</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="alert success">
+                    <strong>Key Insight:</strong> Combining techniques often yields the best results. For example, using few-shot examples within a chain-of-thought framework can achieve superior performance for complex business tasks.
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity 4.1.1: Prompt Engineering Lab -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🔬</div>
+                <h2 class="section-title">Activity 4.1.1: Prompt Engineering Lab</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Practice advanced prompting techniques with real business scenarios and measure performance improvements.</p>
+            
+            <div class="lab-interface">
+                <h3 style="margin-bottom: 1rem;">Interactive Prompt Testing Lab</h3>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="scenario-select" style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Select Business Scenario:</label>
+                    <select id="scenario-select" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 8px;" onchange="loadScenario()">
+                        <option value="">Choose a scenario...</option>
+                        <option value="customer-analysis">Customer Feedback Analysis</option>
+                        <option value="market-research">Market Research Summary</option>
+                        <option value="financial-planning">Financial Planning Analysis</option>
+                        <option value="risk-assessment">Risk Assessment Evaluation</option>
+                    </select>
+                </div>
+                
+                <div id="scenario-content" style="display: none;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Basic Prompt:</label>
+                            <textarea id="basic-prompt" class="prompt-input" placeholder="Enter your basic prompt here..."></textarea>
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Advanced Prompt:</label>
+                            <textarea id="advanced-prompt" class="prompt-input" placeholder="Enter your advanced prompt here..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-bottom: 1.5rem;">
+                        <button class="interactive-button" onclick="testPrompts()">Test Both Prompts</button>
+                        <button class="interactive-button secondary" onclick="generateOptimized()">Generate Optimized Version</button>
+                    </div>
+                    
+                    <div id="results-display" style="display: none;">
+                        <h4 style="margin-bottom: 1rem;">Performance Comparison:</h4>
+                        <div class="metric-display">
+                            <div class="metric-card">
+                                <div class="metric-value" id="basic-score">--</div>
+                                <div class="metric-label">Basic Prompt Score</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="advanced-score">--</div>
+                                <div class="metric-label">Advanced Prompt Score</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="improvement">--</div>
+                                <div class="metric-label">Improvement %</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="interactive-button" onclick="toggleContent('lab-guidance')">View Lab Guidance & Best Practices</button>
+            
+            <div id="lab-guidance" class="hidden-content">
+                <h4>Prompt Engineering Best Practices:</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin: 1rem 0;">
+                    <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h5 style="color: #1e293b; margin-bottom: 0.5rem;">🎯 Specificity</h5>
+                        <p>Be precise about desired output format, tone, and scope. Vague prompts yield inconsistent results.</p>
+                    </div>
+                    <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h5 style="color: #1e293b; margin-bottom: 0.5rem;">📋 Context</h5>
+                        <p>Provide relevant background information and constraints to guide AI reasoning effectively.</p>
+                    </div>
+                    <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h5 style="color: #1e293b; margin-bottom: 0.5rem;">🔄 Iteration</h5>
+                        <p>Test multiple variations and refine based on output quality and consistency.</p>
+                    </div>
+                    <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h5 style="color: #1e293b; margin-bottom: 0.5rem;">📏 Measurement</h5>
+                        <p>Establish clear success criteria and track performance metrics systematically.</p>
+                    </div>
+                </div>
+                
+                <div class="alert warning">
+                    <strong>Common Pitfalls to Avoid:</strong>
+                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                        <li>Overloading prompts with too many instructions</li>
+                        <li>Using ambiguous language or undefined terms</li>
+                        <li>Neglecting to test with edge cases</li>
+                        <li>Failing to validate outputs systematically</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Framework Selection Guide -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🗺️</div>
+                <h2 class="section-title">Framework Selection Guide</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Choose the right prompting technique based on your specific business needs and constraints.</p>
+            
+            <button class="interactive-button" onclick="toggleContent('selection-wizard')">Launch Selection Wizard</button>
+            
+            <div id="selection-wizard" class="hidden-content">
+                <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <h4 style="margin-bottom: 1rem;">Answer these questions to get personalized recommendations:</h4>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">1. What type of task are you optimizing?</label>
+                        <select id="task-type" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 8px;">
+                            <option value="">Select task type...</option>
+                            <option value="classification">Classification/Categorization</option>
+                            <option value="analysis">Complex Analysis</option>
+                            <option value="reasoning">Multi-step Reasoning</option>
+                            <option value="creative">Creative Generation</option>
+                        </select>
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">2. What's your technical expertise level?</label>
+                        <select id="expertise-level" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 8px;">
+                            <option value="">Select expertise level...</option>
+                            <option value="beginner">Beginner (Basic prompting)</option>
+                            <option value="intermediate">Intermediate (Some AI experience)</option>
+                            <option value="advanced">Advanced (Technical background)</option>
+                        </select>
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">3. What's your priority?</label>
+                        <select id="priority" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 8px;">
+                            <option value="">Select priority...</option>
+                            <option value="speed">Quick implementation</option>
+                            <option value="accuracy">Maximum accuracy</option>
+                            <option value="cost">Cost efficiency</option>
+                            <option value="scalability">Long-term scalability</option>
+                        </select>
+                    </div>
+                    
+                    <button class="interactive-button" onclick="getRecommendation()">Get Recommendation</button>
+                    
+                    <div id="recommendation-result" style="display: none; margin-top: 1rem; padding: 1rem; background: #f0fdf4; border-radius: 8px; border-left: 4px solid #10b981;">
+                        <!-- Recommendation will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">💡</div>
+                <h2 class="section-title">Key Takeaways</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                <div class="alert success">
+                    <h4 style="margin-bottom: 0.5rem;">Performance Impact</h4>
+                    <p>Advanced prompting techniques can improve AI performance by 68-300%, with DSPy optimization achieving up to 94% accuracy in systematic testing.</p>
+                </div>
+                
+                <div class="alert info">
+                    <h4 style="margin-bottom: 0.5rem;">Strategic Selection</h4>
+                    <p>Choose techniques based on task complexity, available resources, and performance requirements. Combining methods often yields optimal results.</p>
+                </div>
+                
+                <div class="alert warning">
+                    <h4 style="margin-bottom: 0.5rem;">Implementation Focus</h4>
+                    <p>Start with few-shot prompting for immediate improvements, then advance to meta-prompting and DSPy for complex business applications.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleContent(elementId) {
+            const element = document.getElementById(elementId);
+            if (element.style.display === 'none' || element.style.display === '') {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        }
+        
+        function loadScenario() {
+            const scenario = document.getElementById('scenario-select').value;
+            const content = document.getElementById('scenario-content');
+            const basicPrompt = document.getElementById('basic-prompt');
+            const advancedPrompt = document.getElementById('advanced-prompt');
+            
+            if (scenario) {
+                content.style.display = 'block';
+                
+                const scenarios = {
+                    'customer-analysis': {
+                        basic: 'Analyze this customer feedback and tell me if it\'s positive or negative.',
+                        advanced: 'Analyze the following customer feedback using this format:\n\nSentiment: [Positive/Negative/Mixed]\nProduct Rating: [1-5]\nService Rating: [1-5]\nKey Issues: [List specific problems]\nRecommendations: [Actionable improvements]\n\nFeedback to analyze:'
+                    },
+                    'market-research': {
+                        basic: 'Summarize this market research data.',
+                        advanced: 'Analyze this market research data step by step:\n\n1. Market Size Analysis: Identify total addressable market and growth trends\n2. Competitive Landscape: Map key players and their positioning\n3. Opportunity Assessment: Highlight gaps and opportunities\n4. Risk Factors: Identify potential challenges\n5. Strategic Recommendations: Provide 3-5 actionable insights\n\nData to analyze:'
+                    },
+                    'financial-planning': {
+                        basic: 'Review these financial projections.',
+                        advanced: 'Conduct a comprehensive financial analysis using this framework:\n\nRevenue Analysis:\n- Growth assumptions validation\n- Revenue stream breakdown\n- Market penetration rates\n\nCost Structure:\n- Fixed vs variable cost analysis\n- Scalability assessment\n- Benchmark comparisons\n\nRisk Assessment:\n- Sensitivity analysis\n- Scenario planning\n- Mitigation strategies\n\nProjections to analyze:'
+                    },
+                    'risk-assessment': {
+                        basic: 'What are the risks in this business plan?',
+                        advanced: 'Perform systematic risk assessment:\n\n1. Risk Identification:\n   - Market risks\n   - Operational risks\n   - Financial risks\n   - Regulatory risks\n\n2. Risk Quantification:\n   - Probability assessment (1-5)\n   - Impact severity (1-5)\n   - Risk score calculation\n\n3. Mitigation Strategies:\n   - Prevention measures\n   - Contingency plans\n   - Monitoring indicators\n\nBusiness plan to assess:'
+                    }
+                };
+                
+                basicPrompt.value = scenarios[scenario].basic;
+                advancedPrompt.value = scenarios[scenario].advanced;
+            } else {
+                content.style.display = 'none';
+            }
+        }
+        
+        function testPrompts() {
+            // Simulate performance testing
+            const basicScore = Math.floor(Math.random() * 20) + 60; // 60-80
+            const advancedScore = Math.floor(Math.random() * 15) + 80; // 80-95
+            const improvement = Math.round(((advancedScore - basicScore) / basicScore) * 100);
+            
+            document.getElementById('basic-score').textContent = basicScore + '%';
+            document.getElementById('advanced-score').textContent = advancedScore + '%';
+            document.getElementById('improvement').textContent = '+' + improvement + '%';
+            
+            document.getElementById('results-display').style.display = 'block';
+        }
+        
+        function generateOptimized() {
+            const advancedPrompt = document.getElementById('advanced-prompt');
+            const currentPrompt = advancedPrompt.value;
+            
+            // Add optimization suggestions
+            const optimizations = [
+                '\n\n[OPTIMIZATION SUGGESTIONS]',
+                '• Add specific output format requirements',
+                '• Include example of desired response',
+                '• Specify tone and style preferences',
+                '• Add validation criteria',
+                '• Include edge case handling instructions'
+            ];
+            
+            advancedPrompt.value = currentPrompt + optimizations.join('\n');
+        }
+        
+        function getRecommendation() {
+            const taskType = document.getElementById('task-type').value;
+            const expertise = document.getElementById('expertise-level').value;
+            const priority = document.getElementById('priority').value;
+            
+            if (!taskType || !expertise || !priority) {
+                alert('Please answer all questions to get a recommendation.');
+                return;
+            }
+            
+            const recommendations = {
+                'classification-beginner-speed': {
+                    technique: 'Few-Shot Prompting',
+                    reason: 'Perfect for classification tasks with quick implementation and minimal learning curve.',
+                    implementation: 'Start with 3-5 clear examples and consistent formatting.'
+                },
+                'analysis-intermediate-accuracy': {
+                    technique: 'Chain-of-Thought Prompting',
+                    reason: 'Ideal for complex analysis requiring step-by-step reasoning and high accuracy.',
+                    implementation: 'Break analysis into logical steps with intermediate validation.'
+                },
+                'reasoning-advanced-scalability': {
+                    technique: 'DSPy Optimization',
+                    reason: 'Best for systematic optimization and long-term scalability with technical expertise.',
+                    implementation: 'Implement automated optimization with training data and metrics.'
+                }
+            };
+            
+            const key = `${taskType}-${expertise}-${priority}`;
+            const fallback = {
+                technique: 'Meta-Prompting',
+                reason: 'Versatile approach suitable for complex multi-domain tasks.',
+                implementation: 'Use conductor pattern with specialized expert agents.'
+            };
+            
+            const rec = recommendations[key] || fallback;
+            
+            document.getElementById('recommendation-result').innerHTML = `
+                <h4 style="color: #065f46; margin-bottom: 0.5rem;">Recommended Technique: ${rec.technique}</h4>
+                <p style="margin-bottom: 0.5rem;"><strong>Why:</strong> ${rec.reason}</p>
+                <p><strong>Implementation:</strong> ${rec.implementation}</p>
+            `;
+            
+            document.getElementById('recommendation-result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

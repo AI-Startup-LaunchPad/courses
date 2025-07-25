@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section 1: The AI Business Transformation Landscape - Lesson 1.2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        .lesson-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .lesson-header {
+            background: #28263a;
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px 12px 0 0;
+            margin-bottom: 0;
+        }
+
+        .lesson-meta {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .lesson-title {
+            font-size: clamp(24px, 4vw, 36px);
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .lesson-subtitle {
+            font-size: clamp(16px, 2.5vw, 20px);
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .lesson-body {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .objectives-section {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .objectives-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .objectives-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .objectives-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .objectives-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 12px;
+            background: rgba(255,255,255,0.2);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .content-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #06b6d4;
+        }
+
+        .subsection-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #334155;
+            margin: 30px 0 15px 0;
+        }
+
+        .content-text {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: #475569;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border-left: 5px solid rgba(255,255,255,0.3);
+        }
+
+        .highlight-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .scorecard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .scorecard-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid #06b6d4;
+        }
+
+        .scorecard-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 15px;
+        }
+
+        .scorecard-description {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .interactive-element {
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-element:hover {
+            border-color: #06b6d4;
+            box-shadow: 0 5px 20px rgba(6, 182, 212, 0.1);
+        }
+
+        .activity-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .activity-description {
+            font-size: 16px;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #0891b2);
+            width: 28.6%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .completion-section {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .completion-section h3 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .completion-section p {
+            color: #64748b;
+            margin-bottom: 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .assessment-tool {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .assessment-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #06b6d4;
+        }
+
+        .assessment-section h4 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .assessment-question {
+            margin-bottom: 15px;
+        }
+
+        .assessment-question label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .rating-scale {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .rating-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        .rating-option:hover {
+            background-color: #e2e8f0;
+        }
+
+        .rating-option input[type="radio"] {
+            margin-bottom: 5px;
+        }
+
+        .rating-option span {
+            font-size: 12px;
+            color: #64748b;
+            text-align: center;
+        }
+
+        .framework-tool {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .framework-step {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #10b981;
+        }
+
+        .framework-step h4 {
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .framework-step p {
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .framework-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .results-display {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .results-display h4 {
+            margin-bottom: 15px;
+        }
+
+        .score-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .score-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .score-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .score-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-container {
+                padding: 10px;
+            }
+            
+            .lesson-header, .lesson-body {
+                padding: 20px;
+            }
+            
+            .scorecard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-container">
+        <header class="lesson-header">
+            <div class="lesson-meta">Section 1 • Lesson 1.2 • 75-90 minutes</div>
+            <h1 class="lesson-title">AI-First Strategic Assessment Framework</h1>
+            <p class="lesson-subtitle">Implementing comprehensive AI readiness evaluation across AI Adoption, AI Architecture, and AI Capability dimensions</p>
+        </header>
+
+        <div class="lesson-body">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+
+            <section class="objectives-section">
+                <h2 class="objectives-title">
+                    🎯 Learning Objectives
+                </h2>
+                <ul class="objectives-list">
+                    <li>Complete comprehensive AI readiness assessment using the AI-first scorecard methodology</li>
+                    <li>Evaluate organizational capabilities across AI Adoption, AI Architecture, and AI Capability dimensions</li>
+                    <li>Identify strategic gaps and prioritize AI implementation actions</li>
+                    <li>Develop data-driven roadmap for AI transformation aligned with business objectives</li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">The AI-First Scorecard Framework</h2>
+                
+                <p class="content-text">
+                    The AI-first scorecard provides a comprehensive framework for evaluating organizational readiness across three critical dimensions. This assessment methodology recognizes that AI generates diverse innovation opportunities rather than limiting focus to specific use cases, enabling organizations to identify gaps and prioritize actions aligned with long-term strategic goals.
+                </p>
+
+                <div class="highlight-box">
+                    <h3 class="highlight-title">Strategic Philosophy</h3>
+                    <p>The scorecard philosophy emphasizes that successful AI adoption requires systematic evaluation of organizational capabilities rather than ad-hoc technology implementation. This comprehensive approach ensures sustainable AI transformation that scales with business growth.</p>
+                </div>
+
+                <div class="scorecard-grid">
+                    <div class="scorecard-card">
+                        <h3 class="scorecard-title">AI Adoption</h3>
+                        <p class="scorecard-description">Integration of AI, data platforms, software, and analytics across departments. Measures how effectively AI capabilities are embedded throughout organizational processes and decision-making workflows.</p>
+                    </div>
+                    <div class="scorecard-card">
+                        <h3 class="scorecard-title">AI Architecture</h3>
+                        <p class="scorecard-description">Digital infrastructure strength for seamless, standardized data flow. Evaluates technical foundations including data quality, system integration, and scalability for AI workloads.</p>
+                    </div>
+                    <div class="scorecard-card">
+                        <h3 class="scorecard-title">AI Capability</h3>
+                        <p class="scorecard-description">Development team strength, process agility, and innovation structure. Assesses human capital, organizational culture, and change management readiness for AI transformation.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">AI Readiness Assessment Dimensions</h2>
+                
+                <p class="content-text">
+                    Organizational AI readiness requires evaluation across multiple interconnected dimensions. Each dimension contributes to overall transformation success and must be assessed systematically to identify improvement opportunities and strategic priorities.
+                </p>
+
+                <h3 class="subsection-title">Performance Measurement and Objectives</h3>
+                
+                <div class="content-text">
+                    <strong>Performance Measurement</strong> helps identify quick wins and high-value opportunities by understanding current AI maturity levels. Organizations must establish baseline metrics for efficiency, accuracy, and innovation capability before implementing AI solutions.
+                </div>
+
+                <div class="content-text">
+                    <strong>Clear AI Objectives</strong> aligned with business strategy ensure focused implementation efforts. Successful organizations define specific, measurable outcomes that demonstrate AI value creation and competitive advantage development.
+                </div>
+
+                <h3 class="subsection-title">Infrastructure and Data Quality</h3>
+                
+                <div class="content-text">
+                    <strong>Robust IT Infrastructure</strong> capable of supporting AI workloads includes high-performance computing resources, scalable storage systems, and reliable networking capabilities. Infrastructure assessment must consider both current capacity and future growth requirements.
+                </div>
+
+                <div class="content-text">
+                    <strong>High-Quality, Accessible Data</strong> suitable for AI processing represents the foundation of successful implementation. Data quality metrics include completeness, accuracy, consistency, and relevance across all business-critical datasets.
+                </div>
+
+                <h3 class="subsection-title">Organizational Readiness</h3>
+                
+                <div class="content-text">
+                    <strong>Stakeholder Engagement</strong> across multiple departments ensures comprehensive AI adoption rather than isolated implementations. Cross-functional collaboration enables knowledge sharing and reduces implementation resistance.
+                </div>
+
+                <div class="content-text">
+                    <strong>Change Management Capabilities</strong> for AI integration address both technical and cultural transformation requirements. Organizations must develop training programs, communication strategies, and support systems for successful AI adoption.
+                </div>
+
+                <div class="interactive-element">
+                    <h3 class="activity-title">📊 Activity 1.2.1: AI Readiness Scorecard Assessment</h3>
+                    <p class="activity-description">
+                        Complete a comprehensive assessment of your organization's AI readiness across all critical dimensions. This structured evaluation will provide specific scores and actionable recommendations for improvement.
+                    </p>
+                    <button class="btn-primary" onclick="startReadinessAssessment()">Start AI Readiness Assessment</button>
+                </div>
+
+                <div id="readiness-assessment" class="hidden">
+                    <div class="assessment-tool">
+                        <h4>AI Readiness Scorecard</h4>
+                        
+                        <div class="assessment-section">
+                            <h4>AI Adoption Assessment</h4>
+                            <div class="assessment-question">
+                                <label>How extensively is AI integrated across your organization's departments?</label>
+                                <div class="rating-scale">
+                                    <div class="rating-option">
+                                        <input type="radio" name="ai-integration" value="1">
+                                        <span>No Integration</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="ai-integration" value="2">
+                                        <span>Single Department</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="ai-integration" value="3">
+                                        <span>Multiple Departments</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="ai-integration" value="4">
+                                        <span>Organization-wide</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="ai-integration" value="5">
+                                        <span>Strategic Core</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="assessment-question">
+                                <label>What is your current level of AI-powered decision-making?</label>
+                                <div class="rating-scale">
+                                    <div class="rating-option">
+                                        <input type="radio" name="ai-decisions" value="1">
+                                        <span>Manual Only</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="ai-decisions" value="2">
+                                        <span>Basic Analytics</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="ai-decisions" value="3">
+                                        <span>AI-Assisted</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="ai-decisions" value="4">
+                                        <span>AI-Driven</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="ai-decisions" value="5">
+                                        <span>Autonomous</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="assessment-section">
+                            <h4>AI Architecture Assessment</h4>
+                            <div class="assessment-question">
+                                <label>How would you rate your data infrastructure quality and accessibility?</label>
+                                <div class="rating-scale">
+                                    <div class="rating-option">
+                                        <input type="radio" name="data-infrastructure" value="1">
+                                        <span>Poor Quality</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="data-infrastructure" value="2">
+                                        <span>Basic Systems</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="data-infrastructure" value="3">
+                                        <span>Good Integration</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="data-infrastructure" value="4">
+                                        <span>Excellent Quality</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="data-infrastructure" value="5">
+                                        <span>AI-Optimized</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="assessment-question">
+                                <label>What is your current cloud and computing infrastructure capability?</label>
+                                <div class="rating-scale">
+                                    <div class="rating-option">
+                                        <input type="radio" name="infrastructure" value="1">
+                                        <span>Legacy Systems</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="infrastructure" value="2">
+                                        <span>Basic Cloud</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="infrastructure" value="3">
+                                        <span>Scalable Cloud</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="infrastructure" value="4">
+                                        <span>AI-Ready Cloud</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="infrastructure" value="5">
+                                        <span>AI-Optimized</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="assessment-section">
+                            <h4>AI Capability Assessment</h4>
+                            <div class="assessment-question">
+                                <label>How would you rate your team's AI knowledge and skills?</label>
+                                <div class="rating-scale">
+                                    <div class="rating-option">
+                                        <input type="radio" name="team-skills" value="1">
+                                        <span>No AI Skills</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="team-skills" value="2">
+                                        <span>Basic Awareness</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="team-skills" value="3">
+                                        <span>Practical Skills</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="team-skills" value="4">
+                                        <span>Advanced Skills</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="team-skills" value="5">
+                                        <span>AI Expertise</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="assessment-question">
+                                <label>What is your organization's change management and innovation culture?</label>
+                                <div class="rating-scale">
+                                    <div class="rating-option">
+                                        <input type="radio" name="change-culture" value="1">
+                                        <span>Resistant</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="change-culture" value="2">
+                                        <span>Cautious</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="change-culture" value="3">
+                                        <span>Adaptive</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="change-culture" value="4">
+                                        <span>Innovative</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="radio" name="change-culture" value="5">
+                                        <span>AI-First Culture</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn-primary" onclick="calculateReadinessScore()">Calculate AI Readiness Score</button>
+                    </div>
+                </div>
+
+                <div id="assessment-results" class="hidden">
+                    <div class="results-display">
+                        <h4>Your AI Readiness Assessment Results</h4>
+                        <div class="score-breakdown">
+                            <div class="score-item">
+                                <div class="score-value" id="adoption-score">--</div>
+                                <div class="score-label">AI Adoption</div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-value" id="architecture-score">--</div>
+                                <div class="score-label">AI Architecture</div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-value" id="capability-score">--</div>
+                                <div class="score-label">AI Capability</div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-value" id="overall-score">--</div>
+                                <div class="score-label">Overall Readiness</div>
+                            </div>
+                        </div>
+                        <div id="recommendations" style="margin-top: 20px;">
+                            <h4>Personalized Recommendations</h4>
+                            <div id="recommendation-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Strategic Gap Analysis and Action Planning</h2>
+                
+                <p class="content-text">
+                    Effective AI transformation requires systematic identification of capability gaps and development of targeted improvement strategies. The gap analysis process translates assessment results into actionable roadmaps that prioritize high-impact initiatives.
+                </p>
+
+                <div class="interactive-element">
+                    <h3 class="activity-title">🎯 Activity 1.2.2: Strategic Gap Analysis Framework</h3>
+                    <p class="activity-description">
+                        Use your assessment results to identify specific improvement areas and develop a prioritized action plan. This framework will help you create a data-driven roadmap for AI transformation.
+                    </p>
+                    <button class="btn-primary" onclick="startGapAnalysis()">Launch Gap Analysis Tool</button>
+                </div>
+
+                <div id="gap-analysis" class="hidden">
+                    <div class="framework-tool">
+                        <h4>Strategic Gap Analysis Framework</h4>
+                        
+                        <div class="framework-step">
+                            <h4>Step 1: Identify Priority Gaps</h4>
+                            <p>Based on your assessment, identify the three most critical gaps limiting AI adoption:</p>
+                            <textarea class="framework-input" placeholder="1. Gap: [Description] | Impact: [High/Medium/Low] | Urgency: [High/Medium/Low]&#10;2. Gap: [Description] | Impact: [High/Medium/Low] | Urgency: [High/Medium/Low]&#10;3. Gap: [Description] | Impact: [High/Medium/Low] | Urgency: [High/Medium/Low]"></textarea>
+                        </div>
+                        
+                        <div class="framework-step">
+                            <h4>Step 2: Resource Requirements Analysis</h4>
+                            <p>Estimate resources needed to address each priority gap:</p>
+                            <textarea class="framework-input" placeholder="Gap 1: Budget: $[X] | Timeline: [X months] | Team: [X people] | Skills: [Required capabilities]&#10;Gap 2: Budget: $[X] | Timeline: [X months] | Team: [X people] | Skills: [Required capabilities]&#10;Gap 3: Budget: $[X] | Timeline: [X months] | Team: [X people] | Skills: [Required capabilities]"></textarea>
+                        </div>
+                        
+                        <div class="framework-step">
+                            <h4>Step 3: Implementation Sequencing</h4>
+                            <p>Determine optimal order for addressing gaps based on dependencies and impact:</p>
+                            <textarea class="framework-input" placeholder="Phase 1 (Months 1-3): [Gap to address] | Rationale: [Why first]&#10;Phase 2 (Months 4-6): [Gap to address] | Rationale: [Why second]&#10;Phase 3 (Months 7-9): [Gap to address] | Rationale: [Why third]"></textarea>
+                        </div>
+                        
+                        <div class="framework-step">
+                            <h4>Step 4: Success Metrics Definition</h4>
+                            <p>Define specific, measurable outcomes for each improvement initiative:</p>
+                            <textarea class="framework-input" placeholder="Gap 1 Success Metrics: [Specific measurements]&#10;Gap 2 Success Metrics: [Specific measurements]&#10;Gap 3 Success Metrics: [Specific measurements]&#10;Overall Success Metrics: [Comprehensive measurements]"></textarea>
+                        </div>
+                        
+                        <button class="btn-primary" onclick="completeGapAnalysis()">Generate Action Plan</button>
+                    </div>
+                </div>
+            </section>
+
+            <div class="completion-section">
+                <h3>Lesson 1.2 Complete</h3>
+                <p>You've successfully completed the AI-first strategic assessment framework and developed a data-driven roadmap for AI transformation. Continue to the next lesson to explore AI platform mastery and tool selection strategies.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startReadinessAssessment() {
+            const assessment = document.getElementById('readiness-assessment');
+            assessment.classList.remove('hidden');
+        }
+
+        function calculateReadinessScore() {
+            // Get all radio button values
+            const aiIntegration = document.querySelector('input[name="ai-integration"]:checked');
+            const aiDecisions = document.querySelector('input[name="ai-decisions"]:checked');
+            const dataInfrastructure = document.querySelector('input[name="data-infrastructure"]:checked');
+            const infrastructure = document.querySelector('input[name="infrastructure"]:checked');
+            const teamSkills = document.querySelector('input[name="team-skills"]:checked');
+            const changeCulture = document.querySelector('input[name="change-culture"]:checked');
+
+            if (!aiIntegration || !aiDecisions || !dataInfrastructure || !infrastructure || !teamSkills || !changeCulture) {
+                alert('Please complete all assessment questions before calculating your score.');
+                return;
+            }
+
+            // Calculate scores
+            const adoptionScore = Math.round((parseInt(aiIntegration.value) + parseInt(aiDecisions.value)) / 2 * 20);
+            const architectureScore = Math.round((parseInt(dataInfrastructure.value) + parseInt(infrastructure.value)) / 2 * 20);
+            const capabilityScore = Math.round((parseInt(teamSkills.value) + parseInt(changeCulture.value)) / 2 * 20);
+            const overallScore = Math.round((adoptionScore + architectureScore + capabilityScore) / 3);
+
+            // Display results
+            document.getElementById('adoption-score').textContent = adoptionScore + '%';
+            document.getElementById('architecture-score').textContent = architectureScore + '%';
+            document.getElementById('capability-score').textContent = capabilityScore + '%';
+            document.getElementById('overall-score').textContent = overallScore + '%';
+
+            // Generate recommendations
+            let recommendations = '';
+            if (adoptionScore < 60) {
+                recommendations += '<p><strong>AI Adoption Priority:</strong> Focus on expanding AI integration across departments and implementing AI-assisted decision-making processes.</p>';
+            }
+            if (architectureScore < 60) {
+                recommendations += '<p><strong>AI Architecture Priority:</strong> Invest in data infrastructure improvements and cloud computing capabilities to support AI workloads.</p>';
+            }
+            if (capabilityScore < 60) {
+                recommendations += '<p><strong>AI Capability Priority:</strong> Develop team AI skills through training programs and foster an innovation-friendly organizational culture.</p>';
+            }
+            if (overallScore >= 80) {
+                recommendations += '<p><strong>Excellent Readiness:</strong> Your organization is well-positioned for advanced AI implementation. Focus on strategic AI initiatives and competitive differentiation.</p>';
+            } else if (overallScore >= 60) {
+                recommendations += '<p><strong>Good Foundation:</strong> Your organization has solid AI readiness. Address specific gaps while building on existing strengths.</p>';
+            } else {
+                recommendations += '<p><strong>Foundation Building Required:</strong> Focus on fundamental AI readiness improvements before pursuing advanced implementations.</p>';
+            }
+
+            document.getElementById('recommendation-content').innerHTML = recommendations;
+            document.getElementById('assessment-results').classList.remove('hidden');
+        }
+
+        function startGapAnalysis() {
+            const gapAnalysis = document.getElementById('gap-analysis');
+            gapAnalysis.classList.remove('hidden');
+        }
+
+        function completeGapAnalysis() {
+            alert('Strategic Gap Analysis Complete!\n\nYour comprehensive action plan includes:\n• Prioritized improvement areas with impact assessment\n• Resource requirements and timeline estimates\n• Implementation sequencing with dependency mapping\n• Success metrics for measuring progress\n\nThis roadmap will guide your AI transformation journey.');
+        }
+
+        // Progress tracking
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled / (document.body.offsetHeight - window.innerHeight);
+            const progressFill = document.querySelector('.progress-fill');
+            progressFill.style.width = Math.min(rate * 100, 100) + '%';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section 2: Technical AI Foundations for Business Leaders - Lesson 2.3</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        .lesson-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .lesson-header {
+            background: #28263a;
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px 12px 0 0;
+            margin-bottom: 0;
+        }
+
+        .lesson-meta {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .lesson-title {
+            font-size: clamp(24px, 4vw, 36px);
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .lesson-subtitle {
+            font-size: clamp(16px, 2.5vw, 20px);
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .lesson-body {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .objectives-section {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .objectives-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .objectives-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .objectives-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .objectives-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 12px;
+            background: rgba(255,255,255,0.2);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .content-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #06b6d4;
+        }
+
+        .subsection-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #334155;
+            margin: 30px 0 15px 0;
+        }
+
+        .content-text {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: #475569;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border-left: 5px solid rgba(255,255,255,0.3);
+        }
+
+        .highlight-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border-left: 5px solid rgba(255,255,255,0.3);
+        }
+
+        .warning-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .ethics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .ethics-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid #f59e0b;
+            transition: transform 0.3s ease;
+        }
+
+        .ethics-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .ethics-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .ethics-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+
+        .ethics-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .ethics-description {
+            font-size: 15px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .ethics-examples {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .example-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .example-icon {
+            color: #f59e0b;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        .interactive-element {
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-element:hover {
+            border-color: #06b6d4;
+            box-shadow: 0 5px 20px rgba(6, 182, 212, 0.1);
+        }
+
+        .activity-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .activity-description {
+            font-size: 16px;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #0891b2);
+            width: 42.9%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .completion-section {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .completion-section h3 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .completion-section p {
+            color: #64748b;
+            margin-bottom: 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        .bias-workshop {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .workshop-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .workshop-section h4 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .workshop-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .case-study-container {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .case-study-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 15px;
+        }
+
+        .case-study-content {
+            color: #78350f;
+            line-height: 1.6;
+        }
+
+        .mitigation-strategies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .strategy-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .strategy-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .strategy-description {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .framework-tool {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .framework-step {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #10b981;
+        }
+
+        .framework-step h4 {
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .framework-step p {
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .framework-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-container {
+                padding: 10px;
+            }
+            
+            .lesson-header, .lesson-body {
+                padding: 20px;
+            }
+            
+            .ethics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-container">
+        <header class="lesson-header">
+            <div class="lesson-meta">Section 2 • Lesson 2.3 • 90-105 minutes</div>
+            <h1 class="lesson-title">Ethical AI Implementation and Bias Mitigation</h1>
+            <p class="lesson-subtitle">Understanding AI limitations, recognizing bias patterns, and implementing responsible AI practices for business applications</p>
+        </header>
+
+        <div class="lesson-body">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+
+            <section class="objectives-section">
+                <h2 class="objectives-title">
+                    🎯 Learning Objectives
+                </h2>
+                <ul class="objectives-list">
+                    <li>Identify and understand common AI biases including algorithmic, data, and confirmation bias patterns</li>
+                    <li>Implement systematic bias detection methodologies using real-world testing frameworks</li>
+                    <li>Develop comprehensive bias mitigation strategies through diverse data and inclusive development practices</li>
+                    <li>Establish ethical AI governance frameworks that ensure responsible implementation and ongoing monitoring</li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Understanding AI Bias and Ethical Challenges</h2>
+                
+                <p class="content-text">
+                    AI systems inherit and can amplify biases from historical data, human decision-making patterns, and algorithmic design choices. These biases can lead to discriminatory outcomes that affect hiring, lending, healthcare, and other critical business decisions. Understanding these challenges is essential for building trustworthy AI systems that serve all users fairly.
+                </p>
+
+                <div class="case-study-container">
+                    <div class="case-study-title">🔍 Real-World Case Study: Stanford University Research</div>
+                    <div class="case-study-content">
+                        Stanford University research revealed significant demographic bias in ChatGPT's legal advice responses. The study found that the AI provided different quality and tone of legal guidance based on perceived user demographics, offering more supportive and detailed responses to white male users compared to Black or Hispanic users. This demonstrates how AI systems can perpetuate societal biases even in professional contexts.
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h3 class="warning-title">⚠️ Critical Business Impact</h3>
+                    <p>Biased AI systems can result in legal liability, regulatory violations, reputational damage, and loss of customer trust. Organizations using biased AI for hiring, lending, or customer service may face discrimination lawsuits and regulatory penalties under emerging AI governance frameworks.</p>
+                </div>
+
+                <div class="ethics-grid">
+                    <div class="ethics-card">
+                        <div class="ethics-header">
+                            <div class="ethics-icon">📊</div>
+                            <div class="ethics-title">Data Bias</div>
+                        </div>
+                        <p class="ethics-description">
+                            Historical data reflects past discrimination and societal inequalities, which AI models learn and perpetuate. Training data may lack diversity or contain systematic exclusions of certain groups.
+                        </p>
+                        <div class="ethics-examples">
+                            <div class="example-item">
+                                <span class="example-icon">•</span>
+                                Hiring data favoring certain demographics
+                            </div>
+                            <div class="example-item">
+                                <span class="example-icon">•</span>
+                                Medical research excluding diverse populations
+                            </div>
+                            <div class="example-item">
+                                <span class="example-icon">•</span>
+                                Financial data reflecting historical lending discrimination
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ethics-card">
+                        <div class="ethics-header">
+                            <div class="ethics-icon">⚙️</div>
+                            <div class="ethics-title">Algorithmic Bias</div>
+                        </div>
+                        <p class="ethics-description">
+                            AI algorithms can introduce bias through design choices, feature selection, and optimization objectives that inadvertently favor certain outcomes or groups over others.
+                        </p>
+                        <div class="ethics-examples">
+                            <div class="example-item">
+                                <span class="example-icon">•</span>
+                                Optimization metrics that disadvantage minorities
+                            </div>
+                            <div class="example-item">
+                                <span class="example-icon">•</span>
+                                Feature selection that correlates with protected characteristics
+                            </div>
+                            <div class="example-item">
+                                <span class="example-icon">•</span>
+                                Model architectures that amplify existing biases
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ethics-card">
+                        <div class="ethics-header">
+                            <div class="ethics-icon">🧠</div>
+                            <div class="ethics-title">Confirmation Bias</div>
+                        </div>
+                        <p class="ethics-description">
+                            Human developers and users may unconsciously design or interpret AI systems in ways that confirm their existing beliefs and assumptions about how the world works.
+                        </p>
+                        <div class="ethics-examples">
+                            <div class="example-item">
+                                <span class="example-icon">•</span>
+                                Selective interpretation of AI outputs
+                            </div>
+                            <div class="example-item">
+                                <span class="example-icon">•</span>
+                                Design assumptions reflecting developer biases
+                            </div>
+                            <div class="example-item">
+                                <span class="example-icon">•</span>
+                                Cherry-picking validation data that supports expectations
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Systematic Bias Detection Methodologies</h2>
+                
+                <p class="content-text">
+                    Effective bias detection requires systematic testing approaches that evaluate AI system performance across different demographic groups, use cases, and scenarios. These methodologies help identify disparate impacts before AI systems are deployed in production environments.
+                </p>
+
+                <h3 class="subsection-title">Fairness Metrics and Testing Frameworks</h3>
+                
+                <div class="content-text">
+                    <strong>Demographic Parity</strong> measures whether AI systems produce similar outcomes across different demographic groups. This metric helps identify when certain groups receive systematically different treatment, regardless of individual qualifications or characteristics.
+                </div>
+
+                <div class="content-text">
+                    <strong>Equalized Odds</strong> evaluates whether AI systems maintain consistent accuracy rates across different groups. This ensures that the system performs equally well for all users, not just the majority population represented in training data.
+                </div>
+
+                <div class="content-text">
+                    <strong>Individual Fairness</strong> assesses whether similar individuals receive similar treatment from AI systems. This metric helps identify cases where minor differences in input lead to dramatically different outcomes for comparable users.
+                </div>
+
+                <div class="interactive-element">
+                    <h3 class="activity-title">🔍 Activity 2.3.1: Bias Detection Workshop</h3>
+                    <p class="activity-description">
+                        Learn to identify and analyze algorithmic bias using real-world examples and systematic testing methodologies. This hands-on workshop demonstrates practical approaches to bias detection and measurement.
+                    </p>
+                    <button type="button" class="btn-primary" id="start-bias-workshop">Launch Bias Detection Workshop</button>
+                </div>
+
+                <div id="bias-workshop" class="hidden">
+                    <div class="bias-workshop">
+                        <h4>Bias Detection and Analysis Workshop</h4>
+                        
+                        <div class="workshop-section">
+                            <h4>Step 1: Scenario Analysis</h4>
+                            <p>Analyze the following AI application scenario for potential bias sources:</p>
+                            <div style="background: #f0f9ff; padding: 15px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #06b6d4;">
+                                <strong>Scenario:</strong> A startup is developing an AI-powered resume screening tool for tech companies. The system analyzes resumes and ranks candidates for software engineering positions based on historical hiring data from successful employees.
+                            </div>
+                            <textarea class="workshop-input" placeholder="Identify potential bias sources in this scenario:&#10;1. Data bias: [What historical biases might exist in the training data?]&#10;2. Algorithmic bias: [How might the ranking algorithm introduce bias?]&#10;3. Confirmation bias: [What assumptions might developers make?]"></textarea>
+                        </div>
+                        
+                        <div class="workshop-section">
+                            <h4>Step 2: Demographic Impact Assessment</h4>
+                            <p>Evaluate how different groups might be affected by the AI system:</p>
+                            <textarea class="workshop-input" placeholder="Analyze potential disparate impacts:&#10;• Gender: [How might the system affect male vs. female candidates?]&#10;• Race/Ethnicity: [What impacts on underrepresented minorities?]&#10;• Educational Background: [Effects on non-traditional educational paths?]&#10;• Geographic Location: [Urban vs. rural candidate impacts?]"></textarea>
+                        </div>
+                        
+                        <div class="workshop-section">
+                            <h4>Step 3: Testing Strategy Development</h4>
+                            <p>Design systematic tests to detect bias in the AI system:</p>
+                            <textarea class="workshop-input" placeholder="Propose bias detection tests:&#10;1. Demographic parity test: [How to measure equal outcomes across groups?]&#10;2. Equalized odds test: [How to ensure consistent accuracy?]&#10;3. Individual fairness test: [How to verify similar treatment for similar candidates?]&#10;4. Adversarial testing: [How to test edge cases and unusual scenarios?]"></textarea>
+                        </div>
+                        
+                        <div class="workshop-section">
+                            <h4>Step 4: Bias Measurement Plan</h4>
+                            <p>Establish metrics and monitoring procedures for ongoing bias detection:</p>
+                            <textarea class="workshop-input" placeholder="Define measurement approach:&#10;• Key metrics: [Which fairness metrics to track?]&#10;• Monitoring frequency: [How often to assess bias?]&#10;• Alert thresholds: [When to flag potential bias issues?]&#10;• Reporting procedures: [How to document and address bias findings?]"></textarea>
+                        </div>
+                        
+                        <button type="button" class="btn-primary" onclick="generateBiasReport()">Generate Bias Assessment Report</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Comprehensive Bias Mitigation Strategies</h2>
+                
+                <p class="content-text">
+                    Effective bias mitigation requires proactive strategies implemented throughout the AI development lifecycle, from data collection and model training to deployment and ongoing monitoring. These approaches help ensure fair and equitable AI systems.
+                </p>
+
+                <div class="mitigation-strategies">
+                    <div class="strategy-card">
+                        <div class="strategy-title">Diverse Training Data</div>
+                        <div class="strategy-description">
+                            Collect representative datasets that include diverse demographics, use cases, and scenarios. Actively seek out underrepresented groups and edge cases to ensure comprehensive model training.
+                        </div>
+                    </div>
+                    <div class="strategy-card">
+                        <div class="strategy-title">Inclusive Development Teams</div>
+                        <div class="strategy-description">
+                            Build diverse development teams with varied backgrounds, perspectives, and experiences. Different viewpoints help identify potential biases that homogeneous teams might miss.
+                        </div>
+                    </div>
+                    <div class="strategy-card">
+                        <div class="strategy-title">Algorithmic Fairness Constraints</div>
+                        <div class="strategy-description">
+                            Implement fairness constraints directly into model training processes. Use techniques like adversarial debiasing and fairness-aware machine learning algorithms.
+                        </div>
+                    </div>
+                    <div class="strategy-card">
+                        <div class="strategy-title">Regular Bias Auditing</div>
+                        <div class="strategy-description">
+                            Establish systematic auditing procedures that regularly assess AI system performance across different groups and use cases. Implement automated monitoring for ongoing bias detection.
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">Technical Mitigation Approaches</h3>
+                
+                <div class="content-text">
+                    <strong>Pre-processing Techniques</strong> address bias in training data before model development. These methods include data augmentation to increase representation of underrepresented groups, re-sampling to balance datasets, and feature engineering to remove biased correlations.
+                </div>
+
+                <div class="content-text">
+                    <strong>In-processing Methods</strong> modify the learning algorithm itself to promote fairness. Techniques include fairness constraints that penalize biased outcomes, adversarial training that explicitly fights discrimination, and multi-objective optimization that balances accuracy with fairness metrics.
+                </div>
+
+                <div class="content-text">
+                    <strong>Post-processing Approaches</strong> adjust model outputs to ensure fair outcomes. These methods include threshold optimization for different groups, output calibration to ensure consistent confidence levels, and fairness-aware ensemble methods that combine multiple models.
+                </div>
+
+                <div class="interactive-element">
+                    <h3 class="activity-title">🛡️ Activity 2.3.2: Ethical Framework Development</h3>
+                    <p class="activity-description">
+                        Create comprehensive organizational guidelines for responsible AI implementation and usage. This framework addresses ethical considerations, bias prevention, and ongoing governance requirements.
+                    </p>
+                    <button type="button" class="btn-primary" id="start-ethics-framework">Launch Ethics Framework Builder</button>
+                </div>
+
+                <div id="ethics-framework" class="hidden">
+                    <div class="framework-tool">
+                        <h4>Ethical AI Framework Development Tool</h4>
+                        
+                        <div class="framework-step">
+                            <h4>Step 1: Ethical Principles Definition</h4>
+                            <p>Establish core ethical principles that will guide AI development and deployment:</p>
+                            <textarea class="framework-input" placeholder="Define your organization's AI ethics principles:&#10;• Fairness: [How will you ensure equitable treatment?]&#10;• Transparency: [What level of explainability is required?]&#10;• Accountability: [Who is responsible for AI decisions?]&#10;• Privacy: [How will you protect user data?]&#10;• Human Oversight: [When is human intervention required?]"></textarea>
+                        </div>
+                        
+                        <div class="framework-step">
+                            <h4>Step 2: Risk Assessment Procedures</h4>
+                            <p>Develop systematic approaches for identifying and evaluating AI-related risks:</p>
+                            <textarea class="framework-input" placeholder="Outline risk assessment methodology:&#10;• Risk categories: [What types of AI risks will you evaluate?]&#10;• Assessment frequency: [How often will you review risks?]&#10;• Stakeholder involvement: [Who participates in risk assessment?]&#10;• Mitigation planning: [How will you address identified risks?]"></textarea>
+                        </div>
+                        
+                        <div class="framework-step">
+                            <h4>Step 3: Governance Structure</h4>
+                            <p>Establish organizational structures for AI ethics oversight and decision-making:</p>
+                            <textarea class="framework-input" placeholder="Design governance structure:&#10;• Ethics committee: [Who will oversee AI ethics compliance?]&#10;• Review processes: [How will AI projects be evaluated?]&#10;• Escalation procedures: [How will ethical concerns be addressed?]&#10;• Training requirements: [What ethics training is mandatory?]"></textarea>
+                        </div>
+                        
+                        <div class="framework-step">
+                            <h4>Step 4: Monitoring and Compliance</h4>
+                            <p>Create systems for ongoing monitoring and compliance verification:</p>
+                            <textarea class="framework-input" placeholder="Establish monitoring procedures:&#10;• Performance metrics: [How will you measure ethical compliance?]&#10;• Audit procedures: [What regular reviews will you conduct?]&#10;• Reporting mechanisms: [How will stakeholders report concerns?]&#10;• Corrective actions: [How will you address compliance failures?]"></textarea>
+                        </div>
+                        
+                        <button type="button" class="btn-primary" onclick="generateEthicsFramework()">Generate Ethics Framework</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Responsible AI Governance and Compliance</h2>
+                
+                <p class="content-text">
+                    Implementing responsible AI requires establishing governance frameworks that ensure ongoing compliance with ethical standards, regulatory requirements, and business objectives. These frameworks provide structure for decision-making, accountability, and continuous improvement.
+                </p>
+
+                <h3 class="subsection-title">Regulatory Landscape and Compliance Requirements</h3>
+                
+                <div class="content-text">
+                    <strong>EU AI Act</strong> establishes comprehensive regulations for AI systems, requiring risk assessments, transparency measures, and human oversight for high-risk applications. Organizations must implement conformity assessments and maintain detailed documentation of AI system capabilities and limitations.
+                </div>
+
+                <div class="content-text">
+                    <strong>GDPR and Privacy Regulations</strong> require explicit consent for automated decision-making, rights to explanation for algorithmic decisions, and data protection by design. AI systems must incorporate privacy-preserving techniques and provide users with meaningful control over their data.
+                </div>
+
+                <div class="content-text">
+                    <strong>Industry-Specific Requirements</strong> vary across sectors, with healthcare (HIPAA), financial services (Fair Credit Reporting Act), and employment (Equal Employment Opportunity) having specific AI-related compliance obligations.
+                </div>
+
+                <div class="highlight-box">
+                    <h3 class="highlight-title">Best Practices for Responsible AI</h3>
+                    <p>Establish AI ethics as a shared responsibility across all team members, implement automated validation rules that run continuously, maintain comprehensive documentation of ethical standards and procedures, create feedback loops that enable continuous improvement of AI processes, and ensure regular training on emerging ethical considerations and regulatory requirements.</p>
+                </div>
+
+                <h3 class="subsection-title">Explainability and Transparency</h3>
+                
+                <div class="content-text">
+                    <strong>Model Interpretability</strong> enables stakeholders to understand how AI systems make decisions. Techniques include feature importance analysis, LIME (Local Interpretable Model-agnostic Explanations), and SHAP (SHapley Additive exPlanations) values that provide insight into model behavior.
+                </div>
+
+                <div class="content-text">
+                    <strong>Decision Audit Trails</strong> maintain comprehensive records of AI decision-making processes, including input data, model versions, and contextual factors. These trails support accountability and enable investigation of problematic outcomes.
+                </div>
+
+                <div class="content-text">
+                    <strong>User Communication</strong> ensures that individuals understand when they're interacting with AI systems and how those systems affect them. Clear communication builds trust and enables informed consent for AI-mediated interactions.
+                </div>
+            </section>
+
+            <div class="completion-section">
+                <h3>Lesson 2.3 Complete</h3>
+                <p>You've successfully explored ethical AI implementation and bias mitigation strategies essential for responsible business applications. Continue to the next lesson to learn about technical specification development and vendor communication strategies.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Function to show bias workshop
+            function showBiasWorkshop() {
+                const workshop = document.getElementById('bias-workshop');
+                workshop.classList.remove('hidden');
+                workshop.classList.add('visible');
+            }
+
+            // Function to show ethics framework
+            function showEthicsFramework() {
+                const framework = document.getElementById('ethics-framework');
+                framework.classList.remove('hidden');
+                framework.classList.add('visible');
+            }
+
+            // Event listener for bias workshop button
+            const biasButton = document.getElementById('start-bias-workshop');
+            if (biasButton) {
+                biasButton.addEventListener('click', showBiasWorkshop);
+            }
+
+            // Event listener for ethics framework button
+            const ethicsButton = document.getElementById('start-ethics-framework');
+            if (ethicsButton) {
+                ethicsButton.addEventListener('click', showEthicsFramework);
+            }
+
+            // Progress tracking
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const rate = scrolled / (document.body.offsetHeight - window.innerHeight);
+                const progressFill = document.querySelector('.progress-fill');
+                if (progressFill) {
+                    progressFill.style.width = Math.min(rate * 100, 100) + '%';
+                }
+            });
+        });
+
+        // Function to generate bias assessment report
+        function generateBiasReport() {
+            alert('Bias Assessment Report Generated!\n\nYour comprehensive analysis includes:\n• Identified bias sources and risk factors\n• Demographic impact assessment across groups\n• Systematic testing strategy for bias detection\n• Measurement plan with metrics and monitoring\n• Recommended mitigation strategies\n\nThis report provides a foundation for building fair and equitable AI systems.');
+        }
+
+        // Function to generate ethics framework
+        function generateEthicsFramework() {
+            alert('Ethical AI Framework Generated!\n\nYour framework includes:\n• Core ethical principles and values\n• Risk assessment procedures and methodologies\n• Governance structure with clear accountability\n• Monitoring and compliance systems\n• Training and awareness programs\n\nThis framework ensures responsible AI development and deployment across your organization.');
+        }
+    </script>
+</body>
+</html>

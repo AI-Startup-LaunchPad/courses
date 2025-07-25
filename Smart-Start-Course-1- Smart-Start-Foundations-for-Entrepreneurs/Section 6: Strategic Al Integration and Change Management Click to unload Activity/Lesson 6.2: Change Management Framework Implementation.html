@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Management Framework Implementation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #334155;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        .header {
+            background: #28263a;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(6, 182, 212, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .lesson-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .lesson-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #10b981);
+            width: 82.9%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .interactive-button {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .interactive-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3);
+        }
+        
+        .interactive-button.secondary {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .interactive-button.secondary:hover {
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .interactive-button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .interactive-button.warning:hover {
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+        }
+        
+        .interactive-button.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .interactive-button.danger:hover {
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+        }
+        
+        .hidden-content {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #06b6d4;
+        }
+        
+        .change-framework {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .change-framework:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .framework-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .adoption-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .resistance-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .change-diagram {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .change-interface {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 2px dashed #06b6d4;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            resize: vertical;
+            font-size: 0.95rem;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: white;
+        }
+        
+        .change-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .stakeholder-container {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .stakeholder-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .stakeholder-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 1rem;
+            flex-shrink: 0;
+            font-size: 1.1rem;
+        }
+        
+        .stakeholder-title {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 1.2rem;
+        }
+        
+        .stakeholder-content {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .resistance-matrix {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .resistance-item {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .resistance-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .resistance-level {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .resistance-low {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .resistance-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .resistance-high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid;
+        }
+        
+        .alert.success {
+            background: #f0fdf4;
+            border-color: #10b981;
+            color: #065f46;
+        }
+        
+        .alert.warning {
+            background: #fffbeb;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+        
+        .alert.info {
+            background: #eff6ff;
+            border-color: #06b6d4;
+            color: #0c4a6e;
+        }
+        
+        .alert.danger {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .comparison-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .copy-button {
+            background: #64748b;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .copy-button:hover {
+            background: #475569;
+        }
+        
+        .communication-plan {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .plan-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .plan-item:last-child {
+            border-bottom: none;
+        }
+        
+        .plan-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .plan-icon.communication {
+            background: #06b6d4;
+            color: white;
+        }
+        
+        .plan-icon.training {
+            background: #10b981;
+            color: white;
+        }
+        
+        .plan-icon.support {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .progress-indicator {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+        
+        .progress-fill-animated {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #10b981);
+            border-radius: 3px;
+            transition: width 2s ease;
+        }
+        
+        .change-curve {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .curve-stage {
+            display: inline-block;
+            margin: 0 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .curve-stage:hover {
+            background: #eff6ff;
+            border-color: #06b6d4;
+        }
+        
+        .curve-stage.active {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border-color: #0891b2;
+        }
+        
+        .stage-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stage-description {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="lesson-title">Change Management Framework Implementation</h1>
+            <p class="lesson-subtitle">Section 6.2 • Master organizational change strategies for successful AI adoption and cultural transformation</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">Progress: 82.9% Complete</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Learning Objectives -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2 class="section-title">Learning Objectives</h2>
+            </div>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Implement comprehensive change management frameworks specifically designed for AI adoption
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Design stakeholder engagement strategies that address resistance and build AI adoption champions
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Create communication plans that transparently address AI concerns while building excitement
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Establish cultural transformation initiatives that embrace AI as a collaborative partner
+                </li>
+            </ul>
+        </div>
+
+        <!-- Change Management Framework Overview -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🔄</div>
+                <h2 class="section-title">AI-Specific Change Management Framework</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">AI adoption requires specialized change management approaches that address unique challenges including technological complexity, ethical considerations, and fundamental shifts in how work gets done. Research shows that organizations with structured change management are 6 times more likely to achieve successful AI implementation outcomes.</p>
+
+            <div class="change-grid">
+                <div class="change-framework">
+                    <h3 class="framework-title">
+                        Stakeholder Engagement & Analysis
+                        <span class="adoption-badge">Foundation</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Systematic identification and engagement of all stakeholders affected by AI implementation, including analysis of their influence, concerns, and potential resistance patterns.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Stakeholder mapping and influence analysis</li>
+                        <li style="padding: 0.25rem 0;">• Resistance pattern identification and mitigation</li>
+                        <li style="padding: 0.25rem 0;">• Champion identification and development</li>
+                        <li style="padding: 0.25rem 0;">• Feedback loop establishment and maintenance</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('stakeholder-details')">Analyze Stakeholders</button>
+                </div>
+
+                <div class="change-framework">
+                    <h3 class="framework-title">
+                        Communication Strategy Design
+                        <span class="resistance-badge">Critical Success Factor</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Multi-channel communication approach that addresses AI concerns transparently while building understanding and excitement about AI capabilities and benefits.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Transparent AI capability communication</li>
+                        <li style="padding: 0.25rem 0;">• Concern addressing and myth debunking</li>
+                        <li style="padding: 0.25rem 0;">• Success story sharing and celebration</li>
+                        <li style="padding: 0.25rem 0;">• Multi-channel message delivery</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('communication-details')">Design Communication</button>
+                </div>
+
+                <div class="change-framework">
+                    <h3 class="framework-title">
+                        Cultural Transformation
+                        <span class="adoption-badge">Long-term Success</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Systematic culture change initiatives that position AI as a collaborative partner rather than a replacement, fostering innovation mindset and continuous learning.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• AI collaboration mindset development</li>
+                        <li style="padding: 0.25rem 0;">• Innovation culture reinforcement</li>
+                        <li style="padding: 0.25rem 0;">• Continuous learning environment creation</li>
+                        <li style="padding: 0.25rem 0;">• Success recognition and reward systems</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('culture-details')">Transform Culture</button>
+                </div>
+
+                <div class="change-framework">
+                    <h3 class="framework-title">
+                        Training & Capability Building
+                        <span class="resistance-badge">Skill Development</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Comprehensive training programs that build AI literacy, practical skills, and confidence while addressing individual learning needs and preferences.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• AI literacy foundation building</li>
+                        <li style="padding: 0.25rem 0;">• Hands-on skill development programs</li>
+                        <li style="padding: 0.25rem 0;">• Role-specific training customization</li>
+                        <li style="padding: 0.25rem 0;">• Ongoing support and mentoring</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('training-details')">Build Capabilities</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Change Curve and Psychology -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">📈</div>
+                <h2 class="section-title">AI Adoption Change Curve</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Understanding the psychological journey of AI adoption helps leaders provide appropriate support at each stage, accelerating the transition from resistance to enthusiasm.</p>
+            
+            <div class="change-curve">
+                <h4 style="margin-bottom: 1.5rem;">Interactive Change Curve - Click Each Stage</h4>
+                
+                <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+                    <div class="curve-stage" onclick="selectStage('denial')" id="stage-denial">
+                        <div class="stage-title">1. Denial</div>
+                        <div class="stage-description">"AI won't affect my job"</div>
+                    </div>
+                    <div class="curve-stage" onclick="selectStage('resistance')" id="stage-resistance">
+                        <div class="stage-title">2. Resistance</div>
+                        <div class="stage-description">"This is too complex"</div>
+                    </div>
+                    <div class="curve-stage" onclick="selectStage('exploration')" id="stage-exploration">
+                        <div class="stage-title">3. Exploration</div>
+                        <div class="stage-description">"Maybe this could help"</div>
+                    </div>
+                    <div class="curve-stage" onclick="selectStage('commitment')" id="stage-commitment">
+                        <div class="stage-title">4. Commitment</div>
+                        <div class="stage-description">"I see the value"</div>
+                    </div>
+                </div>
+                
+                <div id="stage-content" style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; text-align: left;">
+                    <p style="color: #64748b;">Select a stage above to see detailed strategies and interventions</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stakeholder Engagement Details -->
+        <div id="stakeholder-details" class="hidden-content">
+            <div class="content-section">
+                <div class="section-header">
+                    <div class="section-icon">👥</div>
+                    <h2 class="section-title">Stakeholder Engagement Strategy</h2>
+                </div>
+                
+                <p style="margin-bottom: 1.5rem;">Effective stakeholder engagement requires understanding different groups' perspectives, concerns, and motivations regarding AI adoption. Each stakeholder group requires tailored approaches and messaging.</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    <div class="stakeholder-container">
+                        <div class="stakeholder-header">
+                            <div class="stakeholder-icon">👔</div>
+                            <div class="stakeholder-title">Executive Leadership</div>
+                        </div>
+                        <div class="stakeholder-content">
+                            <strong>Primary Concerns:</strong> ROI, competitive advantage, strategic alignment
+                            <br><strong>Engagement Approach:</strong> Business case focus, strategic briefings, success metrics
+                            <br><strong>Key Messages:</strong> Competitive necessity, revenue impact, market positioning
+                            <br><strong>Communication Frequency:</strong> Monthly strategic updates, quarterly deep dives
+                        </div>
+                    </div>
+                    
+                    <div class="stakeholder-container">
+                        <div class="stakeholder-header">
+                            <div class="stakeholder-icon">👨‍💼</div>
+                            <div class="stakeholder-title">Middle Management</div>
+                        </div>
+                        <div class="stakeholder-content">
+                            <strong>Primary Concerns:</strong> Team impact, workload changes, skill requirements
+                            <br><strong>Engagement Approach:</strong> Operational focus, team support, change facilitation
+                            <br><strong>Key Messages:</strong> Team empowerment, efficiency gains, leadership opportunities
+                            <br><strong>Communication Frequency:</strong> Bi-weekly team updates, monthly manager sessions
+                        </div>
+                    </div>
+                    
+                    <div class="stakeholder-container">
+                        <div class="stakeholder-header">
+                            <div class="stakeholder-icon">👩‍💻</div>
+                            <div class="stakeholder-title">Front-line Employees</div>
+                        </div>
+                        <div class="stakeholder-content">
+                            <strong>Primary Concerns:</strong> Job security, learning curve, daily workflow changes
+                            <br><strong>Engagement Approach:</strong> Hands-on training, peer support, gradual introduction
+                            <br><strong>Key Messages:</strong> Job enhancement, skill development, career growth
+                            <br><strong>Communication Frequency:</strong> Weekly check-ins, daily support during transition
+                        </div>
+                    </div>
+                    
+                    <div class="stakeholder-container">
+                        <div class="stakeholder-header">
+                            <div class="stakeholder-icon">🛡️</div>
+                            <div class="stakeholder-title">IT & Security Teams</div>
+                        </div>
+                        <div class="stakeholder-content">
+                            <strong>Primary Concerns:</strong> Security risks, integration complexity, maintenance burden
+                            <br><strong>Engagement Approach:</strong> Technical deep dives, security assessments, architecture reviews
+                            <br><strong>Key Messages:</strong> Security enhancement, system reliability, technical innovation
+                            <br><strong>Communication Frequency:</strong> Weekly technical reviews, monthly architecture sessions
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="change-diagram">
+# Stakeholder Engagement Implementation Plan
+
+## [Phase 1: Stakeholder Mapping and Analysis (Week 1-2)](pplx://action/followup)
+ACTIVITIES:
+- Identify all stakeholder groups affected by AI implementation
+- Assess influence levels and impact on AI adoption success
+- Map current attitudes and resistance patterns
+- Identify potential champions and early adopters
+
+DELIVERABLES:
+- Stakeholder influence/impact matrix
+- Resistance assessment report
+- Champion identification list
+- Engagement strategy framework
+
+## [Phase 2: Tailored Engagement Strategy Development (Week 3-4)](pplx://action/followup)
+ACTIVITIES:
+- Design group-specific messaging and communication plans
+- Develop engagement tactics for each stakeholder segment
+- Create feedback collection mechanisms
+- Establish success metrics for engagement efforts
+
+DELIVERABLES:
+- Stakeholder-specific communication plans
+- Engagement tactic playbooks
+- Feedback collection systems
+- Engagement success metrics dashboard
+
+## [Phase 3: Active Engagement and Feedback Collection (Week 5-12)](pplx://action/followup)
+ACTIVITIES:
+- Execute tailored engagement plans for each group
+- Collect and analyze stakeholder feedback
+- Adjust strategies based on response patterns
+- Build and maintain champion networks
+
+DELIVERABLES:
+- Regular engagement activity reports
+- Stakeholder feedback analysis
+- Strategy adjustment recommendations
+- Champion network development progress
+
+## [Phase 4: Continuous Engagement and Optimization (Ongoing)](pplx://action/followup)
+ACTIVITIES:
+- Monitor engagement effectiveness and stakeholder sentiment
+- Refine messaging and tactics based on results
+- Expand champion networks and peer influence
+- Celebrate successes and address ongoing concerns
+
+DELIVERABLES:
+- Monthly stakeholder sentiment reports
+- Engagement optimization recommendations
+- Champion network expansion plans
+- Success celebration and recognition programs
+                </div>
+                <button class="copy-button" onclick="copyChangeCode(this)">Copy Engagement Plan</button>
+            </div>
+        </div>
+
+        <!-- Communication Strategy Details -->
+        <div id="communication-details" class="hidden-content">
+            <div class="content-section">
+                <div class="section-header">
+                    <div class="section-icon">📢</div>
+                    <h2 class="section-title">AI Communication Strategy Framework</h2>
+                </div>
+                
+                <p style="margin-bottom: 1.5rem;">Effective AI communication requires transparency about capabilities and limitations while building excitement about possibilities. The strategy must address common fears while demonstrating tangible benefits.</p>
+                
+                <div class="communication-plan">
+                    <h4 style="margin-bottom: 1rem;">Multi-Channel Communication Plan</h4>
+                    
+                    <div class="plan-item">
+                        <div class="plan-icon communication">📧</div>
+                        <div>
+                            <strong>Email Communications</strong>
+                            <br>Weekly AI updates, success stories, and educational content
+                            <br><em>Target: All employees, customized by role and department</em>
+                        </div>
+                    </div>
+                    
+                    <div class="plan-item">
+                        <div class="plan-icon training">🎥</div>
+                        <div>
+                            <strong>Video Content Series</strong>
+                            <br>AI explainer videos, employee testimonials, and demonstration sessions
+                            <br><em>Target: Visual learners, complex concept explanation</em>
+                        </div>
+                    </div>
+                    
+                    <div class="plan-item">
+                        <div class="plan-icon support">💬</div>
+                        <div>
+                            <strong>Interactive Sessions</strong>
+                            <br>Town halls, Q&A sessions, and hands-on workshops
+                            <br><em>Target: Address concerns, build understanding, gather feedback</em>
+                        </div>
+                    </div>
+                    
+                    <div class="plan-item">
+                        <div class="plan-icon communication">📱</div>
+                        <div>
+                            <strong>Internal Social Platforms</strong>
+                            <br>Slack channels, Teams groups, and collaboration spaces
+                            <br><em>Target: Peer-to-peer learning, informal support, community building</em>
+                        </div>
+                    </div>
+                    
+                    <div class="plan-item">
+                        <div class="plan-icon training">📊</div>
+                        <div>
+                            <strong>Progress Dashboards</strong>
+                            <br>Visual progress tracking, success metrics, and milestone celebrations
+                            <br><em>Target: Transparency, motivation, and accountability</em>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Communication Challenge</th>
+                                <th>Common Concerns</th>
+                                <th>Messaging Strategy</th>
+                                <th>Evidence/Examples</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Job Security Fears</strong></td>
+                                <td>"AI will replace my job"</td>
+                                <td>AI as augmentation, not replacement</td>
+                                <td>Case studies of job enhancement and new opportunities</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Complexity Concerns</strong></td>
+                                <td>"AI is too technical for me"</td>
+                                <td>User-friendly interfaces and gradual learning</td>
+                                <td>Demonstrations of intuitive AI tools and success stories</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Trust and Reliability</strong></td>
+                                <td>"AI makes mistakes and can't be trusted"</td>
+                                <td>Transparency about limitations and human oversight</td>
+                                <td>Accuracy statistics, error handling processes, human validation</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ethical Concerns</strong></td>
+                                <td>"AI decisions may be biased or unfair"</td>
+                                <td>Ethical AI frameworks and governance</td>
+                                <td>Ethics policies, bias testing, diverse training data</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Change Fatigue</strong></td>
+                                <td>"Another technology initiative to learn"</td>
+                                <td>Incremental implementation and clear benefits</td>
+                                <td>Phased rollout plans, quick wins, and support resources</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <button class="interactive-button" onclick="toggleContent('message-templates')">View Message Templates</button>
+                
+                <div id="message-templates" class="hidden-content">
+                    <h4>Ready-to-Use Communication Templates</h4>
+                    
+                    <div class="change-diagram">
+# AI Implementation Announcement Template
+
+Subject: Exciting AI Journey Begins - Enhancing Our Capabilities Together
+
+Dear Team,
+
+I'm excited to share that we're beginning an important journey to integrate AI technologies that will enhance our capabilities and create new opportunities for growth and innovation.
+
+## [What This Means for You](pplx://action/followup)
+• AI will augment your skills, not replace them
+• You'll have access to powerful tools that make your work more efficient
+• New learning opportunities and career development paths
+• Enhanced ability to focus on high-value, creative work
+
+## [Our Commitment to You](pplx://action/followup)
+• Comprehensive training and support throughout the transition
+• Transparent communication about changes and progress
+• Your feedback and concerns are valued and will shape our approach
+• Job security through skill enhancement and new opportunities
+
+## [What's Next](pplx://action/followup)
+• Information sessions starting next week
+• Hands-on workshops and training programs
+• Pilot projects with volunteer participants
+• Regular updates and feedback opportunities
+
+We're committed to making this transition smooth, supportive, and beneficial for everyone. Your success is our success.
+
+Best regards,
+[Leadership Team]
+
+---
+
+# Weekly AI Update Template
+
+Subject: AI Weekly - Progress, Wins, and What's Coming
+
+This Week's Highlights:
+🎉 [Specific achievement or milestone]
+📈 [Quantified improvement or success metric]
+👏 [Team member or department recognition]
+
+Coming Up:
+📅 [Upcoming training or event]
+🔧 [New tool or feature launch]
+💡 [Learning opportunity or resource]
+
+Your Voice Matters:
+Share your AI experiences, questions, or suggestions: [feedback channel]
+
+Resources:
+• [Link to training materials]
+• [Link to support documentation]
+• [Link to FAQ or help desk]
+                    </div>
+                    <button class="copy-button" onclick="copyMessageTemplate(this)">Copy Message Templates</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resistance Management -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🛡️</div>
+                <h2 class="section-title">Resistance Management and Mitigation</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Resistance to AI adoption is natural and predictable. Effective change management anticipates resistance patterns and provides targeted interventions to address specific concerns and barriers.</p>
+            
+            <div class="resistance-matrix">
+                <div class="resistance-item">
+                    <div class="resistance-level resistance-high">High Resistance</div>
+                    <h5 style="margin-bottom: 0.5rem;">Active Opposition</h5>
+                    <p style="font-size: 0.9rem; color: #64748b;">Vocal criticism, spreading negative sentiment, refusing to participate in training</p>
+                    <p style="font-size: 0.85rem; margin-top: 0.5rem;"><strong>Intervention:</strong> One-on-one meetings, address specific concerns, involve in solution design</p>
+                </div>
+                
+                <div class="resistance-item">
+                    <div class="resistance-level resistance-medium">Medium Resistance</div>
+                    <h5 style="margin-bottom: 0.5rem;">Passive Resistance</h5>
+                    <p style="font-size: 0.9rem; color: #64748b;">Minimal participation, skeptical questions, slow adoption of new processes</p>
+                    <p style="font-size: 0.85rem; margin-top: 0.5rem;"><strong>Intervention:</strong> Peer mentoring, success story sharing, gradual exposure</p>
+                </div>
+                
+                <div class="resistance-item">
+                    <div class="resistance-level resistance-low">Low Resistance</div>
+                    <h5 style="margin-bottom: 0.5rem;">Cautious Acceptance</h5>
+                    <p style="font-size: 0.9rem; color: #64748b;">Willing to try but needs reassurance, asks clarifying questions, seeks support</p>
+                    <p style="font-size: 0.85rem; margin-top: 0.5rem;"><strong>Intervention:</strong> Clear communication, training support, regular check-ins</p>
+                </div>
+                
+                <div class="resistance-item">
+                    <div class="resistance-level resistance-low">Champion Potential</div>
+                    <h5 style="margin-bottom: 0.5rem;">Early Adopters</h5>
+                    <p style="font-size: 0.9rem; color: #64748b;">Enthusiastic about AI, quick to learn, willing to help others</p>
+                    <p style="font-size: 0.85rem; margin-top: 0.5rem;"><strong>Strategy:</strong> Develop as champions, peer mentors, and success story examples</p>
+                </div>
+            </div>
+            
+            <button class="interactive-button" onclick="toggleContent('resistance-toolkit')">Access Resistance Management Toolkit</button>
+            
+            <div id="resistance-toolkit" class="hidden-content">
+                <h4>Resistance Management Intervention Toolkit</h4>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin: 1rem 0;">
+                    <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h5 style="color: #1e293b; margin-bottom: 0.5rem;">🎯 Individual Interventions</h5>
+                        <ul style="font-size: 0.9rem; color: #64748b;">
+                            <li>One-on-one coaching sessions</li>
+                            <li>Personalized training plans</li>
+                            <li>Mentorship pairing</li>
+                            <li>Career development discussions</li>
+                        </ul>
+                    </div>
+                    <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h5 style="color: #1e293b; margin-bottom: 0.5rem;">👥 Group Interventions</h5>
+                        <ul style="font-size: 0.9rem; color: #64748b;">
+                            <li>Team workshops and discussions</li>
+                            <li>Peer learning circles</li>
+                            <li>Success story sharing sessions</li>
+                            <li>Collaborative problem-solving</li>
+                        </ul>
+                    </div>
+                    <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h5 style="color: #1e293b; margin-bottom: 0.5rem;">🏢 Organizational Interventions</h5>
+                        <ul style="font-size: 0.9rem; color: #64748b;">
+                            <li>Policy and procedure updates</li>
+                            <li>Incentive alignment</li>
+                            <li>Communication campaigns</li>
+                            <li>Cultural reinforcement activities</li>
+                        </ul>
+                    </div>
+                    <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h5 style="color: #1e293b; margin-bottom: 0.5rem;">📊 Measurement & Adjustment</h5>
+                        <ul style="font-size: 0.9rem; color: #64748b;">
+                            <li>Resistance level tracking</li>
+                            <li>Intervention effectiveness assessment</li>
+                            <li>Strategy refinement</li>
+                            <li>Continuous improvement</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Change Management Implementation Workshop -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🛠️</div>
+                <h2 class="section-title">Change Management Implementation Workshop</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Design and implement a comprehensive change management plan tailored to your organization's specific AI adoption needs and cultural context.</p>
+            
+            <div class="change-interface">
+                <h3 style="margin-bottom: 1.5rem;">Change Management Plan Builder</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Organization Size</label>
+                            <select id="org-size-change" class="form-select" onchange="updateChangePlan()">
+                                <option value="">Select organization size...</option>
+                                <option value="small">Small (1-50 employees)</option>
+                                <option value="medium">Medium (51-200 employees)</option>
+                                <option value="large">Large (201-1000 employees)</option>
+                                <option value="enterprise">Enterprise (1000+ employees)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Current Change Readiness</label>
+                            <select id="change-readiness" class="form-select" onchange="updateChangePlan()">
+                                <option value="">Select readiness level...</option>
+                                <option value="low">Low (Resistant to change)</option>
+                                <option value="medium">Medium (Cautious but open)</option>
+                                <option value="high">High (Embraces change)</option>
+                                <option value="very-high">Very High (Change-driven culture)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">AI Implementation Scope</label>
+                            <select id="ai-scope" class="form-select" onchange="updateChangePlan()">
+                                <option value="">Select implementation scope...</option>
+                                <option value="pilot">Pilot Project (Single department)</option>
+                                <option value="departmental">Departmental (Multiple teams)</option>
+                                <option value="organizational">Organization-wide</option>
+                                <option value="enterprise">Enterprise transformation</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Primary Change Challenges</label>
+                            <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
+                                <label style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="job-security-concerns" style="margin-right: 0.5rem;">
+                                    Job security concerns
+                                </label>
+                                <label style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="technical-complexity" style="margin-right: 0.5rem;">
+                                    Technical complexity fears
+                                </label>
+                                <label style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="change-fatigue" style="margin-right: 0.5rem;">
+                                    Change fatigue
+                                </label>
+                                <label style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="leadership-resistance" style="margin-right: 0.5rem;">
+                                    Leadership resistance
+                                </label>
+                                <label style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="resource-constraints" style="margin-right: 0.5rem;">
+                                    Resource constraints
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Implementation Timeline</label>
+                            <select id="implementation-timeline" class="form-select" onchange="updateChangePlan()">
+                                <option value="">Select timeline...</option>
+                                <option value="rapid">Rapid (3-6 months)</option>
+                                <option value="standard">Standard (6-12 months)</option>
+                                <option value="gradual">Gradual (12-18 months)</option>
+                                <option value="extended">Extended (18+ months)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin: 2rem 0;">
+                    <button class="interactive-button" onclick="generateChangePlan()">Generate Change Management Plan</button>
+                    <button class="interactive-button secondary" onclick="assessChangeReadiness()">Assess Current Readiness</button>
+                    <button class="interactive-button warning" onclick="createActionPlan()">Create Action Plan</button>
+                </div>
+                
+                <div id="change-plan-results" style="display: none;">
+                    <h4 style="margin-bottom: 1rem;">Customized Change Management Plan</h4>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value" id="change-complexity">--</div>
+                            <div class="metric-label">Change Complexity</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="success-probability">--</div>
+                            <div class="metric-label">Success Probability</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="resource-requirement">--</div>
+                            <div class="metric-label">Resource Requirement</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="timeline-estimate">--</div>
+                            <div class="metric-label">Timeline Estimate</div>
+                        </div>
+                    </div>
+                    
+                    <div class="change-diagram" id="change-plan-output">
+                        <!-- Generated change plan will appear here -->
+                    </div>
+                    <button class="copy-button" onclick="copyChangePlan()">Copy Change Management Plan</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Metrics and Measurement -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <h2 class="section-title">Change Management Success Metrics</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Measuring change management effectiveness requires tracking both quantitative metrics and qualitative indicators across multiple dimensions of organizational transformation.</p>
+            
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric Category</th>
+                            <th>Key Indicators</th>
+                            <th>Measurement Method</th>
+                            <th>Target Values</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Adoption Metrics</strong></td>
+                            <td>User adoption rate, feature utilization, training completion</td>
+                            <td>System analytics, training records, usage tracking</td>
+                            <td>>80% adoption, >90% training completion</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Engagement Metrics</strong></td>
+                            <td>Participation rates, feedback quality, champion activity</td>
+                            <td>Event attendance, survey responses, champion reports</td>
+                            <td>>75% participation, positive feedback trends</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sentiment Metrics</strong></td>
+                            <td>Employee satisfaction, confidence levels, enthusiasm</td>
+                            <td>Pulse surveys, sentiment analysis, focus groups</td>
+                            <td>>70% positive sentiment, increasing confidence</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performance Metrics</strong></td>
+                            <td>Productivity gains, error reduction, efficiency improvements</td>
+                            <td>Performance data, quality metrics, time studies</td>
+                            <td>20-50% productivity improvement</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cultural Metrics</strong></td>
+                            <td>Innovation mindset, collaboration, learning culture</td>
+                            <td>Culture surveys, behavioral observations, innovation metrics</td>
+                            <td>Positive cultural shift indicators</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value" style="color: #10b981;">87%</div>
+                    <div class="metric-label">Current Adoption Rate</div>
+                    <div style="font-size: 0.75rem; color: #10b981; margin-top: 0.25rem;">↑ 12% vs last month</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" style="color: #06b6d4;">92%</div>
+                    <div class="metric-label">Training Completion</div>
+                    <div style="font-size: 0.75rem; color: #06b6d4; margin-top: 0.25rem;">On target</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" style="color: #10b981;">74%</div>
+                    <div class="metric-label">Positive Sentiment</div>
+                    <div style="font-size: 0.75rem; color: #10b981; margin-top: 0.25rem;">↑ 8% vs baseline</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" style="color: #f59e0b;">23</div>
+                    <div class="metric-label">Active Champions</div>
+                    <div style="font-size: 0.75rem; color: #f59e0b; margin-top: 0.25rem;">Growing network</div>
+                </div>
+            </div>
+            
+            <div class="alert success">
+                <h5 style="margin-bottom: 0.5rem;">Change Management Progress</h5>
+                <p>Your change management efforts are showing strong results with high adoption rates and positive sentiment trends. Continue focusing on champion development and addressing remaining resistance pockets.</p>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">💡</div>
+                <h2 class="section-title">Key Takeaways</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                <div class="alert success">
+                    <h4 style="margin-bottom: 0.5rem;">Structured Approach Impact</h4>
+                    <p>Organizations with structured change management frameworks are 6 times more likely to achieve successful AI implementation, with 85% higher adoption rates and 60% faster time-to-value.</p>
+                </div>
+                
+                <div class="alert info">
+                    <h4 style="margin-bottom: 0.5rem;">Stakeholder Engagement Critical</h4>
+                    <p>Tailored stakeholder engagement addressing specific concerns and motivations reduces resistance by 70% and accelerates adoption through champion networks and peer influence.</p>
+                </div>
+                
+                <div class="alert warning">
+                    <h4 style="margin-bottom: 0.5rem;">Cultural Transformation Essential</h4>
+                    <p>Long-term AI success requires cultural transformation that positions AI as a collaborative partner. Organizations investing in culture change achieve 3x higher sustained adoption rates.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleContent(elementId) {
+            const element = document.getElementById(elementId);
+            if (element.style.display === 'none' || element.style.display === '') {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        }
+        
+        function copyChangeCode(button) {
+            const code = button.previousElementSibling.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                button.textContent = 'Copied!';
+                button.style.background = '#10b981';
+                setTimeout(() => {
+                    button.textContent = 'Copy Engagement Plan';
+                    button.style.background = '#64748b';
+                }, 2000);
+            });
+        }
+        
+        function copyMessageTemplate(button) {
+            const template = button.previousElementSibling.textContent;
+            navigator.clipboard.writeText(template).then(() => {
+                button.textContent = 'Copied!';
+                button.style.background = '#10b981';
+                setTimeout(() => {
+                    button.textContent = 'Copy Message Templates';
+                    button.style.background = '#64748b';
+                }, 2000);
+            });
+        }
+        
+        function selectStage(stage) {
+            // Remove active class from all stages
+            document.querySelectorAll('.curve-stage').forEach(s => s.classList.remove('active'));
+            
+            // Add active class to selected stage
+            document.getElementById(`stage-${stage}`).classList.add('active');
+            
+            const stageContent = document.getElementById('stage-content');
+            
+            const stageData = {
+                'denial': {
+                    title: 'Denial Stage: "AI won\'t affect my job"',
+                    content: `
+                        <h5 style="margin-bottom: 1rem;">Characteristics:</h5>
+                        <ul style="margin-bottom: 1rem;">
+                            <li>Minimizing AI impact and relevance</li>
+                            <li>Avoiding AI-related discussions and training</li>
+                            <li>Expressing skepticism about AI capabilities</li>
+                        </ul>
+                        <h5 style="margin-bottom: 1rem;">Intervention Strategies:</h5>
+                        <ul style="margin-bottom: 1rem;">
+                            <li><strong>Education:</strong> Provide clear, factual information about AI impact</li>
+                            <li><strong>Relevance:</strong> Show specific examples of AI in their role</li>
+                            <li><strong>Gradual Exposure:</strong> Start with low-threat AI demonstrations</li>
+                        </ul>
+                        <h5 style="margin-bottom: 1rem;">Success Indicators:</h5>
+                        <p>Increased participation in AI discussions, asking clarifying questions, acknowledging AI relevance</p>
+                    `
+                },
+                'resistance': {
+                    title: 'Resistance Stage: "This is too complex"',
+                    content: `
+                        <h5 style="margin-bottom: 1rem;">Characteristics:</h5>
+                        <ul style="margin-bottom: 1rem;">
+                            <li>Expressing concerns about complexity and difficulty</li>
+                            <li>Focusing on potential negative consequences</li>
+                            <li>Passive or active opposition to AI initiatives</li>
+                        </ul>
+                        <h5 style="margin-bottom: 1rem;">Intervention Strategies:</h5>
+                        <ul style="margin-bottom: 1rem;">
+                            <li><strong>Support:</strong> Provide extensive training and support resources</li>
+                            <li><strong>Simplification:</strong> Break AI learning into manageable steps</li>
+                            <li><strong>Peer Mentoring:</strong> Pair with AI-comfortable colleagues</li>
+                        </ul>
+                        <h5 style="margin-bottom: 1rem;">Success Indicators:</h5>
+                        <p>Willingness to try AI tools, asking for help, expressing specific concerns rather than general opposition</p>
+                    `
+                },
+                'exploration': {
+                    title: 'Exploration Stage: "Maybe this could help"',
+                    content: `
+                        <h5 style="margin-bottom: 1rem;">Characteristics:</h5>
+                        <ul style="margin-bottom: 1rem;">
+                            <li>Cautious willingness to try AI tools</li>
+                            <li>Asking questions about AI capabilities</li>
+                            <li>Experimenting with basic AI functions</li>
+                        </ul>
+                        <h5 style="margin-bottom: 1rem;">Intervention Strategies:</h5>
+                        <ul style="margin-bottom: 1rem;">

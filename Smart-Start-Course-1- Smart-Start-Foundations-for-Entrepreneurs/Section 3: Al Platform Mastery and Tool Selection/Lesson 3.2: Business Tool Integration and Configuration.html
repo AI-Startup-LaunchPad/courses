@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section 3: AI Platform Mastery and Tool Selection - Lesson 3.1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        .lesson-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .lesson-header {
+            background: #28263a;
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px 12px 0 0;
+            margin-bottom: 0;
+        }
+
+        .lesson-meta {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .lesson-title {
+            font-size: clamp(24px, 4vw, 36px);
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .lesson-subtitle {
+            font-size: clamp(16px, 2.5vw, 20px);
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .lesson-body {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .objectives-section {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .objectives-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .objectives-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .objectives-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .objectives-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 12px;
+            background: rgba(255,255,255,0.2);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .content-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #06b6d4;
+        }
+
+        .subsection-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #334155;
+            margin: 30px 0 15px 0;
+        }
+
+        .content-text {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: #475569;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border-left: 5px solid rgba(255,255,255,0.3);
+        }
+
+        .highlight-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .platform-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid #06b6d4;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .platform-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .platform-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .platform-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .platform-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .platform-description {
+            font-size: 15px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .platform-features {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .feature-icon {
+            color: #10b981;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        .pricing-info {
+            background: #e0f2fe;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #06b6d4;
+        }
+
+        .pricing-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .pricing-details {
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .interactive-element {
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-element:hover {
+            border-color: #06b6d4;
+            box-shadow: 0 5px 20px rgba(6, 182, 212, 0.1);
+        }
+
+        .activity-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .activity-description {
+            font-size: 16px;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #0891b2);
+            width: 14.3%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .completion-section {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .completion-section h3 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .completion-section p {
+            color: #64748b;
+            margin-bottom: 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        .comparison-tool {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .comparison-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #06b6d4;
+        }
+
+        .comparison-section h4 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .comparison-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .detailed-view {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .cost-calculator {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .cost-input-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .cost-input-group label {
+            display: block;
+            font-size: 14px;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+
+        .cost-input-group input,
+        .cost-input-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+        }
+
+        .cost-result {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .cost-result h4 {
+            margin-bottom: 10px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .comparison-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .comparison-table td {
+            color: #475569;
+        }
+
+        .score-excellent {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .score-good {
+            color: #06b6d4;
+            font-weight: 600;
+        }
+
+        .score-fair {
+            color: #f59e0b;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-container {
+                padding: 10px;
+            }
+            
+            .lesson-header, .lesson-body {
+                padding: 20px;
+            }
+            
+            .platform-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-container">
+        <header class="lesson-header">
+            <div class="lesson-meta">Section 3 • Lesson 3.1 • 90-120 minutes</div>
+            <h1 class="lesson-title">Platform Ecosystem Analysis and Comparison</h1>
+            <p class="lesson-subtitle">Comprehensive evaluation of major AI platforms based on business requirements, cost structures, and strategic alignment</p>
+        </header>
+
+        <div class="lesson-body">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+
+            <section class="objectives-section">
+                <h2 class="objectives-title">
+                    🎯 Learning Objectives
+                </h2>
+                <ul class="objectives-list">
+                    <li>Compare and evaluate major AI platforms across technical capabilities, compliance, and support dimensions</li>
+                    <li>Analyze pricing models including usage-based, seat-based, and tiered structures for optimal cost management</li>
+                    <li>Develop systematic vendor evaluation frameworks that align with specific business requirements</li>
+                    <li>Create platform selection strategies that avoid vendor lock-in while maximizing capabilities and flexibility</li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">The AI Platform Landscape</h2>
+                
+                <p class="content-text">
+                    The AI platform ecosystem has evolved into a sophisticated marketplace offering diverse solutions for different business needs, technical requirements, and budget constraints. Understanding platform capabilities, pricing models, and strategic implications enables informed decision-making that supports both immediate objectives and long-term growth.
+                </p>
+
+                <div class="highlight-box">
+                    <h3 class="highlight-title">Platform Selection Strategy</h3>
+                    <p>Successful AI platform selection requires balancing technical capabilities with business alignment, cost optimization, and strategic flexibility. Organizations that implement systematic evaluation frameworks reduce implementation risk by 40% and achieve 60% better long-term satisfaction with their AI investments.</p>
+                </div>
+
+                <div class="platform-grid">
+                    <div class="platform-card" data-platform="openai">
+                        <div class="platform-header">
+                            <div class="platform-icon">🤖</div>
+                            <div class="platform-title">OpenAI Platform</div>
+                        </div>
+                        <p class="platform-description">
+                            Industry-leading language models with GPT-4 capabilities, offering powerful API access for content generation, analysis, and reasoning tasks across multiple business applications.
+                        </p>
+                        <div class="platform-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                GPT-4 and GPT-3.5 Turbo models
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Comprehensive API documentation
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                ChatGPT Plus integration
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Enterprise security features
+                            </div>
+                        </div>
+                        <div class="pricing-info">
+                            <div class="pricing-title">Pricing Structure</div>
+                            <div class="pricing-details">$0.03 per 1,000 input tokens<br>ChatGPT Plus: $20/month</div>
+                        </div>
+                    </div>
+
+                    <div class="platform-card" data-platform="google">
+                        <div class="platform-header">
+                            <div class="platform-icon">🔍</div>
+                            <div class="platform-title">Google Cloud Vertex AI</div>
+                        </div>
+                        <p class="platform-description">
+                            Enterprise-grade machine learning platform with multimodal capabilities and seamless integration with Google's cloud ecosystem for comprehensive AI solutions.
+                        </p>
+                        <div class="platform-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                PaLM 2 and Gemini models
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Advanced data analytics integration
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Enterprise security and compliance
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                AutoML capabilities
+                            </div>
+                        </div>
+                        <div class="pricing-info">
+                            <div class="pricing-title">Pricing Structure</div>
+                            <div class="pricing-details">Usage-based pricing<br>Pay-per-prediction model</div>
+                        </div>
+                    </div>
+
+                    <div class="platform-card" data-platform="microsoft">
+                        <div class="platform-header">
+                            <div class="platform-icon">💼</div>
+                            <div class="platform-title">Microsoft Azure AI</div>
+                        </div>
+                        <p class="platform-description">
+                            Comprehensive AI services with strong integration capabilities for existing Microsoft environments and enterprise workflows, including Azure OpenAI Service.
+                        </p>
+                        <div class="platform-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Azure OpenAI Service
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Cognitive Services suite
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Microsoft 365 integration
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Enterprise compliance tools
+                            </div>
+                        </div>
+                        <div class="pricing-info">
+                            <div class="pricing-title">Pricing Structure</div>
+                            <div class="pricing-details">Enterprise-focused pricing<br>Volume discounts available</div>
+                        </div>
+                    </div>
+
+                    <div class="platform-card" data-platform="anthropic">
+                        <div class="platform-header">
+                            <div class="platform-icon">🛡️</div>
+                            <div class="platform-title">Anthropic Claude</div>
+                        </div>
+                        <p class="platform-description">
+                            Safety-focused AI with advanced reasoning capabilities, offering responsible AI development with constitutional AI principles and enhanced safety features.
+                        </p>
+                        <div class="platform-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Claude 3 model family
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Enhanced safety features
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Constitutional AI approach
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Responsible AI development
+                            </div>
+                        </div>
+                        <div class="pricing-info">
+                            <div class="pricing-title">Pricing Structure</div>
+                            <div class="pricing-details">Per-user enterprise pricing<br>Custom enterprise plans</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="platform-details" class="hidden">
+                    <div class="detailed-view">
+                        <h3 id="detailed-platform-title"></h3>
+                        <div id="detailed-platform-content"></div>
+                        <button type="button" class="btn-primary" onclick="hidePlatformDetails()">Back to Platform Overview</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Comprehensive Platform Evaluation Framework</h2>
+                
+                <p class="content-text">
+                    Systematic platform evaluation requires assessment across multiple dimensions including technical capabilities, business alignment, cost optimization, and strategic flexibility. This framework ensures optimal platform selection that supports both immediate needs and long-term growth objectives.
+                </p>
+
+                <div class="interactive-element">
+                    <h3 class="activity-title">📊 Activity 3.1.1: Platform Comparison Matrix</h3>
+                    <p class="activity-description">
+                        Use our systematic evaluation framework to compare AI platforms across technical capabilities, compliance, support, and migration considerations. This structured approach ensures informed decision-making.
+                    </p>
+                    <button type="button" class="btn-primary" id="start-platform-comparison">Launch Platform Comparison Tool</button>
+                </div>
+
+                <div id="platform-comparison" class="hidden">
+                    <div class="comparison-tool">
+                        <h4>AI Platform Comparison Matrix</h4>
+                        
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Evaluation Criteria</th>
+                                    <th>Weight</th>
+                                    <th>OpenAI</th>
+                                    <th>Google Cloud</th>
+                                    <th>Microsoft Azure</th>
+                                    <th>Anthropic</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Model Performance</td>
+                                    <td>25%</td>
+                                    <td class="score-excellent">Excellent</td>
+                                    <td class="score-good">Good</td>
+                                    <td class="score-excellent">Excellent</td>
+                                    <td class="score-good">Good</td>
+                                </tr>
+                                <tr>
+                                    <td>API Quality & Documentation</td>
+                                    <td>20%</td>
+                                    <td class="score-excellent">Excellent</td>
+                                    <td class="score-good">Good</td>
+                                    <td class="score-good">Good</td>
+                                    <td class="score-fair">Fair</td>
+                                </tr>
+                                <tr>
+                                    <td>Enterprise Integration</td>
+                                    <td>20%</td>
+                                    <td class="score-good">Good</td>
+                                    <td class="score-excellent">Excellent</td>
+                                    <td class="score-excellent">Excellent</td>
+                                    <td class="score-fair">Fair</td>
+                                </tr>
+                                <tr>
+                                    <td>Security & Compliance</td>
+                                    <td>15%</td>
+                                    <td class="score-good">Good</td>
+                                    <td class="score-excellent">Excellent</td>
+                                    <td class="score-excellent">Excellent</td>
+                                    <td class="score-excellent">Excellent</td>
+                                </tr>
+                                <tr>
+                                    <td>Cost Effectiveness</td>
+                                    <td>10%</td>
+                                    <td class="score-good">Good</td>
+                                    <td class="score-fair">Fair</td>
+                                    <td class="score-fair">Fair</td>
+                                    <td class="score-good">Good</td>
+                                </tr>
+                                <tr>
+                                    <td>Support Quality</td>
+                                    <td>10%</td>
+                                    <td class="score-good">Good</td>
+                                    <td class="score-excellent">Excellent</td>
+                                    <td class="score-excellent">Excellent</td>
+                                    <td class="score-good">Good</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <button type="button" class="btn-primary" onclick="generatePlatformRecommendation()" style="margin-top: 20px;">Generate Platform Recommendation</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Cost Optimization and Pricing Strategy</h2>
+                
+                <p class="content-text">
+                    Understanding AI platform pricing models enables strategic cost optimization while ensuring adequate capabilities for business growth. Different pricing structures suit different usage patterns and organizational needs.
+                </p>
+
+                <h3 class="subsection-title">Pricing Model Analysis</h3>
+                
+                <div class="content-text">
+                    <strong>Usage-Based Pricing</strong> aligns costs with actual consumption, making it ideal for businesses with fluctuating demand. OpenAI's API and Amazon Bedrock follow this model, charging per inference request or computational resource usage. This approach provides cost transparency and scales naturally with business growth.
+                </div>
+
+                <div class="content-text">
+                    <strong>Seat-Based Pricing</strong> provides predictable costs for team-oriented tools. Jasper AI and Anthropic's Claude Enterprise use this approach, making budgeting straightforward for growing teams. This model works best for organizations with consistent user bases and predictable usage patterns.
+                </div>
+
+                <div class="content-text">
+                    <strong>Tiered Pricing</strong> offers flexibility through different feature levels. Hugging Face provides free, pro ($9/month), and enterprise tiers, allowing businesses to scale investment with growth. This approach enables gradual adoption and feature expansion as needs evolve.
+                </div>
+
+                <div class="interactive-element">
+                    <h3 class="activity-title">💰 Activity 3.1.2: Cost Optimization Strategy Workshop</h3>
+                    <p class="activity-description">
+                        Calculate and compare costs across different pricing models using scenario planning. This hands-on exercise demonstrates optimal pricing strategies for various business contexts.
+                    </p>
+                    <button type="button" class="btn-primary" id="start-cost-calculator">Launch Cost Calculator</button>
+                </div>
+
+                <div id="cost-calculator" class="hidden">
+                    <div class="comparison-tool">
+                        <h4>AI Platform Cost Calculator</h4>
+                        
+                        <div class="cost-calculator">
+                            <div class="cost-input-group">
+                                <div>
+                                    <label>Monthly API Calls</label>
+                                    <input type="number" id="api-calls" placeholder="10000">
+                                </div>
+                                <div>
+                                    <label>Team Size</label>
+                                    <input type="number" id="team-size" placeholder="5">
+                                </div>
+                                <div>
+                                    <label>Usage Pattern</label>
+                                    <select id="usage-pattern">
+                                        <option value="consistent">Consistent</option>
+                                        <option value="variable">Variable</option>
+                                        <option value="seasonal">Seasonal</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Growth Rate (%/month)</label>
+                                    <input type="number" id="growth-rate" placeholder="10">
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="btn-primary" onclick="calculateCosts()">Calculate Platform Costs</button>
+                            
+                            <div id="cost-results" class="cost-result hidden">
+                                <h4>Cost Comparison Results</h4>
+                                <div id="cost-breakdown"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Strategic Platform Selection and Vendor Management</h2>
+                
+                <p class="content-text">
+                    Platform selection extends beyond immediate technical requirements to encompass long-term strategic alignment, vendor relationship management, and migration flexibility. Successful organizations implement frameworks that balance capabilities with strategic flexibility.
+                </p>
+
+                <h3 class="subsection-title">Vendor Lock-in Prevention</h3>
+                
+                <div class="content-text">
+                    <strong>API Standardization</strong> ensures compatibility with diverse business environments across finance, healthcare, legal, and manufacturing sectors. Hugging Face provides standardized APIs for multi-model adoption, enabling flexible platform selection without architectural constraints.
+                </div>
+
+                <div class="content-text">
+                    <strong>Data Portability</strong> maintains strategic flexibility through standardized data formats and export capabilities. Ensure platforms support common data standards and provide comprehensive export tools that enable migration without data loss or format conversion challenges.
+                </div>
+
+                <div class="content-text">
+                    <strong>Interoperability Planning</strong> allows AI models to work across cloud providers and platforms. Federated learning enables AI system collaboration without massive data movement, supporting knowledge transfer while protecting privacy and maintaining vendor flexibility.
+                </div>
+
+                <div class="highlight-box">
+                    <h3 class="highlight-title">Platform Selection Best Practices</h3>
+                    <p>Implement multi-vendor strategies that prevent over-dependence on single platforms, establish clear data ownership and portability requirements, maintain standardized integration approaches that enable platform switching, and regularly evaluate vendor performance against evolving business needs.</p>
+                </div>
+            </section>
+
+            <div class="completion-section">
+                <h3>Lesson 3.1 Complete</h3>
+                <p>You've successfully analyzed major AI platforms and developed systematic evaluation frameworks for strategic platform selection. Continue to the next lesson to explore business-focused AI tool integration and configuration strategies.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Platform data for detailed views
+            const platformData = {
+                openai: {
+                    title: "OpenAI Platform: Comprehensive Analysis",
+                    content: `
+                        <h4>Technical Capabilities</h4>
+                        <p>OpenAI leads in language model performance with GPT-4 offering superior reasoning, creativity, and complex task handling. The platform excels in natural language processing, code generation, and creative content creation with industry-leading accuracy rates.</p>
+                        
+                        <h4>Business Applications</h4>
+                        <ul>
+                            <li>Content generation and copywriting automation</li>
+                            <li>Customer service chatbot development</li>
+                            <li>Code generation and debugging assistance</li>
+                            <li>Data analysis and report generation</li>
+                        </ul>
+                        
+                        <h4>Pricing Analysis</h4>
+                        <p>Usage-based pricing at $0.03 per 1,000 input tokens provides cost transparency and scales with usage. ChatGPT Plus at $20/month offers unlimited access for individual users, making it cost-effective for consistent usage patterns.</p>
+                        
+                        <h4>Integration Considerations</h4>
+                        <p>Comprehensive API documentation and extensive community support facilitate integration. Strong ecosystem of third-party tools and integrations. Consider rate limits and API key management for production deployments.</p>
+                        
+                        <h4>Strategic Recommendations</h4>
+                        <p>Ideal for organizations prioritizing cutting-edge language capabilities and rapid prototyping. Best suited for content-heavy applications and customer-facing AI implementations.</p>
+                    `
+                },
+                google: {
+                    title: "Google Cloud Vertex AI: Enterprise Analysis",
+                    content: `
+                        <h4>Technical Capabilities</h4>
+                        <p>Vertex AI provides comprehensive machine learning platform with multimodal capabilities, AutoML features, and seamless integration with Google Cloud services. Excels in data analytics integration and enterprise-scale deployments.</p>
+                        
+                        <h4>Business Applications</h4>
+                        <ul>
+                            <li>Advanced data analytics and business intelligence</li>
+                            <li>Custom model training and deployment</li>
+                            <li>Multimodal AI applications (text, image, video)</li>
+                            <li>Enterprise search and knowledge management</li>
+                        </ul>
+                        
+                        <h4>Pricing Analysis</h4>
+                        <p>Usage-based pricing with pay-per-prediction model offers flexibility for variable workloads. Enterprise discounts available for large-scale deployments. Consider data processing and storage costs in total cost calculations.</p>
+                        
+                        <h4>Integration Considerations</h4>
+                        <p>Excellent integration with Google Workspace and Cloud ecosystem. Strong enterprise security and compliance features. Requires Google Cloud expertise for optimal implementation.</p>
+                        
+                        <h4>Strategic Recommendations</h4>
+                        <p>Best for organizations already using Google Cloud services or requiring advanced data analytics integration. Ideal for custom model development and enterprise-scale AI deployments.</p>
+                    `
+                },
+                microsoft: {
+                    title: "Microsoft Azure AI: Enterprise Integration Analysis",
+                    content: `
+                        <h4>Technical Capabilities</h4>
+                        <p>Azure AI provides comprehensive suite including Azure OpenAI Service, Cognitive Services, and Machine Learning Studio. Strong integration with Microsoft ecosystem and enterprise-grade security features.</p>
+                        
+                        <h4>Business Applications</h4>
+                        <ul>
+                            <li>Microsoft 365 and Teams integration</li>
+                            <li>Enterprise document processing and analysis</li>
+                            <li>Business intelligence and analytics</li>
+                            <li>Custom AI model development and deployment</li>
+                        </ul>
+                        
+                        <h4>Pricing Analysis</h4>
+                        <p>Enterprise-focused pricing with volume discounts and flexible licensing options. Integration with existing Microsoft licenses can provide cost advantages. Consider total cost of ownership including training and support.</p>
+                        
+                        <h4>Integration Considerations</h4>
+                        <p>Seamless integration with Microsoft ecosystem including Office 365, Teams, and Power Platform. Strong enterprise security, compliance, and governance features. Requires Azure expertise for advanced implementations.</p>
+                        
+                        <h4>Strategic Recommendations</h4>
+                        <p>Optimal for Microsoft-centric organizations seeking deep integration with existing workflows. Best choice for enterprises requiring comprehensive compliance and governance features.</p>
+                    `
+                },
+                anthropic: {
+                    title: "Anthropic Claude: Safety-Focused AI Analysis",
+                    content: `
+                        <h4>Technical Capabilities</h4>
+                        <p>Claude 3 model family offers advanced reasoning with enhanced safety features and constitutional AI principles. Excels in complex analysis, ethical reasoning, and responsible AI applications.</p>
+                        
+                        <h4>Business Applications</h4>
+                        <ul>
+                            <li>Ethical AI decision-making and analysis</li>
+                            <li>Complex reasoning and problem-solving</li>
+                            <li>Risk assessment and compliance analysis</li>
+                            <li>Responsible content generation and review</li>
+                        </ul>
+                        
+                        <h4>Pricing Analysis</h4>
+                        <p>Per-user enterprise pricing provides predictable costs for team-based usage. Custom enterprise plans available for large organizations. Consider usage patterns and team size for cost optimization.</p>
+                        
+                        <h4>Integration Considerations</h4>
+                        <p>API access available with focus on responsible AI implementation. Strong emphasis on safety and ethical considerations. May require additional integration work compared to more established platforms.</p>
+                        
+                        <h4>Strategic Recommendations</h4>
+                        <p>Ideal for organizations prioritizing AI safety, ethics, and responsible implementation. Best suited for applications requiring complex reasoning and ethical decision-making capabilities.</p>
+                    `
+                }
+            };
+
+            // Function to show platform details
+            function showPlatformDetails(platform) {
+                const detailsDiv = document.getElementById('platform-details');
+                const titleElement = document.getElementById('detailed-platform-title');
+                const contentElement = document.getElementById('detailed-platform-content');
+                
+                if (platformData[platform]) {
+                    const data = platformData[platform];
+                    titleElement.textContent = data.title;
+                    contentElement.innerHTML = data.content;
+                    detailsDiv.classList.remove('hidden');
+                    detailsDiv.classList.add('visible');
+                }
+            }
+
+            // Function to hide platform details
+            function hidePlatformDetails() {
+                const detailsDiv = document.getElementById('platform-details');
+                detailsDiv.classList.remove('visible');
+                detailsDiv.classList.add('hidden');
+            }
+
+            // Function to show platform comparison
+            function showPlatformComparison() {
+                const comparison = document.getElementById('platform-comparison');
+                comparison.classList.remove('hidden');
+                comparison.classList.add('visible');
+            }
+
+            // Function to show cost calculator
+            function showCostCalculator() {
+                const calculator = document.getElementById('cost-calculator');
+                calculator.classList.remove('hidden');
+                calculator.classList.add('visible');
+            }
+
+            // Event listeners for platform cards
+            const platformCards = document.querySelectorAll('.platform-card');
+            platformCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const platform = this.getAttribute('data-platform');
+                    showPlatformDetails(platform);
+                });
+            });
+
+            // Event listener for platform comparison button
+            const comparisonButton = document.getElementById('start-platform-comparison');
+            if (comparisonButton) {
+                comparisonButton.addEventListener('click', showPlatformComparison);
+            }
+
+            // Event listener for cost calculator button
+            const calculatorButton = document.getElementById('start-cost-calculator');
+            if (calculatorButton) {
+                calculatorButton.addEventListener('click', showCostCalculator);
+            }
+
+            // Make functions globally available
+            window.hidePlatformDetails = hidePlatformDetails;
+
+            // Progress tracking
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const rate = scrolled / (document.body.offsetHeight - window.innerHeight);
+                const progressFill = document.querySelector('.progress-fill');
+                if (progressFill) {
+                    progressFill.style.width = Math.min(rate * 100, 100) + '%';
+                }
+            });
+        });
+
+        // Function to generate platform recommendation
+        function generatePlatformRecommendation() {
+            alert('Platform Recommendation Generated!\n\nBased on the comparison matrix:\n\n🥇 Top Recommendation: Microsoft Azure AI\n• Excellent enterprise integration\n• Strong security and compliance\n• Comprehensive support ecosystem\n\n🥈 Alternative: OpenAI Platform\n• Superior model performance\n• Excellent API quality\n• Strong developer ecosystem\n\nConsider your specific requirements for final selection.');
+        }
+
+        // Function to calculate costs
+        function calculateCosts() {
+            const apiCalls = parseInt(document.getElementById('api-calls').value) || 0;
+            const teamSize = parseInt(document.getElementById('team-size').value) || 0;
+            const usagePattern = document.getElementById('usage-pattern').value;
+            const growthRate = parseInt(document.getElementById('growth-rate').value) || 0;
+
+            if (apiCalls === 0 || teamSize === 0) {
+                alert('Please enter valid values for API calls and team size.');
+                return;
+            }
+
+            // Calculate costs for different platforms
+            const openaiCost = (apiCalls * 0.03) + (teamSize * 20); // API + ChatGPT Plus
+            const googleCost = apiCalls * 0.025; // Estimated usage-based
+            const microsoftCost = teamSize * 30; // Estimated per-user
+            const anthropicCost = teamSize * 25; // Per-user pricing
+
+            // Apply growth factor
+            const monthlyGrowth = growthRate / 100;
+            const projectedOpenAI = openaiCost * (1 + monthlyGrowth * 6); // 6-month projection
+            const projectedGoogle = googleCost * (1 + monthlyGrowth * 6);
+            const projectedMicrosoft = microsoftCost * (1 + monthlyGrowth * 6);
+            const projectedAnthropic = anthropicCost * (1 + monthlyGrowth * 6);
+
+            const resultsDiv = document.getElementById('cost-results');
+            const breakdownDiv = document.getElementById('cost-breakdown');
+            
+            breakdownDiv.innerHTML = `
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Platform</th>
+                            <th>Current Monthly Cost</th>
+                            <th>6-Month Projection</th>
+                            <th>Best For</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>OpenAI</td>
+                            <td>$${openaiCost.toFixed(2)}</td>
+                            <td>$${projectedOpenAI.toFixed(2)}</td>
+                            <td>High API usage</td>
+                        </tr>
+                        <tr>
+                            <td>Google Cloud</td>
+                            <td>$${googleCost.toFixed(2)}</td>
+                            <td>$${projectedGoogle.toFixed(2)}</td>
+                            <td>Variable usage</td>
+                        </tr>
+                        <tr>
+                            <td>Microsoft Azure</td>
+                            <td>$${microsoftCost.toFixed(2)}</td>
+                            <td>$${projectedMicrosoft.toFixed(2)}</td>
+                            <td>Enterprise teams</td>
+                        </tr>
+                        <tr>
+                            <td>Anthropic</td>
+                            <td>$${anthropicCost.toFixed(2)}</td>
+                            <td>$${projectedAnthropic.toFixed(2)}</td>
+                            <td>Safety-focused</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+            
+            resultsDiv.classList.remove('hidden');
+            resultsDiv.classList.add('visible');
+        }
+    </script>
+</body>
+</html>

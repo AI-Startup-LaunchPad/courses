@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integration Platform Implementation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #334155;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        .header {
+            background: #28263a;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(6, 182, 212, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .lesson-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .lesson-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #10b981);
+            width: 74.3%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .interactive-button {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .interactive-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3);
+        }
+        
+        .interactive-button.secondary {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .interactive-button.secondary:hover {
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .interactive-button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .interactive-button.warning:hover {
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+        }
+        
+        .interactive-button.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .interactive-button.danger:hover {
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+        }
+        
+        .hidden-content {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #06b6d4;
+        }
+        
+        .platform-framework {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .platform-framework:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .framework-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .integration-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .enterprise-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .implementation-diagram {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .implementation-interface {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 2px dashed #06b6d4;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            resize: vertical;
+            font-size: 0.95rem;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: white;
+        }
+        
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .comparison-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid;
+        }
+        
+        .alert.success {
+            background: #f0fdf4;
+            border-color: #10b981;
+            color: #065f46;
+        }
+        
+        .alert.warning {
+            background: #fffbeb;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+        
+        .alert.info {
+            background: #eff6ff;
+            border-color: #06b6d4;
+            color: #0c4a6e;
+        }
+        
+        .alert.danger {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        
+        .copy-button {
+            background: #64748b;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .copy-button:hover {
+            background: #475569;
+        }
+        
+        .workflow-builder {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+        }
+        
+        .builder-toolbar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+        
+        .tool-button:hover {
+            border-color: #06b6d4;
+            background: #f0f9ff;
+        }
+        
+        .tool-button.active {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border-color: #0891b2;
+        }
+        
+        .integration-canvas {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            min-height: 400px;
+            position: relative;
+        }
+        
+        .integration-step {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        .integration-step:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3);
+        }
+        
+        .integration-step.trigger {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .integration-step.action {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .integration-step.condition {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .step-connector {
+            display: inline-block;
+            font-size: 1.5rem;
+            color: #06b6d4;
+            margin: 0 0.5rem;
+        }
+        
+        .progress-indicator {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+        
+        .progress-fill-animated {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #10b981);
+            border-radius: 3px;
+            transition: width 2s ease;
+        }
+        
+        .feature-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .feature-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-benefits {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 3px solid #06b6d4;
+        }
+        
+        .pricing-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-card:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+        }
+        
+        .pricing-card.featured {
+            border-color: #06b6d4;
+            border-width: 2px;
+        }
+        
+        .pricing-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .pricing-amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 0.5rem;
+        }
+        
+        .pricing-period {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 2rem;
+        }
+        
+        .pricing-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .pricing-features li::before {
+            content: '✓';
+            color: #10b981;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="lesson-title">Integration Platform Implementation</h1>
+            <p class="lesson-subtitle">Section 5.3 • Master workflow automation using Zapier, Power Automate, and Make for seamless business integration</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">Progress: 74.3% Complete</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Learning Objectives -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2 class="section-title">Learning Objectives</h2>
+            </div>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Implement comprehensive workflow automation using Zapier, Power Automate, and Make platforms
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Design multi-platform integration strategies connecting 8000+ applications and services
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Build AI-powered workflows with intelligent decision-making and adaptive automation
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Establish enterprise-grade governance, security, and monitoring for automated workflows
+                </li>
+            </ul>
+        </div>
+
+        <!-- Platform Overview and Comparison -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🔗</div>
+                <h2 class="section-title">Integration Platform Ecosystem</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Modern integration platforms have revolutionized business automation by connecting thousands of applications without requiring technical expertise. These platforms enable organizations to automate workflows across 8000+ apps, with AI-powered capabilities that adapt to changing business conditions in real-time.</p>
+
+            <div class="platform-grid">
+                <div class="platform-framework">
+                    <h3 class="framework-title">
+                        Zapier
+                        <span class="integration-badge">8000+ Apps</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">The largest AI automation ecosystem with 300+ AI integrations, enabling sophisticated workflows that combine traditional automation with intelligent decision-making capabilities.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• 8000+ app integrations with extensive API connectivity</li>
+                        <li style="padding: 0.25rem 0;">• AI by Zapier with built-in LLM capabilities</li>
+                        <li style="padding: 0.25rem 0;">• Advanced workflow logic with conditional branching</li>
+                        <li style="padding: 0.25rem 0;">• Enterprise-grade security and governance</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('zapier-details')">Explore Zapier</button>
+                </div>
+
+                <div class="platform-framework">
+                    <h3 class="framework-title">
+                        Microsoft Power Automate
+                        <span class="enterprise-badge">Enterprise Focus</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Comprehensive automation solution with AI Builder, robotic process automation (RPA), and deep Microsoft ecosystem integration for enterprise-scale implementations.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• AI Builder with 20+ prebuilt AI models</li>
+                        <li style="padding: 0.25rem 0;">• Desktop and cloud automation capabilities</li>
+                        <li style="padding: 0.25rem 0;">• Process mining and optimization tools</li>
+                        <li style="padding: 0.25rem 0;">• Native Microsoft 365 integration</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('power-automate-details')">Explore Power Automate</button>
+                </div>
+
+                <div class="platform-framework">
+                    <h3 class="framework-title">
+                        Make (Integromat)
+                        <span class="integration-badge">Visual Builder</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Advanced visual automation platform with sophisticated logic capabilities, AI agent integration, and real-time adaptive workflows for complex business processes.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Visual drag-and-drop scenario builder</li>
+                        <li style="padding: 0.25rem 0;">• Make AI Agents for intelligent automation</li>
+                        <li style="padding: 0.25rem 0;">• Advanced error handling and debugging</li>
+                        <li style="padding: 0.25rem 0;">• Real-time execution monitoring</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('make-details')">Explore Make</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Platform Comparison -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">⚖️</div>
+                <h2 class="section-title">Platform Comparison and Selection Guide</h2>
+            </div>
+            
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Zapier</th>
+                            <th>Power Automate</th>
+                            <th>Make</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>App Integrations</strong></td>
+                            <td>8000+ apps</td>
+                            <td>1000+ connectors</td>
+                            <td>2000+ apps</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AI Capabilities</strong></td>
+                            <td>300+ AI integrations, AI by Zapier</td>
+                            <td>AI Builder, GPT integration</td>
+                            <td>AI Agents, adaptive workflows</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pricing Model</strong></td>
+                            <td>Task-based, $19.99-$599/month</td>
+                            <td>Per user, $15-$40/user/month</td>
+                            <td>Operation-based, $9-$299/month</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Learning Curve</strong></td>
+                            <td>Beginner-friendly</td>
+                            <td>Moderate (Microsoft ecosystem)</td>
+                            <td>Advanced visual interface</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Enterprise Features</strong></td>
+                            <td>SSO, governance, monitoring</td>
+                            <td>Advanced governance, compliance</td>
+                            <td>Team collaboration, version control</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Best For</strong></td>
+                            <td>SMB to enterprise, AI-first workflows</td>
+                            <td>Microsoft-centric enterprises</td>
+                            <td>Complex logic, visual workflows</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <button class="interactive-button" onclick="toggleContent('selection-wizard')">Launch Platform Selection Wizard</button>
+            
+            <div id="selection-wizard" class="hidden-content">
+                <div class="implementation-interface">
+                    <h4 style="margin-bottom: 1.5rem;">Platform Selection Wizard</h4>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <div class="form-group">
+                                <label class="form-label">Organization Size</label>
+                                <select id="org-size" class="form-select" onchange="updateRecommendation()">
+                                    <option value="">Select organization size...</option>
+                                    <option value="startup">Startup (1-10 employees)</option>
+                                    <option value="small">Small Business (11-50 employees)</option>
+                                    <option value="medium">Medium Business (51-200 employees)</option>
+                                    <option value="enterprise">Enterprise (200+ employees)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Primary Use Case</label>
+                                <select id="use-case" class="form-select" onchange="updateRecommendation()">
+                                    <option value="">Select primary use case...</option>
+                                    <option value="simple-automation">Simple task automation</option>
+                                    <option value="ai-workflows">AI-powered workflows</option>
+                                    <option value="complex-logic">Complex business logic</option>
+                                    <option value="enterprise-integration">Enterprise integration</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Technical Expertise</label>
+                                <select id="tech-expertise" class="form-select" onchange="updateRecommendation()">
+                                    <option value="">Select expertise level...</option>
+                                    <option value="beginner">Beginner (no coding experience)</option>
+                                    <option value="intermediate">Intermediate (some technical knowledge)</option>
+                                    <option value="advanced">Advanced (technical background)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="form-group">
+                                <label class="form-label">Budget Range (Monthly)</label>
+                                <select id="budget-range" class="form-select" onchange="updateRecommendation()">
+                                    <option value="">Select budget range...</option>
+                                    <option value="under-50">Under $50/month</option>
+                                    <option value="50-200">$50-200/month</option>
+                                    <option value="200-500">$200-500/month</option>
+                                    <option value="over-500">Over $500/month</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Existing Technology Stack</label>
+                                <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="microsoft-stack" style="margin-right: 0.5rem;">
+                                        Microsoft 365 / Azure ecosystem
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="google-stack" style="margin-right: 0.5rem;">
+                                        Google Workspace
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="salesforce-stack" style="margin-right: 0.5rem;">
+                                        Salesforce CRM
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="mixed-stack" style="margin-right: 0.5rem;">
+                                        Mixed / Multi-vendor
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="platform-recommendation" style="display: none; margin-top: 2rem; padding: 1.5rem; background: #f0fdf4; border-radius: 8px; border-left: 4px solid #10b981;">
+                        <h5 style="color: #065f46; margin-bottom: 0.5rem;">Recommended Platform</h5>
+                        <p id="recommendation-text"><!-- Recommendation will be populated here --></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zapier Implementation Details -->
+        <div id="zapier-details" class="hidden-content">
+            <div class="content-section">
+                <div class="section-header">
+                    <div class="section-icon">⚡</div>
+                    <h2 class="section-title">Zapier Implementation Guide</h2>
+                </div>
+                
+                <p style="margin-bottom: 1.5rem;">Zapier's ecosystem connects over 8000 applications with 300+ AI integrations, making it the most comprehensive automation platform for AI-powered workflows. The platform processes over 2,200 days of work automation monthly for enterprise clients.</p>
+                
+                <div class="feature-showcase">
+                    <div class="feature-card">
+                        <h4 class="feature-title">AI by Zapier Integration</h4>
+                        <p class="feature-description">Built-in AI capabilities with access to top LLMs without requiring separate API keys, enabling intelligent content generation and analysis.</p>
+                        <div class="feature-benefits">
+                            <strong>Key Features:</strong> Natural language processing, content generation, data analysis, sentiment analysis, automated decision-making
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4 class="feature-title">Advanced Workflow Logic</h4>
+                        <p class="feature-description">Sophisticated conditional branching, filters, and logic operations that enable complex business process automation.</p>
+                        <div class="feature-benefits">
+                            <strong>Capabilities:</strong> Multi-step workflows, conditional paths, data transformation, error handling, webhook support
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4 class="feature-title">Enterprise Governance</h4>
+                        <p class="feature-description">Comprehensive security and compliance features including SSO, role-based permissions, and audit trails.</p>
+                        <div class="feature-benefits">
+                            <strong>Security:</strong> SOC 2 compliance, enterprise SSO, data encryption, activity monitoring, governance controls
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="implementation-diagram">
+# Zapier AI Workflow Implementation Example
+
+## [Customer Support Automation with AI Analysis](pplx://action/followup)
+
+### [Trigger: New Support Ticket (Zendesk)](pplx://action/followup)
+- Event: New ticket created
+- Data captured: Customer info, issue description, priority
+
+### [Step 1: AI Analysis (AI by Zapier)](pplx://action/followup)
+- Analyze ticket sentiment and urgency
+- Extract key issues and categorize
+- Determine appropriate response strategy
+
+### [Step 2: Conditional Logic](pplx://action/followup)
+IF sentiment = "negative" AND urgency = "high"
+  → Route to senior support agent
+  → Send immediate acknowledgment
+ELSE IF category = "technical"
+  → Route to technical team
+  → Create Jira ticket
+ELSE
+  → Standard support queue
+  → Send automated response
+
+### [Step 3: Multi-Channel Actions](pplx://action/followup)
+- Update CRM (Salesforce) with ticket details
+- Send Slack notification to relevant team
+- Create calendar event for follow-up
+- Log interaction in analytics dashboard
+
+### [Step 4: Follow-up Automation](pplx://action/followup)
+- Schedule follow-up email after 24 hours
+- Monitor ticket status changes
+- Trigger escalation if unresolved after 48 hours
+- Collect customer satisfaction feedback
+
+## [Performance Metrics](pplx://action/followup)
+- 28% of tickets solved automatically
+- 70% reduction in response time
+- 95% customer satisfaction rate
+                </div>
+                <button class="copy-button" onclick="copyImplementationCode(this)">Copy Zapier Workflow</button>
+                
+                <div class="alert info">
+                    <h5 style="margin-bottom: 0.5rem;">Zapier Best Practices</h5>
+                    <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                        <li>Start with simple 2-3 step workflows before building complex automations</li>
+                        <li>Use AI by Zapier for intelligent content processing and decision-making</li>
+                        <li>Implement proper error handling and fallback strategies</li>
+                        <li>Monitor workflow performance and optimize based on usage patterns</li>
+                        <li>Leverage templates for common use cases to accelerate implementation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Power Automate Implementation Details -->
+        <div id="power-automate-details" class="hidden-content">
+            <div class="content-section">
+                <div class="section-header">
+                    <div class="section-icon">🏢</div>
+                    <h2 class="section-title">Microsoft Power Automate Implementation</h2>
+                </div>
+                
+                <p style="margin-bottom: 1.5rem;">Power Automate provides enterprise-grade automation with AI Builder capabilities, supporting both cloud and desktop automation scenarios. The platform integrates seamlessly with Microsoft 365 and offers advanced process mining and optimization tools.</p>
+                
+                <div class="feature-showcase">
+                    <div class="feature-card">
+                        <h4 class="feature-title">AI Builder Capabilities</h4>
+                        <p class="feature-description">20+ prebuilt AI models for document processing, sentiment analysis, object detection, and business prediction without custom model training.</p>
+                        <div class="feature-benefits">
+                            <strong>AI Models:</strong> Document processing, sentiment analysis, entity extraction, image recognition, prediction models
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4 class="feature-title">Robotic Process Automation</h4>
+                        <p class="feature-description">Desktop automation capabilities that can interact with legacy systems, web applications, and desktop software.</p>
+                        <div class="feature-benefits">
+                            <strong>RPA Features:</strong> UI automation, legacy system integration, attended/unattended bots, screen recording
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4 class="feature-title">Process Mining & Optimization</h4>
+                        <p class="feature-description">Advanced analytics to discover, monitor, and optimize business processes with AI-powered insights and recommendations.</p>
+                        <div class="feature-benefits">
+                            <strong>Analytics:</strong> Process discovery, bottleneck identification, performance monitoring, optimization recommendations
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="implementation-diagram">
+# Power Automate AI-Enhanced Invoice Processing
+
+## [Trigger: New Email with Invoice Attachment](pplx://action/followup)
+- Monitor shared mailbox for invoice emails
+- Extract attachments automatically
+
+## [AI Builder: Invoice Processing](pplx://action/followup)
+- Extract key information using AI Builder
+  * Vendor name and details
+  * Invoice number and date
+  * Line items and amounts
+  * Tax information
+  * Total amount due
+
+## [Data Validation & Enrichment](pplx://action/followup)
+- Validate extracted data against business rules
+- Cross-reference vendor information with ERP system
+- Flag discrepancies for human review
+- Enrich data with additional context
+
+## [Approval Workflow](pplx://action/followup)
+IF amount > $5000
+  → Route to finance manager for approval
+  → Send notification with extracted details
+ELSE IF vendor = "new"
+  → Route to procurement for vendor verification
+ELSE
+  → Auto-approve and process
+
+## [Integration Actions](pplx://action/followup)
+- Create entry in Dynamics 365 Finance
+- Update vendor payment schedule
+- Generate purchase order if required
+- Send confirmation to requestor
+- Archive processed invoice in SharePoint
+
+## [Monitoring & Reporting](pplx://action/followup)
+- Track processing time and accuracy
+- Generate monthly automation reports
+- Monitor AI model performance
+- Identify optimization opportunities
+
+## [Performance Results](pplx://action/followup)
+- 90% reduction in manual processing time
+- 99.2% accuracy in data extraction
+- 75% of invoices processed without human intervention
+                </div>
+                <button class="copy-button" onclick="copyImplementationCode(this)">Copy Power Automate Workflow</button>
+                
+                <div class="alert success">
+                    <h5 style="margin-bottom: 0.5rem;">Power Automate Advantages</h5>
+                    <p>Deep Microsoft ecosystem integration enables seamless workflows across Office 365, Teams, SharePoint, and Dynamics 365. AI Builder provides enterprise-grade AI capabilities without requiring data science expertise.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Make Implementation Details -->
+        <div id="make-details" class="hidden-content">
+            <div class="content-section">
+                <div class="section-header">
+                    <div class="section-icon">🎨</div>
+                    <h2 class="section-title">Make (Integromat) Implementation Guide</h2>
+                </div>
+                
+                <p style="margin-bottom: 1.5rem;">Make offers advanced visual automation with sophisticated logic capabilities and AI agent integration. The platform excels at complex workflows requiring detailed error handling, data transformation, and real-time monitoring.</p>
+                
+                <div class="feature-showcase">
+                    <div class="feature-card">
+                        <h4 class="feature-title">Make AI Agents</h4>
+                        <p class="feature-description">Intelligent automation that adapts to changing conditions in real-time, making decisions and adjusting workflows dynamically.</p>
+                        <div class="feature-benefits">
+                            <strong>AI Capabilities:</strong> Adaptive workflows, intelligent decision-making, pattern recognition, dynamic optimization
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4 class="feature-title">Visual Scenario Builder</h4>
+                        <p class="feature-description">Intuitive drag-and-drop interface with advanced logic operations, loops, and conditional branching for complex automation scenarios.</p>
+                        <div class="feature-benefits">
+                            <strong>Features:</strong> Visual workflow design, advanced logic, error handling, debugging tools, version control
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <h4 class="feature-title">Advanced Data Processing</h4>
+                        <p class="feature-description">Sophisticated data transformation, aggregation, and manipulation capabilities with support for complex data structures.</p>
+                        <div class="feature-benefits">
+                            <strong>Data Tools:</strong> JSON/XML processing, data mapping, aggregation functions, custom transformations
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="implementation-diagram">
+# Make AI-Powered Lead Qualification System
+
+## [Trigger: New Lead from Multiple Sources](pplx://action/followup)
+- Website form submissions
+- LinkedIn lead generation
+- Trade show registrations
+- Referral program entries
+
+## [Data Aggregation & Enrichment](pplx://action/followup)
+- Collect lead information from all sources
+- Enrich with company data (Clearbit API)
+- Social media profile analysis
+- Technology stack identification
+
+## [AI Analysis with Make AI Agents](pplx://action/followup)
+- Analyze lead quality using multiple criteria
+- Score based on company size, industry, budget
+- Assess engagement level and buying intent
+- Predict conversion probability
+
+## [Dynamic Routing Logic](pplx://action/followup)
+SWITCH lead_score:
+  CASE > 80: "Hot Lead"
+    → Immediate sales rep assignment
+    → Schedule demo within 24 hours
+    → Send personalized video message
+  
+  CASE 60-80: "Warm Lead"
+    → Add to nurture campaign
+    → Send relevant case studies
+    → Schedule follow-up call
+  
+  CASE 40-60: "Cold Lead"
+    → Add to educational email sequence
+    → Monitor engagement metrics
+    → Re-evaluate after 30 days
+  
+  CASE < 40: "Low Priority"
+    → Add to general newsletter
+    → Quarterly re-evaluation
+
+## [Multi-Channel Engagement](pplx://action/followup)
+- Update CRM with lead score and notes
+- Create personalized email sequences
+- Schedule social media follow-ups
+- Set calendar reminders for sales team
+- Generate custom proposal templates
+
+## [Performance Monitoring](pplx://action/followup)
+- Track conversion rates by source
+- Monitor AI scoring accuracy
+- Analyze engagement metrics
+- Optimize scoring algorithms
+- Generate weekly performance reports
+
+## [Results Achieved](pplx://action/followup)
+- 45% increase in qualified leads
+- 60% reduction in qualification time
+- 30% improvement in conversion rates
+- 85% accuracy in lead scoring
+                </div>
+                <button class="copy-button" onclick="copyImplementationCode(this)">Copy Make Scenario</button>
+                
+                <div class="alert warning">
+                    <h5 style="margin-bottom: 0.5rem;">Make Implementation Tips</h5>
+                    <p>Make's visual interface requires more initial setup time but provides superior flexibility for complex workflows. Use the debugging tools extensively during development and implement comprehensive error handling for production scenarios.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hands-on Implementation Workshop -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🛠️</div>
+                <h2 class="section-title">Hands-on Implementation Workshop</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Build your first AI-powered workflow using your chosen integration platform. This workshop guides you through creating a complete automation from trigger to action with AI enhancement.</p>
+            
+            <div class="workflow-builder">
+                <h4 style="margin-bottom: 1rem;">Workflow Builder Interface</h4>
+                
+                <div class="builder-toolbar">
+                    <button class="tool-button active" onclick="selectWorkflowType('customer-onboarding')">Customer Onboarding</button>
+                    <button class="tool-button" onclick="selectWorkflowType('lead-qualification')">Lead Qualification</button>
+                    <button class="tool-button" onclick="selectWorkflowType('content-creation')">Content Creation</button>
+                    <button class="tool-button" onclick="selectWorkflowType('data-processing')">Data Processing</button>
+                    <button class="tool-button" onclick="selectWorkflowType('custom')">Custom Workflow</button>
+                </div>
+                
+                <div class="integration-canvas" id="workflow-canvas">
+                    <div style="text-align: center; color: #64748b; margin-top: 8rem;">
+                        <h4>Workflow Canvas</h4>
+                        <p>Select a workflow type above to begin building your automation</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1rem;">
+                    <div class="progress-indicator">
+                        <div class="progress-fill-animated" id="build-progress" style="width: 0%"></div>
+                    </div>
+                    <p style="text-align: center; color: #64748b; margin-top: 0.5rem;">Workflow Building Progress</p>
+                </div>
+                
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <button class="interactive-button" onclick="testWorkflow()">Test Workflow</button>
+                    <button class="interactive-button secondary" onclick="deployWorkflow()">Deploy to Production</button>
+                    <button class="interactive-button warning" onclick="exportWorkflow()">Export Configuration</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Platform Pricing and ROI Analysis -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">💰</div>
+                <h2 class="section-title">Pricing Models and ROI Analysis</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Understanding platform pricing models and calculating ROI is essential for making informed integration platform decisions. Each platform offers different value propositions based on usage patterns and business requirements.</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 2rem 0;">
+                <div class="pricing-card">
+                    <h3 class="pricing-title">Zapier</h3>
+                    <div class="pricing-amount">$19.99</div>
+                    <div class="pricing-period">per month (Starter)</div>
+                    <ul class="pricing-features">
+                        <li>750 tasks/month</li>
+                        <li>20 Zaps (workflows)</li>
+                        <li>AI by Zapier included</li>
+                        <li>Email support</li>
+                        <li>Basic integrations</li>
+                    </ul>
+                    <button class="interactive-button">Start Free Trial</button>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <h3 class="pricing-title">Power Automate</h3>
+                    <div class="pricing-amount">$15</div>
+                    <div class="pricing-period">per user/month</div>
+                    <ul class="pricing-features">
+                        <li>Unlimited cloud flows</li>
+                        <li>AI Builder credits included</li>
+                        <li>Premium connectors</li>
+                        <li>Microsoft 365 integration</li>
+                        <li>Enterprise security</li>
+                    </ul>
+                    <button class="interactive-button">Start Free Trial</button>
+                </div>
+                
+                <div class="pricing-card">
+                    <h3 class="pricing-title">Make</h3>
+                    <div class="pricing-amount">$9</div>
+                    <div class="pricing-period">per month (Core)</div>
+                    <ul class="pricing-features">
+                        <li>10,000 operations/month</li>
+                        <li>Unlimited scenarios</li>
+                        <li>AI integrations</li>
+                        <li>Advanced logic</li>
+                        <li>Email support</li>
+                    </ul>
+                    <button class="interactive-button">Start Free Trial</button>
+                </div>
+            </div>
+            
+            <button class="interactive-button" onclick="toggleContent('roi-calculator')">Launch ROI Calculator</button>
+            
+            <div id="roi-calculator" class="hidden-content">
+                <div class="implementation-interface">
+                    <h4 style="margin-bottom: 1.5rem;">Integration Platform ROI Calculator</h4>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <div class="form-group">
+                                <label class="form-label">Current Manual Process Time (hours/week)</label>
+                                <input type="number" id="manual-hours" class="form-input" placeholder="40" min="1" onchange="calculateROI()">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Average Hourly Rate ($)</label>
+                                <input type="number" id="hourly-rate" class="form-input" placeholder="50" min="1" onchange="calculateROI()">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Expected Automation Percentage</label>
+                                <input type="range" id="automation-percentage" min="10" max="95" value="70" class="form-input" onchange="calculateROI()">
+                                <div style="text-align: center; margin-top: 0.5rem;">
+                                    <span id="automation-display">70%</span> automation
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Platform Monthly Cost ($)</label>
+                                <input type="number" id="platform-cost" class="form-input" placeholder="100" min="1" onchange="calculateROI()">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h5 style="margin-bottom: 1rem;">ROI Analysis Results</h5>
+                            
+                            <div class="metrics-grid">
+                                <div class="metric-card">
+                                    <div class="metric-value" id="monthly-savings">$0</div>
+                                    <div class="metric-label">Monthly Savings</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-value" id="annual-roi">0%</div>
+                                    <div class="metric-label">Annual ROI</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-value" id="payback-period">0</div>
+                                    <div class="metric-label">Payback (Months)</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-value" id="hours-saved">0</div>
+                                    <div class="metric-label">Hours Saved/Week</div>
+                                </div>
+                            </div>
+                            
+                            <div class="alert success" id="roi-recommendation" style="display: none;">
+                                <h6 style="margin-bottom: 0.5rem;">Investment Recommendation</h6>
+                                <p id="roi-text"><!-- ROI recommendation will be populated here --></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enterprise Implementation Considerations -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🏛️</div>
+                <h2 class="section-title">Enterprise Implementation and Governance</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Enterprise-scale integration platform implementation requires comprehensive governance, security, and monitoring frameworks to ensure reliable, compliant, and scalable automation across the organization.</p>
+            
+            <div class="feature-showcase">
+                <div class="feature-card">
+                    <h4 class="feature-title">Security and Compliance</h4>
+                    <p class="feature-description">Enterprise-grade security features including SOC 2 compliance, data encryption, and comprehensive audit trails for regulatory requirements.</p>
+                    <div class="feature-benefits">
+                        <strong>Security Features:</strong> SSO integration, role-based access control, data encryption, audit logging, compliance reporting
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <h4 class="feature-title">Governance and Monitoring</h4>
+                    <p class="feature-description">Centralized oversight with workflow monitoring, performance analytics, and automated alerting for proactive issue resolution.</p>
+                    <div class="feature-benefits">
+                        <strong>Governance Tools:</strong> Workflow monitoring, performance dashboards, error tracking, usage analytics, cost optimization
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <h4 class="feature-title">Scalability and Performance</h4>
+                    <p class="feature-description">Auto-scaling infrastructure that handles peak loads while optimizing costs through intelligent resource allocation and load balancing.</p>
+                    <div class="feature-benefits">
+                        <strong>Scalability:</strong> Auto-scaling, load balancing, performance optimization, cost management, capacity planning
+                    </div>
+                </div>
+            </div>
+            
+            <div class="alert info">
+                <h5 style="margin-bottom: 0.5rem;">Enterprise Implementation Checklist</h5>
+                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                    <li><strong>Security Assessment:</strong> Evaluate platform security controls and compliance certifications</li>
+                    <li><strong>Integration Planning:</strong> Map existing systems and plan integration architecture</li>
+                    <li><strong>Governance Framework:</strong> Establish workflow approval processes and monitoring procedures</li>
+                    <li><strong>Training Program:</strong> Develop comprehensive training for technical and business users</li>
+                    <li><strong>Change Management:</strong> Plan organizational change management and adoption strategies</li>
+                    <li><strong>Performance Monitoring:</strong> Implement monitoring and alerting for workflow performance</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">💡</div>
+                <h2 class="section-title">Key Takeaways</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                <div class="alert success">
+                    <h4 style="margin-bottom: 0.5rem;">Platform Selection Impact</h4>
+                    <p>Choosing the right integration platform can deliver 200-500% ROI through automation. Zapier excels in AI-first workflows, Power Automate in Microsoft ecosystems, and Make in complex visual automation.</p>
+                </div>
+                
+                <div class="alert info">
+                    <h4 style="margin-bottom: 0.5rem;">AI-Enhanced Automation</h4>
+                    <p>AI-powered workflows achieve 45% higher efficiency than traditional automation by enabling intelligent decision-making, adaptive responses, and predictive optimization.</p>
+                </div>
+                
+                <div class="alert warning">
+                    <h4 style="margin-bottom: 0.5rem;">Enterprise Governance</h4>
+                    <p>Successful enterprise implementation requires comprehensive governance frameworks, security controls, and monitoring systems to ensure reliable, compliant, and scalable automation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleContent(elementId) {
+            const element = document.getElementById(elementId);
+            if (element.style.display === 'none' || element.style.display === '') {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        }
+        
+        function copyImplementationCode(button) {
+            const code = button.previousElementSibling.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                button.textContent = 'Copied!';
+                button.style.background = '#10b981';
+                setTimeout(() => {
+                    button.textContent = 'Copy Implementation Code';
+                    button.style.background = '#64748b';
+                }, 2000);
+            });
+        }
+        
+        function updateRecommendation() {
+            const orgSize = document.getElementById('org-size').value;
+            const useCase = document.getElementById('use-case').value;
+            const techExpertise = document.getElementById('tech-expertise').value;
+            const budget = document.getElementById('budget-range').value;
+            const microsoftStack = document.getElementById('microsoft-stack').checked;
+            
+            if (!orgSize || !useCase || !techExpertise || !budget) {
+                return;
+            }
+            
+            let recommendation = '';
+            
+            // Microsoft ecosystem preference
+            if (microsoftStack && (orgSize === 'medium' || orgSize === 'enterprise')) {
+                recommendation = '<strong>Recommended: Microsoft Power Automate</strong><br>Your Microsoft ecosystem and enterprise requirements make Power Automate the optimal choice. Deep integration with Office 365, advanced governance features, and AI Builder capabilities align perfectly with your needs.';
+            }
+            // AI-first workflows
+            else if (useCase === 'ai-workflows' || useCase === 'complex-logic') {
+                if (budget === 'under-50') {
+                    recommendation = '<strong>Recommended: Make</strong><br>For AI-powered workflows on a budget, Make offers excellent value with AI agent capabilities and sophisticated logic at a lower cost point.';
+                } else {
+                    recommendation = '<strong>Recommended: Zapier</strong><br>With 300+ AI integrations and the largest ecosystem, Zapier is ideal for AI-first workflows. The platform excels at intelligent automation and adaptive workflows.';
+                }
+            }
+            // Simple automation for beginners
+            else if (techExpertise === 'beginner' && useCase === 'simple-automation') {
+                recommendation = '<strong>Recommended: Zapier</strong><br>Zapier\'s user-friendly interface and extensive template library make it perfect for beginners. Start with simple automations and scale to AI-powered workflows as you grow.';
+            }
+            // Complex logic requirements
+            else if (useCase === 'complex-logic' && techExpertise === 'advanced') {
+                recommendation = '<strong>Recommended: Make</strong><br>Make\'s visual interface and advanced logic capabilities are perfect for complex workflows. The platform offers superior debugging tools and flexible data handling.';
+            }
+            // Default recommendation
+            else {
+                recommendation = '<strong>Recommended: Zapier</strong><br>Based on your requirements, Zapier offers the best balance of features, ease of use, and ecosystem connectivity for most business automation needs.';
+            }
+            
+            document.getElementById('recommendation-text').innerHTML = recommendation;
+            document.getElementById('platform-recommendation').style.display = 'block';
+        }
+        
+        function selectWorkflowType(workflowType) {
+            // Update active button
+            document.querySelectorAll('.tool-button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const canvas = document.getElementById('workflow-canvas');
+            const progress = document.getElementById('build-progress');
+            
+            const workflows = {
+                'customer-onboarding': `
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                        <div class="integration-step trigger">New Customer Signup</div>
+                        <span class="step-connector">→</span>
+                        <div class="integration-step">AI Profile Analysis</div>
+                        <span class="step-connector">→</span>
+                        <div class="integration-step condition">Personalization Logic</div>
+                        <span class="step-connector">→</span>
+                        <div class="integration-step action">Welcome Sequence</div>
+                        <span class="step-connector">→</span>
+                        <div class="integration-step">Account Setup</div>
+                    </div>
+                    <div style="margin-top: 2rem; text-align: center;">
+                        <p style="color: #64748b;">Customer Onboarding Workflow</p>
+                        <p style="font-size: 0.875rem; color: #64748b;">AI-powered personalization with automated setup</p>
+                    </div>
+                `,
+                'lead-qualification': `
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                        <div class="integration-step trigger">
+       </script>
+    </body>
+  </html>  

@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section 3: AI Platform Mastery and Tool Selection - Lesson 3.3</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        .lesson-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .lesson-header {
+            background: #28263a;
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px 12px 0 0;
+            margin-bottom: 0;
+        }
+
+        .lesson-meta {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .lesson-title {
+            font-size: clamp(24px, 4vw, 36px);
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .lesson-subtitle {
+            font-size: clamp(16px, 2.5vw, 20px);
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .lesson-body {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .objectives-section {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .objectives-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .objectives-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .objectives-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .objectives-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 12px;
+            background: rgba(255,255,255,0.2);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .content-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #06b6d4;
+        }
+
+        .subsection-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #334155;
+            margin: 30px 0 15px 0;
+        }
+
+        .content-text {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: #475569;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border-left: 5px solid rgba(255,255,255,0.3);
+        }
+
+        .highlight-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .api-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .api-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid #06b6d4;
+            transition: transform 0.3s ease;
+        }
+
+        .api-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .api-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .api-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .api-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .api-description {
+            font-size: 15px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .api-features {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .feature-icon {
+            color: #10b981;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        .code-example {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .interactive-element {
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-element:hover {
+            border-color: #06b6d4;
+            box-shadow: 0 5px 20px rgba(6, 182, 212, 0.1);
+        }
+
+        .activity-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .activity-description {
+            font-size: 16px;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #0891b2);
+            width: 42.9%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .completion-section {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .completion-section h3 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .completion-section p {
+            color: #64748b;
+            margin-bottom: 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        .connectivity-lab {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .connectivity-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #06b6d4;
+        }
+
+        .connectivity-section h4 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .connectivity-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .architecture-diagram {
+            background: #f8fafc;
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .diagram-layer {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 2px solid #06b6d4;
+            position: relative;
+        }
+
+        .layer-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .layer-description {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .connection-arrow {
+            font-size: 24px;
+            color: #06b6d4;
+            margin: 10px 0;
+        }
+
+        .testing-panel {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .test-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #10b981;
+        }
+
+        .test-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .test-description {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .test-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-pending {
+            background: #e0f2fe;
+            color: #0891b2;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-container {
+                padding: 10px;
+            }
+            
+            .lesson-header, .lesson-body {
+                padding: 20px;
+            }
+            
+            .api-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-container">
+        <header class="lesson-header">
+            <div class="lesson-meta">Section 3 • Lesson 3.3 • 105-120 minutes</div>
+            <h1 class="lesson-title">API Management and Standardization</h1>
+            <p class="lesson-subtitle">Implementing standardized connectivity and switching mechanisms between AI platforms for flexible, scalable enterprise architectures</p>
+        </header>
+
+        <div class="lesson-body">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+
+            <section class="objectives-section">
+                <h2 class="objectives-title">
+                    🎯 Learning Objectives
+                </h2>
+                <ul class="objectives-list">
+                    <li>Implement standardized API connectivity protocols that enable seamless switching between AI platforms</li>
+                    <li>Design enterprise orchestration layers for dynamic model selection based on specific requirements</li>
+                    <li>Establish comprehensive API management frameworks including authentication, monitoring, and version control</li>
+                    <li>Create flexible integration architectures that prevent vendor lock-in while maximizing platform capabilities</li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">API Standardization Framework</h2>
+                
+                <p class="content-text">
+                    API standardization enables organizations to build flexible AI architectures that can adapt to changing requirements, leverage multiple platforms simultaneously, and avoid vendor lock-in. Standardized APIs provide consistent interfaces that abstract platform-specific implementations while maintaining access to unique capabilities.
+                </p>
+
+                <div class="highlight-box">
+                    <h3 class="highlight-title">Strategic API Management</h3>
+                    <p>Organizations implementing standardized API management report 50% faster platform switching capabilities, 40% reduction in integration complexity, and 60% improvement in development velocity. Standardization enables teams to focus on business logic rather than platform-specific integration challenges.</p>
+                </div>
+
+                <div class="architecture-diagram">
+                    <h3>Enterprise AI API Architecture</h3>
+                    
+                    <div class="diagram-layer">
+                        <div class="layer-title">Application Layer</div>
+                        <div class="layer-description">Business applications and user interfaces</div>
+                    </div>
+                    
+                    <div class="connection-arrow">↓</div>
+                    
+                    <div class="diagram-layer">
+                        <div class="layer-title">API Gateway & Orchestration</div>
+                        <div class="layer-description">Unified API interface, routing, authentication, and monitoring</div>
+                    </div>
+                    
+                    <div class="connection-arrow">↓</div>
+                    
+                    <div class="diagram-layer">
+                        <div class="layer-title">Platform Adapters</div>
+                        <div class="layer-description">OpenAI, Google Cloud, Microsoft Azure, Anthropic connectors</div>
+                    </div>
+                    
+                    <div class="connection-arrow">↓</div>
+                    
+                    <div class="diagram-layer">
+                        <div class="layer-title">AI Platform Services</div>
+                        <div class="layer-description">External AI platform APIs and services</div>
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">Standardization Principles</h3>
+                
+                <div class="content-text">
+                    <strong>Unified Interface Design</strong> creates consistent API contracts that abstract platform differences. Implement standard request/response formats, error handling patterns, and authentication mechanisms that work across all integrated platforms.
+                </div>
+
+                <div class="content-text">
+                    <strong>Platform Abstraction Layers</strong> isolate business logic from platform-specific implementations. Design adapter patterns that translate standard requests into platform-specific formats while maintaining feature parity and performance optimization.
+                </div>
+
+                <div class="content-text">
+                    <strong>Configuration-Driven Routing</strong> enables dynamic platform selection based on requirements such as cost optimization, performance needs, or feature availability. Implement intelligent routing that considers real-time platform status and business rules.
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Multi-Platform API Integration</h2>
+                
+                <p class="content-text">
+                    Effective multi-platform integration requires understanding each platform's API characteristics, implementing appropriate adapter patterns, and establishing monitoring systems that ensure reliable operation across diverse AI services.
+                </p>
+
+                <div class="api-grid">
+                    <div class="api-card">
+                        <div class="api-header">
+                            <div class="api-icon">🔗</div>
+                            <div class="api-title">OpenAI API Integration</div>
+                        </div>
+                        <p class="api-description">
+                            RESTful API with JSON request/response format, supporting chat completions, embeddings, and fine-tuning operations with comprehensive error handling and rate limiting.
+                        </p>
+                        <div class="api-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Bearer token authentication
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Streaming response support
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Usage tracking and billing
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Model versioning and updates
+                            </div>
+                        </div>
+                        <div class="code-example">
+curl -X POST https://api.openai.com/v1/chat/completions \
+  -H "Authorization: Bearer $OPENAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-4",
+    "messages": [{"role": "user", "content": "Hello"}]
+  }'
+                        </div>
+                    </div>
+
+                    <div class="api-card">
+                        <div class="api-header">
+                            <div class="api-icon">☁️</div>
+                            <div class="api-title">Google Cloud Vertex AI</div>
+                        </div>
+                        <p class="api-description">
+                            Google Cloud-native API with OAuth2 authentication, supporting prediction, training, and model management operations with enterprise-grade security and monitoring.
+                        </p>
+                        <div class="api-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                OAuth2 and service account auth
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Batch and online prediction
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Model registry and versioning
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Integrated monitoring and logging
+                            </div>
+                        </div>
+                        <div class="code-example">
+curl -X POST \
+  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+  -H "Content-Type: application/json" \
+  https://us-central1-aiplatform.googleapis.com/v1/projects/PROJECT/locations/us-central1/publishers/google/models/text-bison:predict \
+  -d '{"instances": [{"prompt": "Hello"}]}'
+                        </div>
+                    </div>
+
+                    <div class="api-card">
+                        <div class="api-header">
+                            <div class="api-icon">🔷</div>
+                            <div class="api-title">Microsoft Azure AI</div>
+                        </div>
+                        <p class="api-description">
+                            Azure-integrated API with subscription-based authentication, supporting cognitive services, machine learning, and Azure OpenAI Service operations.
+                        </p>
+                        <div class="api-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Subscription key authentication
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Regional deployment options
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Enterprise compliance features
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Azure ecosystem integration
+                            </div>
+                        </div>
+                        <div class="code-example">
+curl -X POST \
+  -H "api-key: $AZURE_OPENAI_KEY" \
+  -H "Content-Type: application/json" \
+  https://your-resource.openai.azure.com/openai/deployments/gpt-4/chat/completions?api-version=2023-05-15 \
+  -d '{"messages": [{"role": "user", "content": "Hello"}]}'
+                        </div>
+                    </div>
+
+                    <div class="api-card">
+                        <div class="api-header">
+                            <div class="api-icon">🛡️</div>
+                            <div class="api-title">Anthropic Claude API</div>
+                        </div>
+                        <p class="api-description">
+                            Safety-focused API with x-api-key authentication, supporting conversational AI with constitutional AI principles and enhanced safety features.
+                        </p>
+                        <div class="api-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                API key authentication
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Constitutional AI safety features
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Long context window support
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">✓</span>
+                                Responsible AI monitoring
+                            </div>
+                        </div>
+                        <div class="code-example">
+curl -X POST https://api.anthropic.com/v1/messages \
+  -H "x-api-key: $ANTHROPIC_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-3-opus-20240229",
+    "max_tokens": 1024,
+    "messages": [{"role": "user", "content": "Hello"}]
+  }'
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interactive-element">
+                    <h3 class="activity-title">🔌 Activity 3.3.1: API Connectivity Workshop</h3>
+                    <p class="activity-description">
+                        Implement standardized connectivity and switching mechanisms between multiple AI platforms using unified interface patterns and configuration-driven routing.
+                    </p>
+                    <button type="button" class="btn-primary" id="start-connectivity-workshop">Launch Connectivity Workshop</button>
+                </div>
+
+                <div id="connectivity-workshop" class="hidden">
+                    <div class="connectivity-lab">
+                        <h4>Multi-Platform API Connectivity Laboratory</h4>
+                        
+                        <div class="connectivity-section">
+                            <h4>Step 1: Unified Interface Design</h4>
+                            <p>Design a standardized API interface that abstracts platform differences:</p>
+                            <div class="code-example">
+// Unified AI API Interface
+interface AIProvider {
+  generateText(prompt: string, options?: GenerationOptions): Promise&lt;AIResponse&gt;;
+  generateEmbedding(text: string): Promise&lt;number[]&gt;;
+  analyzeText(text: string, task: AnalysisTask): Promise&lt;AnalysisResult&gt;;
+}
+
+// Standard request/response formats
+interface GenerationOptions {
+  maxTokens?: number;
+  temperature?: number;
+  model?: string;
+}
+
+interface AIResponse {
+  text: string;
+  usage: TokenUsage;
+  metadata: ResponseMetadata;
+}
+                            </div>
+                        </div>
+                        
+                        <div class="connectivity-section">
+                            <h4>Step 2: Platform Adapter Implementation</h4>
+                            <p>Create adapter classes for each AI platform:</p>
+                            <textarea class="connectivity-input" placeholder="Platform Adapter Design:&#10;• OpenAIAdapter: Implements AIProvider interface for OpenAI API&#10;• GoogleCloudAdapter: Implements AIProvider interface for Vertex AI&#10;• AzureAIAdapter: Implements AIProvider interface for Azure AI&#10;• AnthropicAdapter: Implements AIProvider interface for Claude API&#10;&#10;Each adapter handles:&#10;- Authentication and authorization&#10;- Request/response transformation&#10;- Error handling and retry logic&#10;- Rate limiting and quota management"></textarea>
+                        </div>
+                        
+                        <div class="connectivity-section">
+                            <h4>Step 3: Configuration-Driven Routing</h4>
+                            <p>Implement intelligent routing based on business rules and requirements:</p>
+                            <textarea class="connectivity-input" placeholder="Routing Configuration:&#10;• Cost Optimization: Route to lowest-cost provider for batch processing&#10;• Performance Priority: Route to fastest provider for real-time applications&#10;• Feature Requirements: Route to provider with specific capabilities&#10;• Fallback Strategy: Automatic failover to backup providers&#10;• Load Balancing: Distribute requests across multiple providers&#10;&#10;Example Rules:&#10;- If task = 'content_generation' AND priority = 'cost' → OpenAI&#10;- If task = 'data_analysis' AND enterprise = true → Google Cloud&#10;- If task = 'safety_critical' → Anthropic"></textarea>
+                        </div>
+                        
+                        <button type="button" class="btn-primary" onclick="generateConnectivityFramework()">Generate Connectivity Framework</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Enterprise Orchestration and Dynamic Selection</h2>
+                
+                <p class="content-text">
+                    Enterprise orchestration enables intelligent platform selection based on real-time requirements, cost optimization, and performance characteristics. Dynamic selection systems automatically route requests to optimal providers while maintaining service quality and business objectives.
+                </p>
+
+                <h3 class="subsection-title">Orchestration Architecture</h3>
+                
+                <div class="content-text">
+                    <strong>Request Routing Engine</strong> analyzes incoming requests and selects optimal AI providers based on configurable business rules. Consider factors such as request type, urgency, cost constraints, and required capabilities when making routing decisions.
+                </div>
+
+                <div class="content-text">
+                    <strong>Load Balancing and Failover</strong> ensure high availability and optimal resource utilization across multiple AI platforms. Implement health checks, circuit breakers, and automatic failover mechanisms that maintain service continuity during platform outages.
+                </div>
+
+                <div class="content-text">
+                    <strong>Performance Monitoring</strong> tracks response times, error rates, and cost metrics across all integrated platforms. Use this data to optimize routing decisions and identify performance bottlenecks or cost optimization opportunities.
+                </div>
+
+                <div class="interactive-element">
+                    <h3 class="activity-title">⚡ Activity 3.3.2: Integration Testing Lab</h3>
+                    <p class="activity-description">
+                        Conduct comprehensive testing of API connectivity, routing logic, and failover mechanisms to ensure robust multi-platform integration performance.
+                    </p>
+                    <button type="button" class="btn-primary" id="start-testing-lab">Launch Integration Testing</button>
+                </div>
+
+                <div id="testing-lab" class="hidden">
+                    <div class="connectivity-lab">
+                        <h4>Integration Testing Laboratory</h4>
+                        
+                        <div class="testing-panel">
+                            <div class="test-item">
+                                <div class="test-title">API Connectivity Test</div>
+                                <div class="test-description">Verify successful connection to all configured AI platforms</div>
+                                <span class="test-status status-success">✓ Passed</span>
+                            </div>
+                            
+                            <div class="test-item">
+                                <div class="test-title">Authentication Validation</div>
+                                <div class="test-description">Confirm proper authentication for each platform adapter</div>
+                                <span class="test-status status-success">✓ Passed</span>
+                            </div>
+                            
+                            <div class="test-item">
+                                <div class="test-title">Request Routing Logic</div>
+                                <div class="test-description">Test intelligent routing based on business rules and requirements</div>
+                                <span class="test-status status-warning">⚠ Needs Optimization</span>
+                            </div>
+                            
+                            <div class="test-item">
+                                <div class="test-title">Failover Mechanism</div>
+                                <div class="test-description">Verify automatic failover when primary platform is unavailable</div>
+                                <span class="test-status status-pending">⏳ In Progress</span>
+                            </div>
+                            
+                            <div class="test-item">
+                                <div class="test-title">Performance Monitoring</div>
+                                <div class="test-description">Confirm metrics collection and alerting functionality</div>
+                                <span class="test-status status-success">✓ Passed</span>
+                            </div>
+                            
+                            <div class="test-item">
+                                <div class="test-title">Cost Tracking</div>
+                                <div class="test-description">Validate cost attribution and budget monitoring across platforms</div>
+                                <span class="test-status status-success">✓ Passed</span>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="btn-primary" onclick="generateTestingReport()">Generate Testing Report</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">API Management Best Practices</h2>
+                
+                <p class="content-text">
+                    Comprehensive API management ensures reliable, secure, and scalable AI platform integration. Implement governance frameworks that address authentication, monitoring, version control, and compliance requirements across all integrated platforms.
+                </p>
+
+                <h3 class="subsection-title">Security and Authentication</h3>
+                
+                <div class="content-text">
+                    <strong>Centralized Authentication Management</strong> simplifies credential management and enhances security through single sign-on (SSO) integration, token rotation, and access control policies. Implement secure credential storage and automated key rotation procedures.
+                </div>
+
+                <div class="content-text">
+                    <strong>API Gateway Security</strong> provides additional protection through rate limiting, request validation, and threat detection. Implement DDoS protection, input sanitization, and anomaly detection that identifies suspicious usage patterns.
+                </div>
+
+                <h3 class="subsection-title">Monitoring and Analytics</h3>
+                
+                <div class="content-text">
+                    <strong>Comprehensive Logging</strong> captures all API interactions, performance metrics, and error conditions across integrated platforms. Implement structured logging that supports debugging, compliance auditing, and performance optimization.
+                </div>
+
+                <div

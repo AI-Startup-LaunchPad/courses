@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Step Workflow Design</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #334155;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        .header {
+            background: #28263a;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(6, 182, 212, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .lesson-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .lesson-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #10b981);
+            width: 65.7%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .interactive-button {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .interactive-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3);
+        }
+        
+        .interactive-button.secondary {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .interactive-button.secondary:hover {
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .interactive-button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .interactive-button.warning:hover {
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+        }
+        
+        .interactive-button.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .interactive-button.danger:hover {
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+        }
+        
+        .hidden-content {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #06b6d4;
+        }
+        
+        .workflow-framework {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .workflow-framework:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .framework-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .complexity-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .efficiency-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .workflow-diagram {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .workflow-builder {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 2px dashed #06b6d4;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            resize: vertical;
+            font-size: 0.95rem;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: white;
+        }
+        
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .step-container {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 1.1rem;
+        }
+        
+        .step-content {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .workflow-canvas {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            min-height: 400px;
+            position: relative;
+        }
+        
+        .workflow-node {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        .workflow-node:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3);
+        }
+        
+        .workflow-node.decision {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .workflow-node.endpoint {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid;
+        }
+        
+        .alert.success {
+            background: #f0fdf4;
+            border-color: #10b981;
+            color: #065f46;
+        }
+        
+        .alert.warning {
+            background: #fffbeb;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+        
+        .alert.info {
+            background: #eff6ff;
+            border-color: #06b6d4;
+            color: #0c4a6e;
+        }
+        
+        .alert.danger {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .comparison-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .copy-button {
+            background: #64748b;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .copy-button:hover {
+            background: #475569;
+        }
+        
+        .workflow-controls {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .control-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+        
+        .progress-indicator {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+        
+        .progress-fill-animated {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #10b981);
+            border-radius: 3px;
+            transition: width 2s ease;
+        }
+        
+        .workflow-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .status-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-complete {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="lesson-title">Multi-Step Workflow Design</h1>
+            <p class="lesson-subtitle">Section 4.4 • Design sophisticated AI workflows for complex business process automation</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">Progress: 65.7% Complete</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Learning Objectives -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2 class="section-title">Learning Objectives</h2>
+            </div>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Master chain-of-thought implementation for complex reasoning workflows
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Design multi-step business process automation with error handling and validation
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Implement conditional logic and decision trees for adaptive workflow execution
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Create scalable workflow architectures with performance monitoring and optimization
+                </li>
+            </ul>
+        </div>
+
+        <!-- Workflow Design Principles -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🏗️</div>
+                <h2 class="section-title">Multi-Step Workflow Architecture</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Multi-step workflow design transforms complex business processes into automated, intelligent systems that can handle sophisticated decision-making, error recovery, and adaptive execution. These workflows combine AI reasoning capabilities with traditional process automation to create powerful business solutions.</p>
+
+            <div class="workflow-grid">
+                <div class="workflow-framework">
+                    <h3 class="framework-title">
+                        Chain-of-Thought Workflows
+                        <span class="complexity-badge">300% Improvement</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Sequential reasoning workflows that break complex problems into logical steps, dramatically improving accuracy and providing transparency in AI decision-making processes.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Problem decomposition into logical steps</li>
+                        <li style="padding: 0.25rem 0;">• Sequential processing with validation</li>
+                        <li style="padding: 0.25rem 0;">• Intermediate result verification</li>
+                        <li style="padding: 0.25rem 0;">• Transparent reasoning trails</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('chain-of-thought-details')">Explore Implementation</button>
+                </div>
+
+                <div class="workflow-framework">
+                    <h3 class="framework-title">
+                        Conditional Logic Systems
+                        <span class="efficiency-badge">Smart Branching</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Dynamic decision trees that adapt workflow execution based on real-time conditions, data analysis, and business rules for optimal outcomes.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Dynamic condition evaluation</li>
+                        <li style="padding: 0.25rem 0;">• Multi-path execution strategies</li>
+                        <li style="padding: 0.25rem 0;">• Real-time decision optimization</li>
+                        <li style="padding: 0.25rem 0;">• Adaptive workflow routing</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('conditional-logic-details')">Design Logic Trees</button>
+                </div>
+
+                <div class="workflow-framework">
+                    <h3 class="framework-title">
+                        Error Handling & Recovery
+                        <span class="complexity-badge">Fault Tolerant</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Robust error management systems that detect failures, implement recovery strategies, and maintain workflow continuity even when individual components fail.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Automated error detection</li>
+                        <li style="padding: 0.25rem 0;">• Graceful degradation strategies</li>
+                        <li style="padding: 0.25rem 0;">• Rollback and retry mechanisms</li>
+                        <li style="padding: 0.25rem 0;">• Human escalation triggers</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('error-handling-details')">Build Error Systems</button>
+                </div>
+
+                <div class="workflow-framework">
+                    <h3 class="framework-title">
+                        Performance Optimization
+                        <span class="efficiency-badge">Real-time Monitoring</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Continuous performance monitoring and optimization systems that track workflow efficiency, identify bottlenecks, and automatically improve execution speed and quality.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Real-time performance metrics</li>
+                        <li style="padding: 0.25rem 0;">• Bottleneck identification</li>
+                        <li style="padding: 0.25rem 0;">• Automatic optimization</li>
+                        <li style="padding: 0.25rem 0;">• Scalability planning</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('performance-optimization-details')">Monitor Performance</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chain-of-Thought Implementation -->
+        <div id="chain-of-thought-details" class="hidden-content">
+            <div class="content-section">
+                <div class="section-header">
+                    <div class="section-icon">🔗</div>
+                    <h2 class="section-title">Chain-of-Thought Implementation Framework</h2>
+                </div>
+                
+                <p style="margin-bottom: 1.5rem;">Chain-of-thought workflows transform complex business problems into sequential, logical steps that AI systems can process systematically, achieving up to 300% improvement in reasoning accuracy.</p>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Problem Decomposition</div>
+                    </div>
+                    <div class="step-content">
+                        Break complex business challenges into discrete, manageable components that can be processed sequentially. Each step should have clear inputs, processing logic, and expected outputs.
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Sequential Processing</div>
+                    </div>
+                    <div class="step-content">
+                        Process each step in logical order, using outputs from previous steps as inputs for subsequent operations. Maintain context and intermediate results throughout the workflow.
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Validation & Verification</div>
+                    </div>
+                    <div class="step-content">
+                        Implement validation checks at each step to ensure accuracy and logical consistency. Include confidence scoring and quality assessment mechanisms.
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Result Synthesis</div>
+                    </div>
+                    <div class="step-content">
+                        Combine intermediate results into comprehensive final outputs, maintaining traceability and providing reasoning explanations for transparency.
+                    </div>
+                </div>
+                
+                <div class="workflow-diagram">
+# Chain-of-Thought Workflow Example: Market Analysis
+
+## [Step 1: Data Collection](pplx://action/followup)
+INPUT: Market research requirements
+PROCESS: Gather competitor data, market size, trends
+OUTPUT: Comprehensive data set
+VALIDATION: Data completeness check (>95% coverage required)
+
+## [Step 2: Competitive Analysis  ](pplx://action/followup)
+INPUT: Competitor data from Step 1
+PROCESS: Analyze positioning, strengths, weaknesses
+OUTPUT: Competitive landscape mapping
+VALIDATION: Cross-reference with industry reports
+
+## [Step 3: Opportunity Identification](pplx://action/followup)
+INPUT: Market data + competitive analysis
+PROCESS: Identify gaps and opportunities
+OUTPUT: Prioritized opportunity list
+VALIDATION: Feasibility assessment (technical + financial)
+
+## [Step 4: Strategic Recommendations](pplx://action/followup)
+INPUT: All previous analysis
+PROCESS: Synthesize insights into actionable strategies
+OUTPUT: Strategic roadmap with implementation plan
+VALIDATION: Risk assessment and ROI projection
+
+## [Final Output: ](pplx://action/followup)
+Comprehensive market entry strategy with:
+- Executive summary
+- Detailed analysis
+- Implementation roadmap
+- Success metrics
+                </div>
+                <button class="copy-button" onclick="copyWorkflowDiagram(this)">Copy Workflow Template</button>
+            </div>
+        </div>
+
+        <!-- Activity 4.4.1: Chain-of-Thought Implementation -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🔬</div>
+                <h2 class="section-title">Activity 4.4.1: Chain-of-Thought Implementation</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Design and implement chain-of-thought workflows for complex business scenarios, measuring performance improvements and reasoning quality.</p>
+            
+            <div class="workflow-builder">
+                <h3 style="margin-bottom: 1.5rem;">Chain-of-Thought Workflow Builder</h3>
+                
+                <div class="form-group">
+                    <label class="form-label">Select Business Scenario</label>
+                    <select id="cot-scenario" class="form-select" onchange="loadCOTScenario()">
+                        <option value="">Choose a scenario...</option>
+                        <option value="investment-analysis">Investment Decision Analysis</option>
+                        <option value="product-launch">Product Launch Strategy</option>
+                        <option value="risk-assessment">Comprehensive Risk Assessment</option>
+                        <option value="customer-acquisition">Customer Acquisition Planning</option>
+                    </select>
+                </div>
+                
+                <div id="cot-scenario-content" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Problem Statement</label>
+                        <textarea id="cot-problem" class="form-textarea" readonly></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Number of Reasoning Steps</label>
+                        <select id="cot-steps" class="form-select">
+                            <option value="3">3 Steps (Simple)</option>
+                            <option value="5">5 Steps (Moderate)</option>
+                            <option value="7">7 Steps (Complex)</option>
+                            <option value="10">10 Steps (Advanced)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Validation Requirements</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" id="data-validation" style="margin-right: 0.5rem;" checked>
+                                Data Quality Validation
+                            </label>
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" id="logic-validation" style="margin-right: 0.5rem;" checked>
+                                Logic Consistency Check
+                            </label>
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" id="confidence-scoring" style="margin-right: 0.5rem;" checked>
+                                Confidence Scoring
+                            </label>
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" id="cross-validation" style="margin-right: 0.5rem;">
+                                Cross-Validation
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 1.5rem 0;">
+                        <button class="interactive-button" onclick="generateCOTWorkflow()">Generate Workflow</button>
+                        <button class="interactive-button secondary" onclick="testCOTWorkflow()">Test Workflow</button>
+                        <button class="interactive-button warning" onclick="optimizeCOTWorkflow()">Optimize Performance</button>
+                    </div>
+                    
+                    <div id="cot-workflow-output" style="display: none;">
+                        <h4 style="margin-bottom: 1rem;">Generated Chain-of-Thought Workflow</h4>
+                        <div class="workflow-diagram" id="cot-workflow-code">
+                            <!-- Generated workflow will appear here -->
+                        </div>
+                        <button class="copy-button" onclick="copyCOTWorkflow()">Copy Workflow Code</button>
+                    </div>
+                    
+                    <div id="cot-test-results" style="display: none;">
+                        <h4 style="margin-bottom: 1rem;">Workflow Performance Results</h4>
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-value" id="cot-accuracy">--</div>
+                                <div class="metric-label">Reasoning Accuracy</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="cot-consistency">--</div>
+                                <div class="metric-label">Consistency Score</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="cot-completeness">--</div>
+                                <div class="metric-label">Completeness Rate</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="cot-efficiency">--</div>
+                                <div class="metric-label">Processing Efficiency</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity 4.4.2: Complex Business Process Automation -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">⚙️</div>
+                <h2 class="section-title">Activity 4.4.2: Complex Business Process Automation</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Design comprehensive automation workflows that handle complex business processes with conditional logic, error handling, and performance optimization.</p>
+            
+            <div class="workflow-builder">
+                <h3 style="margin-bottom: 1.5rem;">Business Process Automation Designer</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h4 style="margin-bottom: 1rem;">Process Configuration</h4>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Business Process Type</label>
+                            <select id="process-type" class="form-select" onchange="updateProcessBuilder()">
+                                <option value="">Select process type...</option>
+                                <option value="customer-onboarding">Customer Onboarding</option>
+                                <option value="order-fulfillment">Order Fulfillment</option>
+                                <option value="content-creation">Content Creation Pipeline</option>
+                                <option value="quality-assurance">Quality Assurance Workflow</option>
+                                <option value="financial-reporting">Financial Reporting</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Complexity Level</label>
+                            <select id="complexity-level" class="form-select">
+                                <option value="basic">Basic (Linear workflow)</option>
+                                <option value="intermediate">Intermediate (Conditional branches)</option>
+                                <option value="advanced">Advanced (Multi-path with loops)</option>
+                                <option value="expert">Expert (Dynamic adaptation)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Integration Requirements</label>
+                            <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
+                                <label style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="crm-integration" style="margin-right: 0.5rem;">
+                                    CRM System Integration
+                                </label>
+                                <label style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="email-automation" style="margin-right: 0.5rem;">
+                                    Email Automation
+                                </label>
+                                <label style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="database-updates" style="margin-right: 0.5rem;">
+                                    Database Updates
+                                </label>
+                                <label style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="api-calls" style="margin-right: 0.5rem;">
+                                    External API Calls
+                                </label>
+                                <label style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="document-generation" style="margin-right: 0.5rem;">
+                                    Document Generation
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 style="margin-bottom: 1rem;">Workflow Controls</h4>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Error Handling Strategy</label>
+                            <select id="error-strategy" class="form-select">
+                                <option value="retry">Automatic Retry (3 attempts)</option>
+                                <option value="escalate">Human Escalation</option>
+                                <option value="fallback">Fallback to Alternative Path</option>
+                                <option value="comprehensive">Comprehensive Recovery</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Performance Monitoring</label>
+                            <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
+                                <label style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="execution-time" style="margin-right: 0.5rem;" checked>
+                                    Execution Time Tracking
+                                </label>
+                                <label style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="success-rate" style="margin-right: 0.5rem;" checked>
+                                    Success Rate Monitoring
+                                </label>
+                                <label style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="resource-usage" style="margin-right: 0.5rem;">
+                                    Resource Usage Tracking
+                                </label>
+                                <label style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="quality-metrics" style="margin-right: 0.5rem;">
+                                    Quality Metrics
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Scalability Requirements</label>
+                            <select id="scalability-level" class="form-select">
+                                <option value="small">Small Scale (1-100 processes/day)</option>
+                                <option value="medium">Medium Scale (100-1000 processes/day)</option>
+                                <option value="large">Large Scale (1000-10000 processes/day)</option>
+                                <option value="enterprise">Enterprise Scale (10000+ processes/day)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin: 2rem 0;">
+                    <button class="interactive-button" onclick="designAutomationWorkflow()">Design Workflow</button>
+                    <button class="interactive-button secondary" onclick="simulateWorkflow()">Simulate Execution</button>
+                    <button class="interactive-button warning" onclick="generateWorkflowCode()">Generate Code</button>
+                </div>
+                
+                <div id="workflow-design-output" style="display: none;">
+                    <h4 style="margin-bottom: 1rem;">Workflow Design Visualization</h4>
+                    <div class="workflow-canvas" id="workflow-canvas">
+                        <!-- Workflow visualization will be generated here -->
+                    </div>
+                    
+                    <div class="workflow-controls">
+                        <div class="control-group">
+                            <span class="control-label">Execution Status</span>
+                            <span id="workflow-status" class="workflow-status status-pending">Ready</span>
+                        </div>
+                        <div class="control-group">
+                            <span class="control-label">Progress</span>
+                            <div class="progress-indicator">
+                                <div class="progress-fill-animated" id="workflow-progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="workflow-simulation-results" style="display: none;">
+                    <h4 style="margin-bottom: 1rem;">Simulation Results</h4>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value" id="sim-throughput">--</div>
+                            <div class="metric-label">Processes/Hour</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="sim-success-rate">--</div>
+                            <div class="metric-label">Success Rate</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="sim-avg-time">--</div>
+                            <div class="metric-label">Avg. Processing Time</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="sim-error-rate">--</div>
+                            <div class="metric-label">Error Rate</div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert info">
+                        <h5 style="margin-bottom: 0.5rem;">Optimization Recommendations</h5>
+                        <p id="optimization-recommendations"><!-- Recommendations will be populated here --></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Workflow Patterns -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🔄</div>
+                <h2 class="section-title">Advanced Workflow Patterns</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Sophisticated workflow patterns enable complex business logic implementation with high reliability and performance optimization.</p>
+            
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pattern Type</th>
+                            <th>Use Cases</th>
+                            <th>Complexity</th>
+                            <th>Performance Impact</th>
+                            <th>Best Practices</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Sequential Processing</strong></td>
+                            <td>Linear workflows, step-by-step analysis</td>
+                            <td>Low</td>
+                            <td>Predictable timing</td>
+                            <td>Clear validation at each step</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Parallel Execution</strong></td>
+                            <td>Independent tasks, bulk processing</td>
+                            <td>Medium</td>
+                            <td>High throughput</td>
+                            <td>Resource management critical</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Conditional Branching</strong></td>
+                            <td>Decision trees, adaptive workflows</td>
+                            <td>Medium</td>
+                            <td>Variable timing</td>
+                            <td>Comprehensive condition testing</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Loop Processing</strong></td>
+                            <td>Iterative refinement, batch operations</td>
+                            <td>High</td>
+                            <td>Resource intensive</td>
+                            <td>Exit condition validation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Event-Driven</strong></td>
+                            <td>Real-time responses, triggers</td>
+                            <td>High</td>
+                            <td>Highly scalable</td>
+                            <td>Robust event handling</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <button class="interactive-button" onclick="toggleContent('pattern-examples')">View Implementation Examples</button>
+            
+            <div id="pattern-examples" class="hidden-content">
+                <h4>Advanced Pattern Implementation Examples</h4>
+                
+                <div class="workflow-diagram">
+# Parallel Processing Pattern Example
+
+## [Customer Onboarding Workflow](pplx://action/followup)
+TRIGGER: New customer registration
+
+PARALLEL_EXECUTION:
+  Branch_A: Document Verification
+    - ID verification
+    - Address confirmation
+    - Credit check
+  
+  Branch_B: Account Setup
+    - Create user profile
+    - Generate account numbers
+    - Set up initial preferences
+  
+  Branch_C: Communication Setup
+    - Send welcome email
+    - Schedule onboarding call
+    - Prepare welcome package
+
+SYNCHRONIZATION_POINT: All branches complete
+
+FINAL_STEP: Account activation and notification
+                </div>
+                
+                <div class="workflow-diagram">
+# Event-Driven Pattern Example
+
+## [Real-Time Order Processing](pplx://action/followup)
+EVENT_TRIGGERS:
+  - order_received
+  - payment_confirmed
+  - inventory_updated
+  - shipping_status_changed
+
+WORKFLOW_HANDLERS:
+  order_received:
+    - Validate order details
+    - Check inventory availability
+    - Calculate pricing
+    - Reserve inventory
+  
+  payment_confirmed:
+    - Update order status
+    - Trigger fulfillment process
+    - Send confirmation email
+  
+  inventory_updated:
+    - Check pending orders
+    - Update availability
+    - Notify customers of changes
+  
+  shipping_status_changed:
+    - Update tracking information
+    - Send customer notifications
+    - Update delivery estimates
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Optimization Strategies -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2 class="section-title">Workflow Performance Optimization</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Systematic performance optimization ensures workflows maintain efficiency and reliability as they scale to handle increasing business demands.</p>
+            
+            <div class="workflow-grid">
+                <div class="workflow-framework">
+                    <h3 class="framework-title">
+                        Bottleneck Identification
+                        <span class="efficiency-badge">Real-time Analysis</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Automated systems that continuously monitor workflow execution to identify performance bottlenecks and optimization opportunities.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Execution time analysis</li>
+                        <li style="padding: 0.25rem 0;">• Resource utilization tracking</li>
+                        <li style="padding: 0.25rem 0;">• Queue depth monitoring</li>
+                        <li style="padding: 0.25rem 0;">• Dependency mapping</li>
+                    </ul>
+                </div>
+                
+                <div class="workflow-framework">
+                    <h3 class="framework-title">
+                        Caching Strategies
+                        <span class="efficiency-badge">Speed Enhancement</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Intelligent caching systems that store frequently accessed data and results to reduce processing time and improve response rates.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Result caching</li>
+                        <li style="padding: 0.25rem 0;">• Data prefetching</li>
+                        <li style="padding: 0.25rem 0;">• Computed value storage</li>
+                        <li style="padding: 0.25rem 0;">• Cache invalidation strategies</li>
+                    </ul>
+                </div>
+                
+                <div class="workflow-framework">
+                    <h3 class="framework-title">
+                        Load Balancing
+                        <span class="complexity-badge">Scalability</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Dynamic load distribution systems that optimize resource allocation and maintain performance under varying demand conditions.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Dynamic resource allocation</li>
+                        <li style="padding: 0.25rem 0;">• Queue management</li>
+                        <li style="padding: 0.25rem 0;">• Priority-based processing</li>
+                        <li style="padding: 0.25rem 0;">• Auto-scaling triggers</li>
+                    </ul>
+                </div>
+                
+                <div class="workflow-framework">
+                    <h3 class="framework-title">
+                        Monitoring & Analytics
+                        <span class="efficiency-badge">Continuous Improvement</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Comprehensive monitoring systems that track performance metrics and provide actionable insights for continuous workflow optimization.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Performance dashboards</li>
+                        <li style="padding: 0.25rem 0;">• Trend analysis</li>
+                        <li style="padding: 0.25rem 0;">• Predictive analytics</li>
+                        <li style="padding: 0.25rem 0;">• Automated reporting</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <button class="interactive-button" onclick="toggleContent('optimization-dashboard')">Launch Performance Dashboard</button>
+            
+            <div id="optimization-dashboard" class="hidden-content">
+                <h4>Workflow Performance Dashboard</h4>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">2.3s</div>
+                        <div class="metric-label">Avg. Processing Time</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">97.8%</div>
+                        <div class="metric-label">Success Rate</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">1,247</div>
+                        <div class="metric-label">Processes/Hour</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">0.3%</div>
+                        <div class="metric-label">Error Rate</div>
+                    </div>
+                </div>
+                
+                <div class="alert success">
+                    <h5 style="margin-bottom: 0.5rem;">Performance Insights</h5>
+                    <p>Your workflows are performing optimally with 97.8% success rate and sub-3-second processing times. Consider implementing caching for the document verification step to achieve further improvements.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Deliverable -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">📋</div>
+                <h2 class="section-title">Section 4 Deliverable: Business Prompt Library</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Create a comprehensive business prompt library that combines advanced techniques, optimized templates, and multi-step workflows for maximum AI performance across your organization.</p>
+            
+            <div class="alert info">
+                <h4 style="margin-bottom: 0.5rem;">Deliverable Requirements</h4>
+                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                    <li>Minimum 10 business-specific prompt templates</li>
+                    <li>3 chain-of-thought workflows for complex processes</li>
+                    <li>Performance metrics and optimization documentation</li>
+                    <li>Implementation guide with best practices</li>
+                    <li>Quality assurance and validation framework</li>
+                </ul>
+            </div>
+            
+            <div class="workflow-builder">
+                <h3 style="margin-bottom: 1.5rem;">Prompt Library Generator</h3>
+                
+                <div class="form-group">
+                    <label class="form-label">Library Focus Areas</label>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem;">
+                        <label style="display: flex; align-items: center;">
+                            <input type="checkbox" id="strategic-planning" style="margin-right: 0.5rem;" checked>
+                            Strategic Planning
+                        </label>
+                        <label style="display: flex; align-items: center;">
+                            <input type="checkbox" id="customer-research" style="margin-right: 0.5rem;" checked>
+                            Customer Research
+                        </label>
+                        <label style="display: flex; align-items: center;">
+                            <input type="checkbox" id="financial-analysis" style="margin-right: 0.5rem;" checked>
+                            Financial Analysis
+                        </label>
+                        <label style="display: flex; align-items: center;">
+                            <input type="checkbox" id="operations-optimization" style="margin-right: 0.5rem;">
+                            Operations Optimization
+                        </label>
+                        <label style="display: flex; align-items: center;">
+                            <input type="checkbox" id="marketing-content" style="margin-right: 0.5rem;">
+                            Marketing Content
+                        </label>
+                        <label style="display: flex; align-items: center;">
+                            <input type="checkbox" id="risk-management" style="margin-right: 0.5rem;">
+                            Risk Management
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Industry Specialization</label>
+                    <select id="industry-focus" class="form-select">
+                        <option value="general">General Business</option>
+                        <option value="technology">Technology/Software</option>
+                        <option value="healthcare">Healthcare/Medical</option>
+                        <option value="finance">Financial Services</option>
+                        <option value="retail">Retail/E-commerce</option>
+                        <option value="manufacturing">Manufacturing</option>
+                        <option value="consulting">Professional Services</option>
+                    </select>
+                </div>
+                
+                <div style="text-align: center; margin: 1.5rem 0;">
+                    <button class="interactive-button" onclick="generatePromptLibrary()">Generate Prompt Library</button>
+                    <button class="interactive-button secondary" onclick="validateLibraryQuality()">Validate Quality</button>
+                    <button class="interactive-button warning" onclick="exportPromptLibrary()">Export Library</button>
+                </div>
+                
+                <div id="library-generation-results" style="display: none;">
+                    <h4 style="margin-bottom: 1rem;">Generated Prompt Library Summary</h4>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value" id="library-templates">--</div>
+                            <div class="metric-label">Prompt Templates</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="library-workflows">--</div>
+                            <div class="metric-label">COT Workflows</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="library-quality">--</div>
+                            <div class="metric-label">Quality Score</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value" id="library-coverage">--</div>
+                            <div class="metric-label">Business Coverage</div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert success">
+                        <h5 style="margin-bottom: 0.5rem;">Library Generation Complete</h5>
+                        <p>Your business prompt library has been generated with comprehensive templates and workflows. The library includes performance metrics and optimization guidelines for immediate implementation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">💡</div>
+                <h2 class="section-title">Key Takeaways</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                <div class="alert success">
+                    <h4 style="margin-bottom: 0.5rem;">Chain-of-Thought Impact</h4>
+                    <p>Chain-of-thought workflows achieve up to 300% improvement in reasoning accuracy by breaking complex problems into sequential, logical steps with validation at each stage.</p>
+                </div>
+                
+                <div class="alert info">
+                    <h4 style="margin-bottom: 0.5rem;">Workflow Scalability</h4>
+                    <p>Multi-step workflows with proper error handling and performance optimization can scale from hundreds to thousands of processes per day while maintaining quality and reliability.</p>
+                </div>
+                
+                <div class="alert warning">
+                    <h4 style="margin-bottom: 0.5rem;">Business Integration</h4>
+                    <p>Successful workflow implementation requires careful integration with existing business systems, comprehensive testing, and continuous performance monitoring for optimal results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleContent(elementId) {
+            const element = document.getElementById(elementId);
+            if (element.style.display === 'none' || element.style.display === '') {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        }
+        
+        function copyWorkflowDiagram(button) {
+            const diagram = button.previousElementSibling.textContent;
+            navigator.clipboard.writeText(diagram).then(() => {
+                button.textContent = 'Copied!';
+                button.style.background = '#10b981';
+                setTimeout(() => {
+                    button.textContent = 'Copy Workflow Template';
+                    button.style.background = '#64748b';
+                }, 2000);
+            });
+        }
+        
+        function loadCOTScenario() {
+            const scenario = document.getElementById('cot-scenario').value;
+            const content = document.getElementById('cot-scenario-content');
+            const problemStatement = document.getElementById('cot-problem');
+            
+            if (scenario) {
+                content.style.display = 'block';
+                
+                const scenarios = {
+                    'investment-analysis': 'Evaluate a $2M investment opportunity in an AI startup. Consider market potential, competitive landscape, financial projections, team capabilities, and risk factors to make a comprehensive investment recommendation.',
+                    'product-launch': 'Plan the launch strategy for a new SaaS product targeting small businesses. Analyze market readiness, competitive positioning, pricing strategy, marketing channels, and success metrics.',
+                    'risk-assessment': 'Conduct a comprehensive risk assessment for expanding operations into a new geographic market. Evaluate regulatory, financial, operational, and strategic risks with mitigation strategies.',
+                    'customer-acquisition': 'Develop a customer acquisition strategy for a B2B software company. Analyze target segments, acquisition channels, conversion optimization, and lifetime value projections.'
+                };
+                
+                problemStatement.value = scenarios[scenario];
+            } else {
+                content.style.display = 'none';
+            }
+        }
+        
+        function generateCOTWorkflow() {
+            const scenario = document.getElementById('cot-scenario').value;
+            const steps = document.getElementById('cot-steps').value;
+            
+            if (!scenario || !steps) {
+                alert('Please select a scenario and number of steps.');
+                return;
+            }
+            
+            const workflows = {
+                'investment-analysis': `# Investment Analysis Chain-of-Thought Workflow
+
+## [Step 1: Market Analysis](pplx://action/followup)
+INPUT: Industry data, market size, growth trends
+PROCESS: Analyze total addressable market and growth potential
+OUTPUT: Market opportunity assessment
+VALIDATION: Cross-reference with industry reports (confidence >85%)
+
+## [Step 2: Competitive Landscape](pplx://action/followup)
+INPUT: Competitor data, market positioning
+PROCESS: Map competitive strengths, weaknesses, and differentiation
+OUTPUT: Competitive analysis matrix
+VALIDATION: Verify competitive intelligence accuracy
+
+## [Step 3: Financial Evaluation](pplx://action/followup)
+INPUT: Financial projections, revenue model, unit economics
+PROCESS: Analyze revenue potential, profitability, and cash flow
+OUTPUT: Financial viability assessment
+VALIDATION: Stress test assumptions with sensitivity analysis
+
+## [Step 4: Team Assessment](pplx://action/followup)
+INPUT: Founder backgrounds, team composition, advisory board
+PROCESS: Evaluate execution capability and domain expertise
+OUTPUT: Team strength evaluation
+VALIDATION: Reference checks and track record verification
+
+## [Step 5: Risk Analysis](pplx://action/followup)
+INPUT: Market risks, execution risks, competitive threats
+PROCESS: Identify and quantify key risk factors
+OUTPUT: Risk matrix with mitigation strategies
+VALIDATION: Probability and impact assessment
+
+## [Final Synthesis: Investment Recommendation](pplx://action/followup)
+INPUTS: All previous analysis
+PROCESS: Weighted scoring across all dimensions
+OUTPUT: Go/No-Go recommendation with rationale
+VALIDATION: Investment committee review criteria`,
+
+                'product-launch': `# Product Launch Strategy Chain-of-Thought Workflow
+
+## [Step 1: Market Readiness Assessment](pplx://action/followup)
+INPUT: Market research, customer interviews, competitive analysis
+PROCESS: Evaluate market timing and customer demand
+OUTPUT: Market readiness score and insights
+VALIDATION: Customer validation interviews (>50 responses)
+
+## [Step 2: Product-Market Fit Validation](pplx://action/followup)
+INPUT: Product features, customer feedback, usage data
+PROCESS: Assess alignment between product and market needs
+OUTPUT: PMF score and optimization recommendations
+VALIDATION: Beta user feedback analysis
+
+## [Step 3: Competitive Positioning](pplx://action/followup)
+INPUT: Competitor analysis, differentiation factors
+PROCESS: Define unique value proposition and positioning
+OUTPUT: Positioning strategy and messaging framework
+VALIDATION: A/B test messaging with target audience
+
+## [Step 4: Go-to-Market Strategy](pplx://action/followup)
+INPUT: Customer segments, acquisition channels, pricing
+PROCESS: Design comprehensive launch strategy
+OUTPUT: GTM plan with tactics and timeline
+VALIDATION: Channel effectiveness analysis
+
+## [Step 5: Success Metrics Definition](pplx://action/followup)
+INPUT: Business objectives, market benchmarks
+PROCESS
+</head>
+</html>

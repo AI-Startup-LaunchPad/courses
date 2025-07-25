@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section 2: Technical AI Foundations for Business Leaders - Lesson 2.1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        .lesson-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .lesson-header {
+            background: #28263a;
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px 12px 0 0;
+            margin-bottom: 0;
+        }
+
+        .lesson-meta {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .lesson-title {
+            font-size: clamp(24px, 4vw, 36px);
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .lesson-subtitle {
+            font-size: clamp(16px, 2.5vw, 20px);
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .lesson-body {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .objectives-section {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .objectives-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .objectives-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .objectives-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .objectives-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 12px;
+            background: rgba(255,255,255,0.2);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .content-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #06b6d4;
+        }
+
+        .subsection-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #334155;
+            margin: 30px 0 15px 0;
+        }
+
+        .content-text {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: #475569;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border-left: 5px solid rgba(255,255,255,0.3);
+        }
+
+        .highlight-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .technology-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .technology-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid #06b6d4;
+            transition: transform 0.3s ease;
+        }
+
+        .technology-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .tech-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .tech-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+
+        .tech-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .tech-description {
+            font-size: 15px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .tech-applications {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .application-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .application-icon {
+            color: #10b981;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        .interactive-element {
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-element:hover {
+            border-color: #06b6d4;
+            box-shadow: 0 5px 20px rgba(6, 182, 212, 0.1);
+        }
+
+        .activity-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .activity-description {
+            font-size: 16px;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #0891b2);
+            width: 14.3%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .completion-section {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .completion-section h3 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .completion-section p {
+            color: #64748b;
+            margin-bottom: 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        .demo-lab {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .demo-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #06b6d4;
+        }
+
+        .demo-section h4 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .demo-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .demo-output {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #166534;
+        }
+
+        .capability-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .capability-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .capability-score {
+            font-size: 36px;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 10px;
+        }
+
+        .capability-label {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .limitation-alert {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .limitation-alert h4 {
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-container {
+                padding: 10px;
+            }
+            
+            .lesson-header, .lesson-body {
+                padding: 20px;
+            }
+            
+            .technology-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-container">
+        <header class="lesson-header">
+            <div class="lesson-meta">Section 2 • Lesson 2.1 • 75-90 minutes</div>
+            <h1 class="lesson-title">Core AI Technologies and Applications</h1>
+            <p class="lesson-subtitle">Understanding Large Language Models, Computer Vision, and Predictive Analytics for strategic business implementation</p>
+        </header>
+
+        <div class="lesson-body">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+
+            <section class="objectives-section">
+                <h2 class="objectives-title">
+                    🎯 Learning Objectives
+                </h2>
+                <ul class="objectives-list">
+                    <li>Understand the core capabilities and limitations of Large Language Models (LLMs) for business applications</li>
+                    <li>Explore Computer Vision applications for visual information processing and quality control</li>
+                    <li>Master Predictive Analytics fundamentals for forecasting and strategic decision-making</li>
+                    <li>Identify appropriate AI technologies for specific business use cases and implementation scenarios</li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">The AI Technology Landscape</h2>
+                
+                <p class="content-text">
+                    Modern AI encompasses three primary technology categories that form the foundation of business transformation: Large Language Models for natural language processing and generation, Computer Vision for visual information analysis, and Predictive Analytics for data-driven forecasting. Understanding these core technologies enables entrepreneurs to make informed decisions about AI implementation strategies.
+                </p>
+
+                <div class="highlight-box">
+                    <h3 class="highlight-title">Strategic Technology Selection</h3>
+                    <p>Successful AI implementation requires matching technology capabilities with specific business needs. Each AI technology excels in particular domains: LLMs for content and communication, Computer Vision for visual analysis and automation, and Predictive Analytics for strategic planning and risk management.</p>
+                </div>
+
+                <div class="technology-grid">
+                    <div class="technology-card">
+                        <div class="tech-header">
+                            <div class="tech-icon">🧠</div>
+                            <div class="tech-title">Large Language Models</div>
+                        </div>
+                        <p class="tech-description">
+                            Advanced AI systems that understand and generate human-like text, enabling sophisticated content creation, analysis, and communication capabilities across multiple languages and domains.
+                        </p>
+                        <div class="tech-applications">
+                            <div class="application-item">
+                                <span class="application-icon">✓</span>
+                                Content generation and copywriting
+                            </div>
+                            <div class="application-item">
+                                <span class="application-icon">✓</span>
+                                Customer service automation
+                            </div>
+                            <div class="application-item">
+                                <span class="application-icon">✓</span>
+                                Document analysis and summarization
+                            </div>
+                            <div class="application-item">
+                                <span class="application-icon">✓</span>
+                                Code generation and debugging
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="technology-card">
+                        <div class="tech-header">
+                            <div class="tech-icon">👁️</div>
+                            <div class="tech-title">Computer Vision</div>
+                        </div>
+                        <p class="tech-description">
+                            AI systems that process and interpret visual information from images and videos, enabling automated analysis, recognition, and decision-making based on visual data.
+                        </p>
+                        <div class="tech-applications">
+                            <div class="application-item">
+                                <span class="application-icon">✓</span>
+                                Quality control and inspection
+                            </div>
+                            <div class="application-item">
+                                <span class="application-icon">✓</span>
+                                Medical imaging analysis
+                            </div>
+                            <div class="application-item">
+                                <span class="application-icon">✓</span>
+                                Inventory management and tracking
+                            </div>
+                            <div class="application-item">
+                                <span class="application-icon">✓</span>
+                                Security and surveillance
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="technology-card">
+                        <div class="tech-header">
+                            <div class="tech-icon">📊</div>
+                            <div class="tech-title">Predictive Analytics</div>
+                        </div>
+                        <p class="tech-description">
+                            Machine learning systems that analyze historical data patterns to forecast future outcomes, enabling proactive decision-making and strategic planning.
+                        </p>
+                        <div class="tech-applications">
+                            <div class="application-item">
+                                <span class="application-icon">✓</span>
+                                Sales forecasting and demand planning
+                            </div>
+                            <div class="application-item">
+                                <span class="application-icon">✓</span>
+                                Risk assessment and management
+                            </div>
+                            <div class="application-item">
+                                <span class="application-icon">✓</span>
+                                Customer behavior prediction
+                            </div>
+                            <div class="application-item">
+                                <span class="application-icon">✓</span>
+                                Maintenance scheduling optimization
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Large Language Models: Business Applications</h2>
+                
+                <p class="content-text">
+                    Large Language Models represent the most versatile AI technology for business applications, combining natural language understanding with generation capabilities. These models excel at content creation, analysis, and communication tasks that traditionally required human expertise.
+                </p>
+
+                <h3 class="subsection-title">Core LLM Capabilities</h3>
+                
+                <div class="content-text">
+                    <strong>Natural Language Understanding</strong> enables LLMs to comprehend complex instructions, analyze documents, and extract meaningful insights from unstructured text data. This capability supports applications from customer service to legal document review.
+                </div>
+
+                <div class="content-text">
+                    <strong>Content Generation</strong> allows LLMs to create human-quality text across multiple formats including emails, reports, marketing copy, and technical documentation. Advanced models maintain consistency in tone, style, and brand voice.
+                </div>
+
+                <div class="content-text">
+                    <strong>Reasoning and Analysis</strong> capabilities enable LLMs to perform complex logical operations, solve problems, and provide strategic recommendations based on provided information and context.
+                </div>
+
+                <div class="capability-matrix">
+                    <div class="capability-card">
+                        <div class="capability-score">95%</div>
+                        <div class="capability-label">Content Quality</div>
+                    </div>
+                    <div class="capability-card">
+                        <div class="capability-score">88%</div>
+                        <div class="capability-label">Accuracy Rate</div>
+                    </div>
+                    <div class="capability-card">
+                        <div class="capability-score">92%</div>
+                        <div class="capability-label">Context Understanding</div>
+                    </div>
+                    <div class="capability-card">
+                        <div class="capability-score">85%</div>
+                        <div class="capability-label">Multilingual Support</div>
+                    </div>
+                </div>
+
+                <div class="interactive-element">
+                    <h3 class="activity-title">🧪 Activity 2.1.1: AI Technology Demonstration Lab</h3>
+                    <p class="activity-description">
+                        Experience hands-on demonstrations of different AI model types including text generation, image analysis, and predictive modeling tools to understand their practical capabilities and limitations.
+                    </p>
+                    <button type="button" class="btn-primary" id="start-demo-lab">Launch Technology Demo Lab</button>
+                </div>
+
+                <div id="demo-lab" class="hidden">
+                    <div class="demo-lab">
+                        <h4>AI Technology Demonstration Laboratory</h4>
+                        
+                        <div class="demo-section">
+                            <h4>Large Language Model Testing</h4>
+                            <p>Test LLM capabilities with business-focused prompts:</p>
+                            <textarea class="demo-input" placeholder="Enter a business prompt to test LLM capabilities (e.g., 'Write a professional email to a client explaining a project delay')"></textarea>
+                            <button type="button" class="btn-primary" onclick="simulateLLMResponse(this)">Generate LLM Response</button>
+                            <div class="demo-output hidden">
+                                <strong>Simulated LLM Response:</strong><br>
+                                Subject: Project Timeline Update - [Project Name]<br><br>
+                                Dear [Client Name],<br><br>
+                                I hope this message finds you well. I'm writing to provide you with an important update regarding the timeline for [Project Name].<br><br>
+                                Due to [specific reason], we anticipate a [time period] delay in the project completion. We understand the importance of this project to your business objectives and sincerely apologize for any inconvenience this may cause.<br><br>
+                                Our team is implementing the following measures to minimize further delays: [action items]. We remain committed to delivering exceptional quality and will keep you informed of our progress.<br><br>
+                                Thank you for your understanding and continued partnership.<br><br>
+                                Best regards,<br>
+                                [Your Name]
+                            </div>
+                        </div>
+                        
+                        <div class="demo-section">
+                            <h4>Computer Vision Simulation</h4>
+                            <p>Explore computer vision applications for business use cases:</p>
+                            <select class="demo-input">
+                                <option>Quality Control - Manufacturing Defect Detection</option>
+                                <option>Inventory Management - Product Recognition</option>
+                                <option>Security - Access Control and Monitoring</option>
+                                <option>Healthcare - Medical Image Analysis</option>
+                            </select>
+                            <button type="button" class="btn-primary" onclick="simulateVisionResponse(this)">Analyze Vision Application</button>
+                            <div class="demo-output hidden">
+                                <strong>Computer Vision Analysis:</strong><br>
+                                Application: Quality Control - Manufacturing Defect Detection<br>
+                                Accuracy Rate: 99.2%<br>
+                                Processing Speed: 0.3 seconds per image<br>
+                                Detected Issues: Surface scratches, dimensional variations, color inconsistencies<br>
+                                ROI Impact: 35% reduction in manual inspection time, 78% decrease in defective products reaching customers
+                            </div>
+                        </div>
+                        
+                        <div class="demo-section">
+                            <h4>Predictive Analytics Modeling</h4>
+                            <p>Simulate predictive analytics for business forecasting:</p>
+                            <textarea class="demo-input" placeholder="Describe your business scenario (e.g., 'Predict customer churn for SaaS company with 1000 monthly active users')"></textarea>
+                            <button type="button" class="btn-primary" onclick="simulatePredictiveResponse(this)">Generate Prediction Model</button>
+                            <div class="demo-output hidden">
+                                <strong>Predictive Analytics Results:</strong><br>
+                                Model Type: Gradient Boosting Classifier<br>
+                                Prediction Accuracy: 87.3%<br>
+                                Key Factors: Usage frequency, support ticket volume, payment history<br>
+                                Risk Segments: High (15%), Medium (25%), Low (60%)<br>
+                                Recommended Actions: Targeted retention campaigns for high-risk segments, proactive support for medium-risk users
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Computer Vision and Predictive Analytics</h2>
+                
+                <p class="content-text">
+                    Computer Vision and Predictive Analytics represent specialized AI technologies that excel in specific business domains. Computer Vision transforms visual information into actionable insights, while Predictive Analytics leverages historical data to forecast future trends and behaviors.
+                </p>
+
+                <h3 class="subsection-title">Computer Vision Applications</h3>
+                
+                <div class="content-text">
+                    <strong>Quality Control and Inspection</strong> systems can identify defects, inconsistencies, and quality issues with accuracy rates exceeding human capabilities. Manufacturing companies report 35% reduction in inspection time and 78% decrease in defective products reaching customers.
+                </div>
+
+                <div class="content-text">
+                    <strong>Inventory Management</strong> applications use visual recognition to track products, monitor stock levels, and automate reordering processes. Retail implementations show 40% improvement in inventory accuracy and 25% reduction in stockouts.
+                </div>
+
+                <h3 class="subsection-title">Predictive Analytics Capabilities</h3>
+                
+                <div class="content-text">
+                    <strong>Demand Forecasting</strong> models analyze historical sales data, seasonal patterns, and external factors to predict future demand with accuracy rates typically ranging from 85-95%. This enables optimized inventory management and resource allocation.
+                </div>
+
+                <div class="content-text">
+                    <strong>Customer Behavior Prediction</strong> systems identify patterns in user interactions, purchase history, and engagement metrics to forecast churn risk, lifetime value, and purchase propensity. Advanced models achieve 90%+ accuracy in identifying high-risk customers.
+                </div>
+
+                <div class="limitation-alert">
+                    <h4>⚠️ Technology Limitations</h4>
+                    <p>AI technologies have specific limitations: LLMs may generate plausible but incorrect information, Computer Vision requires high-quality images and may struggle with edge cases, and Predictive Analytics depends heavily on historical data quality and may not account for unprecedented events.</p>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Strategic Technology Selection Framework</h2>
+                
+                <p class="content-text">
+                    Choosing the appropriate AI technology requires systematic evaluation of business requirements, technical constraints, and expected outcomes. This framework helps entrepreneurs make informed decisions about AI technology adoption.
+                </p>
+
+                <div class="interactive-element">
+                    <h3 class="activity-title">🎯 Activity 2.1.2: Technology Matching Workshop</h3>
+                    <p class="activity-description">
+                        Use our interactive framework to match AI technologies with your specific business challenges and opportunities. This tool helps you identify the most suitable AI approach for your use cases.
+                    </p>
+                    <button type="button" class="btn-primary" id="start-matching-workshop">Launch Technology Matching Tool</button>
+                </div>
+
+                <div id="matching-workshop" class="hidden">
+                    <div class="demo-lab">
+                        <h4>AI Technology Matching Framework</h4>
+                        
+                        <div class="demo-section">
+                            <h4>Step 1: Define Your Business Challenge</h4>
+                            <p>Describe the specific business problem you want to solve with AI:</p>
+                            <textarea class="demo-input" placeholder="Example: We need to automate customer support responses while maintaining quality and personalization"></textarea>
+                        </div>
+                        
+                        <div class="demo-section">
+                            <h4>Step 2: Identify Data Types</h4>
+                            <p>What type of data will you primarily work with?</p>
+                            <select class="demo-input">
+                                <option>Text and documents</option>
+                                <option>Images and visual content</option>
+                                <option>Numerical and structured data</option>
+                                <option>Mixed data types</option>
+                            </select>
+                        </div>
+                        
+                        <div class="demo-section">
+                            <h4>Step 3: Define Success Metrics</h4>
+                            <p>How will you measure the success of your AI implementation?</p>
+                            <textarea class="demo-input" placeholder="Example: 50% reduction in response time, 90% customer satisfaction score, 30% cost savings"></textarea>
+                        </div>
+                        
+                        <div class="demo-section">
+                            <h4>Step 4: Assess Technical Requirements</h4>
+                            <p>What are your technical constraints and requirements?</p>
+                            <textarea class="demo-input" placeholder="Example: Must integrate with existing CRM, real-time processing required, budget under $10k/month"></textarea>
+                        </div>
+                        
+                        <button type="button" class="btn-primary" onclick="generateTechnologyRecommendation()">Generate Technology Recommendation</button>
+                        
+                        <div id="tech-recommendation" class="demo-output hidden">
+                            <strong>Technology Recommendation:</strong><br>
+                            <strong>Primary Technology:</strong> Large Language Models (LLMs)<br>
+                            <strong>Rationale:</strong> Your use case involves text processing and customer communication, which aligns perfectly with LLM capabilities.<br>
+                            <strong>Recommended Tools:</strong> OpenAI GPT-4, Anthropic Claude, or Azure OpenAI Service<br>
+                            <strong>Implementation Approach:</strong> Start with API integration for automated response generation, then add fine-tuning for brand voice consistency<br>
+                            <strong>Expected Outcomes:</strong> 60-80% reduction in response time, 85-95% accuracy in initial responses, scalable to handle volume increases
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="completion-section">
+                <h3>Lesson 2.1 Complete</h3>
+                <p>You've successfully explored core AI technologies and their business applications. Continue to the next lesson to learn about data requirements and quality fundamentals for AI implementation.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Function to show demo lab
+            function showDemoLab() {
+                const demoLab = document.getElementById('demo-lab');
+                demoLab.classList.remove('hidden');
+                demoLab.classList.add('visible');
+            }
+
+            // Function to show matching workshop
+            function showMatchingWorkshop() {
+                const workshop = document.getElementById('matching-workshop');
+                workshop.classList.remove('hidden');
+                workshop.classList.add('visible');
+            }
+
+            // Event listener for demo lab button
+            const demoButton = document.getElementById('start-demo-lab');
+            if (demoButton) {
+                demoButton.addEventListener('click', showDemoLab);
+            }
+
+            // Event listener for matching workshop button
+            const matchingButton = document.getElementById('start-matching-workshop');
+            if (matchingButton) {
+                matchingButton.addEventListener('click', showMatchingWorkshop);
+            }
+
+            // Progress tracking
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const rate = scrolled / (document.body.offsetHeight - window.innerHeight);
+                const progressFill = document.querySelector('.progress-fill');
+                if (progressFill) {
+                    progressFill.style.width = Math.min(rate * 100, 100) + '%';
+                }
+            });
+        });
+
+        // Simulation functions for demo responses
+        function simulateLLMResponse(button) {
+            const output = button.parentElement.querySelector('.demo-output');
+            output.classList.remove('hidden');
+            output.classList.add('visible');
+        }
+
+        function simulateVisionResponse(button) {
+            const output = button.parentElement.querySelector('.demo-output');
+            output.classList.remove('hidden');
+            output.classList.add('visible');
+        }
+
+        function simulatePredictiveResponse(button) {
+            const output = button.parentElement.querySelector('.demo-output');
+            output.classList.remove('hidden');
+            output.classList.add('visible');
+        }
+
+        function generateTechnologyRecommendation() {
+            const recommendation = document.getElementById('tech-recommendation');
+            recommendation.classList.remove('hidden');
+            recommendation.classList.add('visible');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Optimized Infrastructure Planning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #334155;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        .header {
+            background: #28263a;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(6, 182, 212, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .lesson-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .lesson-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #10b981);
+            width: 91.4%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .interactive-button {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .interactive-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3);
+        }
+        
+        .interactive-button.secondary {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .interactive-button.secondary:hover {
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .interactive-button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .interactive-button.warning:hover {
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+        }
+        
+        .interactive-button.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .interactive-button.danger:hover {
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+        }
+        
+        .hidden-content {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #06b6d4;
+        }
+        
+        .infrastructure-framework {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .infrastructure-framework:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .framework-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .scalability-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .performance-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .infrastructure-diagram {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .infrastructure-interface {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 2px dashed #06b6d4;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            resize: vertical;
+            font-size: 0.95rem;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: white;
+        }
+        
+        .infrastructure-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .component-container {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .component-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .component-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 1rem;
+            flex-shrink: 0;
+            font-size: 1.1rem;
+        }
+        
+        .component-title {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 1.2rem;
+        }
+        
+        .component-content {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .architecture-canvas {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            min-height: 400px;
+            position: relative;
+        }
+        
+        .architecture-layer {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        .architecture-layer:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3);
+        }
+        
+        .architecture-layer.compute {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .architecture-layer.storage {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .architecture-layer.network {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid;
+        }
+        
+        .alert.success {
+            background: #f0fdf4;
+            border-color: #10b981;
+            color: #065f46;
+        }
+        
+        .alert.warning {
+            background: #fffbeb;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+        
+        .alert.info {
+            background: #eff6ff;
+            border-color: #06b6d4;
+            color: #0c4a6e;
+        }
+        
+        .alert.danger {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .comparison-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .copy-button {
+            background: #64748b;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .copy-button:hover {
+            background: #475569;
+        }
+        
+        .cost-calculator {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .calculator-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .calculator-item:last-child {
+            border-bottom: none;
+        }
+        
+        .calculator-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .calculator-icon.compute {
+            background: #10b981;
+            color: white;
+        }
+        
+        .calculator-icon.storage {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .calculator-icon.network {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .calculator-icon.platform {
+            background: #06b6d4;
+            color: white;
+        }
+        
+        .progress-indicator {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+        
+        .progress-fill-animated {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #10b981);
+            border-radius: 3px;
+            transition: width 2s ease;
+        }
+        
+        .requirements-matrix {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 1rem 0;
+        }
+        
+        .requirements-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            align-items: center;
+        }
+        
+        .requirements-row:first-child {
+            font-weight: 600;
+            color: #1e293b;
+            background: #f8fafc;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .requirements-row:last-child {
+            border-bottom: none;
+        }
+        
+        .requirement-status {
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .status-essential {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-recommended {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-optional {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-future {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        
+        .deployment-timeline {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 40px;
+            bottom: -20px;
+            width: 2px;
+            background: #e2e8f0;
+        }
+        
+        .timeline-item:last-child::before {
+            display: none;
+        }
+        
+        .timeline-marker {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .timeline-content {
+            flex: 1;
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .timeline-description {
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-duration {
+            font-size: 0.875rem;
+            color: #06b6d4;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="lesson-title">AI-Optimized Infrastructure Planning</h1>
+            <p class="lesson-subtitle">Section 7.1 • Design scalable, cost-effective infrastructure that powers AI-driven startup growth</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">Progress: 91.4% Complete</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Learning Objectives -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2 class="section-title">Learning Objectives</h2>
+            </div>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Design AI-optimized infrastructure architectures that support machine learning workloads and scale with business growth
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Evaluate compute, storage, and networking requirements for AI applications with cost optimization strategies
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Implement cloud-native architectures with hybrid deployment strategies for maximum flexibility and performance
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Establish security, compliance, and governance frameworks for AI infrastructure in regulated environments
+                </li>
+            </ul>
+        </div>
+
+        <!-- AI Infrastructure Architecture Framework -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🏗️</div>
+                <h2 class="section-title">AI Infrastructure Architecture Framework</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">AI workloads demand specialized infrastructure that differs significantly from traditional applications. Modern AI infrastructure requires high-performance computing resources, massive data storage capabilities, and optimized networking for distributed processing. Research shows that properly designed AI infrastructure can reduce training costs by 60% while improving model performance by 40%.</p>
+
+            <div class="infrastructure-grid">
+                <div class="infrastructure-framework">
+                    <h3 class="framework-title">
+                        Compute Architecture
+                        <span class="performance-badge">GPU/TPU Optimized</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Specialized computing resources designed for AI workloads including training, inference, and real-time processing with dynamic scaling capabilities.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• GPU clusters for parallel processing and model training</li>
+                        <li style="padding: 0.25rem 0;">• TPU integration for TensorFlow workloads</li>
+                        <li style="padding: 0.25rem 0;">• CPU resources for inference and data preprocessing</li>
+                        <li style="padding: 0.25rem 0;">• Auto-scaling based on workload demands</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('compute-architecture')">Design Compute Layer</button>
+                </div>
+
+                <div class="infrastructure-framework">
+                    <h3 class="framework-title">
+                        Storage Systems
+                        <span class="scalability-badge">High-Performance</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Multi-tiered storage architecture optimized for AI data pipelines with fast access, massive capacity, and intelligent data lifecycle management.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• NVMe SSD for high-speed data access</li>
+                        <li style="padding: 0.25rem 0;">• Object storage for massive dataset management</li>
+                        <li style="padding: 0.25rem 0;">• Data lakes for unstructured AI training data</li>
+                        <li style="padding: 0.25rem 0;">• Intelligent tiering and lifecycle policies</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('storage-systems')">Plan Storage Architecture</button>
+                </div>
+
+                <div class="infrastructure-framework">
+                    <h3 class="framework-title">
+                        Network Infrastructure
+                        <span class="performance-badge">Low Latency</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">High-bandwidth, low-latency networking designed for distributed AI workloads with optimized data transfer and model synchronization.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• High-speed interconnects for distributed training</li>
+                        <li style="padding: 0.25rem 0;">• Content delivery networks for model serving</li>
+                        <li style="padding: 0.25rem 0;">• Edge computing for real-time inference</li>
+                        <li style="padding: 0.25rem 0;">• Network optimization for data pipelines</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('network-infrastructure')">Optimize Networking</button>
+                </div>
+
+                <div class="infrastructure-framework">
+                    <h3 class="framework-title">
+                        Orchestration Platform
+                        <span class="scalability-badge">Container Native</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Kubernetes-based orchestration with AI-specific extensions for model deployment, scaling, and lifecycle management across hybrid environments.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Kubernetes with GPU scheduling support</li>
+                        <li style="padding: 0.25rem 0;">• MLOps pipeline automation</li>
+                        <li style="padding: 0.25rem 0;">• Model versioning and deployment</li>
+                        <li style="padding: 0.25rem 0;">• Multi-cloud orchestration capabilities</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('orchestration-platform')">Build Orchestration</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compute Architecture Details -->
+        <div id="compute-architecture" class="hidden-content">
+            <div class="content-section">
+                <div class="section-header">
+                    <div class="section-icon">⚡</div>
+                    <h2 class="section-title">AI Compute Architecture Design</h2>
+                </div>
+                
+                <p style="margin-bottom: 1.5rem;">AI compute architecture requires careful balance between performance, cost, and scalability. Modern AI workloads benefit from heterogeneous computing environments that combine GPUs for training, CPUs for inference, and specialized processors for specific tasks.</p>
+                
+                <div class="component-container">
+                    <div class="component-header">
+                        <div class="component-icon">🖥️</div>
+                        <div class="component-title">GPU Computing Clusters</div>
+                    </div>
+                    <div class="component-content">
+                        <strong>Primary Use Cases:</strong> Model training, deep learning inference, parallel data processing
+                        <br><strong>Recommended Hardware:</strong> NVIDIA A100, H100, or AMD MI250 for enterprise workloads
+                        <br><strong>Scaling Strategy:</strong> Auto-scaling groups with GPU-aware scheduling
+                        <br><strong>Cost Optimization:</strong> Spot instances for training, reserved instances for production
+                    </div>
+                </div>
+                
+                <div class="component-container">
+                    <div class="component-header">
+                        <div class="component-icon">🧠</div>
+                        <div class="component-title">TPU Integration</div>
+                    </div>
+                    <div class="component-content">
+                        <strong>Primary Use Cases:</strong> TensorFlow model training, large-scale inference, research workloads
+                        <br><strong>Performance Benefits:</strong> 2-5x faster training for supported models
+                        <br><strong>Integration Requirements:</strong> TensorFlow optimization, XLA compilation
+                        <br><strong>Cost Considerations:</strong> Pay-per-use pricing, significant savings for large workloads
+                    </div>
+                </div>
+                
+                <div class="component-container">
+                    <div class="component-header">
+                        <div class="component-icon">⚙️</div>
+                        <div class="component-title">CPU Resources</div>
+                    </div>
+                    <div class="component-content">
+                        <strong>Primary Use Cases:</strong> Data preprocessing, lightweight inference, orchestration tasks
+                        <br><strong>Optimization Strategy:</strong> High-memory instances for data processing
+                        <br><strong>Scaling Approach:</strong> Horizontal scaling with container orchestration
+                        <br><strong>Cost Management:</strong> Right-sizing based on actual utilization patterns
+                    </div>
+                </div>
+                
+                <div class="infrastructure-diagram">
+# AI Compute Architecture Configuration
+
+## [GPU Cluster Configuration](pplx://action/followup)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gpu-cluster-config
+data:
+  cluster_size: "4-16 nodes"
+  gpu_type: "NVIDIA A100 80GB"
+  memory_per_node: "512GB"
+  storage_per_node: "2TB NVMe SSD"
+  network: "100Gbps InfiniBand"
+
+## [Auto-Scaling Configuration](pplx://action/followup)
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ai-training-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ai-training-deployment
+  minReplicas: 2
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: nvidia.com/gpu
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+## [Cost Optimization Strategy](pplx://action/followup)
+COMPUTE_OPTIMIZATION = {
+    "training_workloads": {
+        "instance_type": "spot_instances",
+        "cost_savings": "60-70%",
+        "fault_tolerance": "checkpoint_based_recovery"
+    },
+    "inference_workloads": {
+        "instance_type": "reserved_instances",
+        "cost_savings": "30-40%",
+        "availability": "99.9%_uptime"
+    },
+    "development_workloads": {
+        "instance_type": "on_demand",
+        "flexibility": "immediate_scaling",
+        "cost_premium": "acceptable_for_agility"
+    }
+}
+
+## [Performance Benchmarks](pplx://action/followup)
+EXPECTED_PERFORMANCE = {
+    "model_training": {
+        "bert_large": "2.3x faster vs CPU",
+        "resnet_50": "15x faster vs CPU",
+        "gpt_3_fine_tuning": "8x faster vs CPU"
+    },
+    "inference_throughput": {
+        "batch_size_1": "50ms latency",
+        "batch_size_32": "200ms latency",
+        "concurrent_requests": "1000+ req/sec"
+    }
+}
+                </div>
+                <button class="copy-button" onclick="copyInfrastructureCode(this)">Copy Compute Configuration</button>
+            </div>
+        </div>
+
+        <!-- Cloud vs On-Premises Analysis -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">☁️</div>
+                <h2 class="section-title">Cloud vs On-Premises Infrastructure Analysis</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Choosing between cloud and on-premises infrastructure for AI workloads requires careful analysis of costs, performance, security, and scalability requirements. Hybrid approaches often provide the optimal balance for most startups.</p>
+            
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Factor</th>
+                            <th>Cloud Infrastructure</th>
+                            <th>On-Premises</th>
+                            <th>Hybrid Approach</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Initial Investment</strong></td>
+                            <td>Low - Pay-as-you-go model</td>
+                            <td>High - Significant capital expenditure</td>
+                            <td>Medium - Gradual investment</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Scalability</strong></td>
+                            <td>Excellent - Instant scaling</td>
+                            <td>Limited - Hardware constraints</td>
+                            <td>Good - Flexible scaling options</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performance</strong></td>
+                            <td>Good - Network latency considerations</td>
+                            <td>Excellent - Direct hardware access</td>
+                            <td>Excellent - Optimized placement</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Security Control</strong></td>
+                            <td>Shared responsibility model</td>
+                            <td>Full control and customization</td>
+                            <td>Balanced approach</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Operational Complexity</strong></td>
+                            <td>Low - Managed services</td>
+                            <td>High - Full management required</td>
+                            <td>Medium - Mixed management</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cost Predictability</strong></td>
+                            <td>Variable - Usage-based</td>
+                            <td>Predictable - Fixed costs</td>
+                            <td>Mixed - Hybrid cost model</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <button class="interactive-button" onclick="toggleContent('deployment-calculator')">Launch Deployment Calculator</button>
+            
+            <div id="deployment-calculator" class="hidden-content">
+                <div class="infrastructure-interface">
+                    <h4 style="margin-bottom: 1.5rem;">AI Infrastructure Deployment Calculator</h4>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <div class="form-group">
+                                <label class="form-label">Expected AI Workload</label>
+                                <select id="workload-type" class="form-select" onchange="updateDeploymentRecommendation()">
+                                    <option value="">Select workload type...</option>
+                                    <option value="development">Development & Experimentation</option>
+                                    <option value="training">Model Training & Research</option>
+                                    <option value="inference">Production Inference</option>
+                                    <option value="mixed">Mixed Workloads</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Data Sensitivity Level</label>
+                                <select id="data-sensitivity" class="form-select" onchange="updateDeploymentRecommendation()">
+                                    <option value="">Select sensitivity level...</option>
+                                    <option value="public">Public data</option>
+                                    <option value="internal">Internal business data</option>
+                                    <option value="confidential">Confidential data</option>
+                                    <option value="regulated">Highly regulated data</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Budget Range (Monthly)</label>
+                                <select id="budget-range" class="form-select" onchange="updateDeploymentRecommendation()">
+                                    <option value="">Select budget range...</option>
+                                    <option value="startup">Startup Budget ($1K-$10K)</option>
+                                    <option value="growth">Growth Stage ($10K-$50K)</option>
+                                    <option value="scale">Scale Stage ($50K-$200K)</option>
+                                    <option value="enterprise">Enterprise ($200K+)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="form-group">
+                                <label class="form-label">Performance Requirements</label>
+                                <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="low-latency" style="margin-right: 0.5rem;">
+                                        Low Latency (<10ms response)
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="high-throughput" style="margin-right: 0.5rem;">
+                                        High Throughput (>1000 req/sec)
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="gpu-intensive" style="margin-right: 0.5rem;">
+                                        GPU-Intensive Workloads
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="global-distribution" style="margin-right: 0.5rem;">
+                                        Global Distribution Required
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Compliance Requirements</label>
+                                <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="gdpr-compliance" style="margin-right: 0.5rem;">
+                                        GDPR Compliance
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="hipaa-compliance" style="margin-right: 0.5rem;">
+                                        HIPAA Compliance
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="sox-compliance" style="margin-right: 0.5rem;">
+                                        SOX Compliance
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="iso-compliance" style="margin-right: 0.5rem;">
+                                        ISO 27001 Compliance
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 2rem 0;">
+                        <button class="interactive-button" onclick="generateDeploymentPlan()">Generate Deployment Plan</button>
+                        <button class="interactive-button secondary" onclick="calculateTotalCost()">Calculate Total Cost</button>
+                        <button class="interactive-button warning" onclick="compareOptions()">Compare All Options</button>
+                    </div>
+                    
+                    <div id="deployment-results" style="display: none;">
+                        <h4 style="margin-bottom: 1rem;">Recommended Deployment Strategy</h4>
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-value" id="recommended-approach">--</div>
+                                <div class="metric-label">Recommended Approach</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="estimated-cost">--</div>
+                                <div class="metric-label">Estimated Monthly Cost</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="implementation-time">--</div>
+                                <div class="metric-label">Implementation Time</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="scalability-score">--</div>
+                                <div class="metric-label">Scalability Score</div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert info">
+                            <h5 style="margin-bottom: 0.5rem;">Deployment Recommendations</h5>
+                            <p id="deployment-recommendations"><!-- Recommendations will be populated here --></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cost Optimization Strategies -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">💰</div>
+                <h2 class="section-title">AI Infrastructure Cost Optimization</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">AI infrastructure costs can quickly escalate without proper optimization strategies. Implementing intelligent cost management can reduce infrastructure expenses by 40-60% while maintaining performance and reliability.</p>
+            
+            <div class="cost-calculator">
+                <h4 style="margin-bottom: 1rem;">Cost Optimization Framework</h4>
+                
+                <div class="calculator-item">
+                    <div class="calculator-icon compute">C</div>
+                    <div>
+                        <strong>Compute Optimization:</strong> Right-sizing instances, spot instances for training, reserved capacity for production
+                        <br><em>Potential Savings: 50-70% on training costs, 30-40% on inference costs</em>
+                    </div>
+                </div>
+                
+                <div class="calculator-item">
+                    <div class="calculator-icon storage">S</div>
+                    <div>
+                        <strong>Storage Optimization:</strong> Intelligent tiering, data lifecycle management, compression strategies
+                        <br><em>Potential Savings: 40-60% on storage costs, improved data access performance</em>
+                    </div>
+                </div>
+                
+                <div class="calculator-item">
+                    <div class="calculator-icon network">N</div>
+                    <div>
+                        <strong>Network Optimization:</strong> Data locality, CDN utilization, bandwidth optimization
+                        <br><em>Potential Savings: 30-50% on data transfer costs, reduced latency</em>
+                    </div>
+                </div>
+                
+                <div class="calculator-item">
+                    <div class="calculator-icon platform">P</div>
+                    <div>
+                        <strong>Platform Optimization:</strong> Multi-cloud strategies, vendor negotiations, usage monitoring
+                        <br><em>Potential Savings: 20-40% on platform costs, improved vendor relationships</em>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="infrastructure-diagram">
+# Cost Optimization Implementation Strategy
+
+## [Compute Cost Optimization](pplx://action/followup)
+COMPUTE_STRATEGY = {
+    "training_workloads": {
+        "primary": "spot_instances",
+        "savings": "60-70%",
+        "fallback": "on_demand_for_critical_jobs",
+        "scheduling": "off_peak_hours"
+    },
+    "inference_workloads": {
+        "primary": "reserved_instances",
+        "savings": "30-40%",
+        "auto_scaling": "demand_based",
+        "right_sizing": "continuous_monitoring"
+    }
+}
+
+## [Storage Cost Optimization](pplx://action/followup)
+STORAGE_STRATEGY = {
+    "hot_data": {
+        "tier": "high_performance_ssd",
+        "retention": "30_days",
+        "access_pattern": "frequent"
+    },
+    "warm_data": {
+        "tier": "standard_storage",
+        "retention": "90_days",
+        "access_pattern": "occasional"
+    },
+    "cold_data": {
+        "tier": "archive_storage",
+        "retention": "7_years",
+        "access_pattern": "rare"
+    }
+}
+
+## [Network Cost Optimization](pplx://action/followup)
+NETWORK_STRATEGY = {
+    "data_locality": {
+        "compute_storage_colocation": True,
+        "regional_data_centers": True,
+        "edge_caching": True
+    },
+    "bandwidth_optimization": {
+        "compression": "gzip_brotli",
+        "cdn_utilization": "global_distribution",
+        "traffic_shaping": "qos_policies"
+    }
+}
+
+## [Monitoring and Alerting](pplx://action/followup)
+COST_MONITORING = {
+    "budget_alerts": {
+        "threshold_80_percent": "email_notification",
+        "threshold_95_percent": "slack_alert",
+        "threshold_100_percent": "auto_scaling_pause"
+    },
+    "usage_analytics": {
+        "daily_reports": "cost_breakdown",
+        "weekly_analysis": "trend_identification",
+        "monthly_review": "optimization_recommendations"
+    }
+}
+
+## [Expected Cost Savings](pplx://action/followup)
+TOTAL_SAVINGS = {
+    "compute": "50-70%",
+    "storage": "40-60%",
+    "network": "30-50%",
+    "overall": "45-65%",
+    "payback_period": "2-3_months"
+}
+            </div>
+            <button class="copy-button" onclick="copyOptimizationStrategy(this)">Copy Optimization Strategy</button>
+        </div>
+
+        <!-- Security and Compliance Framework -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🔒</div>
+                <h2 class="section-title">Security and Compliance Framework</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">AI infrastructure security requires comprehensive protection across data, models, and infrastructure layers. Compliance frameworks ensure adherence to regulations like GDPR, HIPAA, and emerging AI-specific legislation.</p>
+            
+            <div class="requirements-matrix">
+                <h4 style="margin-bottom: 1rem;">Security Requirements Matrix</h4>
+                
+                <div class="requirements-row">
+                    <div><strong>Security Component</strong></div>
+                    <div><strong>Startup</strong></div>
+                    <div><strong>Growth</strong></div>
+                    <div><strong>Enterprise</strong></div>
+                </div>
+                
+                <div class="requirements-row">
+                    <div><strong>Data Encryption</strong></div>
+                    <div class="requirement-status status-essential">Essential</div>
+                    <div class="requirement-status status-essential">Essential</div>
+                    <div class="requirement-status status-essential">Essential</div>
+                </div>
+                
+                <div class="requirements-row">
+                    <div><strong>Access Control (RBAC)</strong></div>
+                    <div class="requirement-status status-recommended">Recommended</div>
+                    <div class="requirement-status status-essential">Essential</div>
+                    <div class="requirement-status status-essential">Essential</div>
+                </div>
+                
+                <div class="requirements-row">
+                    <div><strong>Network Security</strong></div>
+                    <div class="requirement-status status-essential">Essential</div>
+                    <div class="requirement-status status-essential">Essential</div>
+                    <div class="requirement-status status-essential">Essential</div>
+                </div>
+                
+                <div class="requirements-row">
+                    <div><strong>Audit Logging</strong></div>
+                    <div class="requirement-status status-recommended">Recommended</div>
+                    <div class="requirement-status status-essential">Essential</div>
+                    <div class="requirement-status status-essential">Essential</div>
+                </div>
+                
+                <div class="requirements-row">
+                    <div><strong>Model Security</strong></div>
+                    <div class="requirement-status status-optional">Optional</div>
+                    <div class="requirement-status status-recommended">Recommended</div>
+                    <div class="requirement-status status-essential">Essential</div>
+                </div>
+                
+                <div class="requirements-row">
+                    <div><strong>Compliance Automation</strong></div>
+                    <div class="requirement-status status-future">Future</div>
+                    <div class="requirement-status status-recommended">Recommended</div>
+                    <div class="requirement-status status-essential">Essential</div>
+                </div>
+                
+                <div class="requirements-row">
+                    <div><strong>Threat Detection</strong></div>
+                    <div class="requirement-status status-optional">Optional</div>
+                    <div class="requirement-status status-recommended">Recommended</div>
+                    <div class="requirement-status status-essential">Essential</div>
+                </div>
+                
+                <div class="requirements-row">
+                    <div><strong>Incident Response</strong></div>
+                    <div class="requirement-status status-recommended">Recommended</div>
+                    <div class="requirement-status status-essential">Essential</div>
+                    <div class="requirement-status status-essential">Essential</div>
+                </div>
+            </div>
+            
+            <div class="alert warning">
+                <h5 style="margin-bottom: 0.5rem;">Emerging AI Compliance Requirements</h5>
+                <p>The EU AI Act (2024) introduces new compliance requirements for AI systems, including risk assessment, documentation, and human oversight requirements. Organizations must prepare for similar regulations in other jurisdictions.</p>
+            </div>
+        </div>
+
+        <!-- Implementation Timeline -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">📅</div>
+                <h2 class="section-title">Infrastructure Implementation Timeline</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Systematic infrastructure implementation reduces risk and ensures proper foundation for AI workloads. This phased approach enables learning and optimization at each stage.</p>
+            
+            <div class="deployment-timeline">
+                <h4 style="margin-bottom: 1.5rem;">12-Month Infrastructure Deployment Plan</h4>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker">1</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Foundation Setup (Months 1-2)</div>
+                        <div class="timeline-description">
+                            <strong>Core Infrastructure:</strong> Basic cloud setup, networking, security foundations, monitoring systems
+                            <br><strong>Deliverables:</strong> VPC configuration, IAM policies, basic compute instances, monitoring dashboards
+                            <br><strong>Success Criteria:</strong> Secure, monitored environment ready for AI workloads
+                        </div>
+                        <div class="timeline-duration">8 weeks</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker">2</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">AI Platform Integration (Months 3-4)</div>
+                        <div class="timeline-description">
+                            <strong>AI Services:</strong> GPU clusters, ML platforms, data pipelines, model repositories
+                            <br><strong>Deliverables:</strong> Kubernetes cluster, MLOps pipeline, data storage systems, CI/CD integration
+                            <br><strong>Success Criteria:</strong> Functional AI development and deployment environment
+                        </div>
+                        <div class="timeline-duration">8 weeks</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker">3</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Production Optimization (Months 5-7)</div>
+                        <div class="timeline-description">
+                            <strong>Performance Tuning:</strong> Auto-scaling, cost optimization, performance monitoring, security hardening
+                            <br><strong>Deliverables:</strong> Optimized configurations, cost controls, performance baselines, security audits
+                            <br><strong>Success Criteria:</strong> Production-ready environment with optimized performance and costs
+                        </div>
+                        <div class="timeline-duration">12 weeks</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker">4</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Scale and Advanced Features (Months 8-12)</div>
+                        <div class="timeline-description">
+                            <strong>Enterprise Features:</strong> Multi-region deployment, advanced security, compliance automation, disaster recovery
+                            <br><strong>Deliverables:</strong> Global infrastructure, compliance frameworks, backup systems, advanced monitoring
+                            <br><strong>Success Criteria:</strong> Enterprise-grade infrastructure supporting global operations
+                        </div>
+                        <div class="timeline-duration">20 weeks</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Monitoring and Optimization -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <h2 class="section-title">Performance Monitoring and Optimization</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Continuous performance monitoring ensures AI infrastructure operates efficiently while identifying optimization opportunities. Real-time metrics enable proactive issue resolution and capacity planning.</p>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value" style="color: #10b981;">99.7%</div>
+                    <div class="metric-label">Infrastructure Uptime</div>
+                    <div style="font-size: 0.75rem; color: #10b981; margin-top: 0.25rem;">↑ 0.2% vs last month</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" style="color: #06b6d4;">2.3s</div>
+                    <div class="metric-label">Avg Model Inference Time</div>
+                    <div style="font-size: 0.75rem; color: #06b6d4; margin-top: 0.25rem;">↓ 0.4s vs baseline</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" style="color: #10b981;">87%</div>
+                    <div class="metric-label">GPU Utilization</div>
+                    <div style="font-size: 0.75rem; color: #10b981; margin-top: 0.25rem;">↑ 12% vs last week</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" style="color: #f59e0b;">$12.4K</div>
+                    <div class="metric-label">Monthly Infrastructure Cost</div>
+                    <div style="font-size: 0.75rem; color: #f59e0b; margin-top: 0.25rem;">↓ $2.1K vs projected</div>
+                </div>
+            </div>
+            
+            <div class="alert success">
+                <h5 style="margin-bottom: 0.5rem;">Infrastructure Performance Summary</h5>
+                <p>Your AI infrastructure is performing excellently with high uptime, optimized costs, and efficient resource utilization. Continue monitoring GPU utilization patterns to identify further optimization opportunities.</p>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">💡</div>
+                <h2 class="section-title">Key Takeaways</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                <div class="alert success">
+                    <h4 style="margin-bottom: 0.5rem;">AI-Optimized Architecture</h4>
+                    <p>Properly designed AI infrastructure reduces training costs by 60% and improves model performance by 40%. Specialized compute, storage, and networking are essential for AI workload success.</p>
+                </div>
+                
+                <div class="alert info">
+                    <h4 style="margin-bottom: 0.5rem;">Cost Optimization Impact</h4>
+                    <p>Intelligent cost management strategies can reduce infrastructure expenses by 45-65% while maintaining performance. Right-sizing, spot instances, and intelligent tiering are key optimization techniques.</p>
+                </div>
+                
+                <div class="alert warning">
+                    <h4 style="margin-bottom: 0.5rem;">Security and Compliance</h4>
+                    <p>AI infrastructure security requires comprehensive protection across data, models, and infrastructure layers. Emerging AI regulations like the EU AI Act introduce new compliance requirements for AI systems.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleContent(elementId) {
+            const element = document.getElementById(elementId);
+            if (element.style.display === 'none' || element.style.display === '') {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        }
+        
+        function copyInfrastructureCode(button) {
+            const code = button.previousElementSibling.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                button.textContent = 'Copied!';
+                button.style.background = '#10b981';
+                setTimeout(() => {
+                    button.textContent = 'Copy Compute Configuration';
+                    button.style.background = '#64748b';
+                }, 2000);
+            });
+        }
+        
+        function copyOptimizationStrategy(button) {
+            const strategy = button.previousElementSibling.textContent;
+            navigator.clipboard.writeText(strategy).then(() => {
+                button.textContent = 'Copied!';
+                button.style.background = '#10b981';
+                setTimeout(() => {
+                    button.textContent = 'Copy Optimization Strategy';
+                    button.style.background = '#64748b';
+                }, 2000);
+            });
+        }
+        
+        function updateDeploymentRecommendation() {
+            const workloadType = document.getElementById('workload-type').value;
+            const dataSensitivity = document.getElementById('data-sensitivity').value;
+            const budgetRange = document.getElementById('budget-range').value;
+            
+            if (!workloadType || !dataSensitivity || !budgetRange) {
+                return;
+            }
+            
+            // Show results section
+            document.getElementById('deployment-results').style.display = 'block';
+            
+            // Generate recommendation based on inputs
+            let recommendation = 'Hybrid Cloud';
+            let cost = '$15,000';
+            let timeline = '8-12 weeks';
+            let scalability = '8.5/10';
+            let details = '';
+            
+            if (dataSensitivity === 'regulated' || dataSensitivity === 'confidential') {
+                recommendation = 'Private Cloud';
+                cost = '$25,000';
+                timeline = '12-16 weeks';
+                scalability = '7.5/10';
+                details = 'High security requirements suggest private cloud deployment with enhanced compliance controls.';
+            } else if (budgetRange === 'startup' && workloadType === 'development') {
+                recommendation = 'Public Cloud';
+                cost = '$5,000';
+                timeline = '4-6 weeks';
+                scalability = '9.5/10';
+                details = 'Startup budget and development workloads are well-suited for public cloud with pay-as-you-go pricing.';
+            } else if (workloadType === 'training' || workloadType === 'mixed') {
+                recommendation = 'Hybrid Cloud';
+                cost = '$18,000';
+                timeline = '8-10 weeks';
+                scalability = '9.0/10';
+                details = 'Mixed workloads benefit from hybrid approach: cloud for training flexibility, on-premises for sensitive data.';
+            }
+            
+            document.getElementById('recommended-approach').textContent = recommendation;
+            document.getElementById('estimated-cost').textContent = cost;
+            document.getElementById('implementation-time').textContent = timeline;
+            document.getElementById('scalability-score').textContent = scalability;
+            document.getElementById('deployment-recommendations
+        </script>
+    </body>
+  </html>  

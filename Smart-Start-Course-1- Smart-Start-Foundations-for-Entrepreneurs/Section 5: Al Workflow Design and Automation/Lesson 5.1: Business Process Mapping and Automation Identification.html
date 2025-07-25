@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Process Mapping and Automation Identification</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #334155;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        .header {
+            background: #28263a;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(6, 182, 212, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .lesson-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .lesson-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #10b981);
+            width: 68.6%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .interactive-button {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .interactive-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3);
+        }
+        
+        .interactive-button.secondary {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .interactive-button.secondary:hover {
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .interactive-button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .interactive-button.warning:hover {
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+        }
+        
+        .interactive-button.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .interactive-button.danger:hover {
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+        }
+        
+        .hidden-content {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #06b6d4;
+        }
+        
+        .process-framework {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .process-framework:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .framework-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .automation-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .efficiency-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .process-diagram {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .mapping-interface {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 2px dashed #06b6d4;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            resize: vertical;
+            font-size: 0.95rem;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: white;
+        }
+        
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .step-container {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 1.1rem;
+        }
+        
+        .step-content {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .process-canvas {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            min-height: 400px;
+            position: relative;
+        }
+        
+        .process-node {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        .process-node:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3);
+        }
+        
+        .process-node.decision {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .process-node.automation {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid;
+        }
+        
+        .alert.success {
+            background: #f0fdf4;
+            border-color: #10b981;
+            color: #065f46;
+        }
+        
+        .alert.warning {
+            background: #fffbeb;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+        
+        .alert.info {
+            background: #eff6ff;
+            border-color: #06b6d4;
+            color: #0c4a6e;
+        }
+        
+        .alert.danger {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .comparison-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .copy-button {
+            background: #64748b;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .copy-button:hover {
+            background: #475569;
+        }
+        
+        .automation-score {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .score-high {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .score-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .score-low {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .process-filter {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .filter-button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-button.active {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border-color: #0891b2;
+        }
+        
+        .filter-button:hover {
+            border-color: #06b6d4;
+        }
+        
+        .progress-indicator {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+        
+        .progress-fill-animated {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #10b981);
+            border-radius: 3px;
+            transition: width 2s ease;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="lesson-title">Business Process Mapping and Automation Identification</h1>
+            <p class="lesson-subtitle">Section 5.1 • Map existing processes and identify high-value automation opportunities</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">Progress: 68.6% Complete</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Learning Objectives -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2 class="section-title">Learning Objectives</h2>
+            </div>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Master systematic business process mapping methodologies using AI-powered tools
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Identify high-value automation opportunities through data-driven analysis
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Apply automation scoring frameworks to prioritize implementation efforts
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Design end-to-end process optimization strategies with measurable ROI
+                </li>
+            </ul>
+        </div>
+
+        <!-- Process Mapping Fundamentals -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🗺️</div>
+                <h2 class="section-title">AI-Powered Process Mapping Framework</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Modern business process mapping leverages artificial intelligence to automatically identify, document, and optimize workflows with unprecedented accuracy and speed. AI-driven process mapping reduces manual effort by 70% while improving accuracy and identifying optimization opportunities that traditional methods miss.</p>
+
+            <div class="process-grid">
+                <div class="process-framework">
+                    <h3 class="framework-title">
+                        Automated Process Discovery
+                        <span class="automation-badge">AI-Powered</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">AI tools automatically extract process workflows from system logs, user interactions, and data flows, creating comprehensive process maps without manual documentation.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• System log analysis and pattern recognition</li>
+                        <li style="padding: 0.25rem 0;">• User behavior tracking and workflow extraction</li>
+                        <li style="padding: 0.25rem 0;">• Cross-system integration mapping</li>
+                        <li style="padding: 0.25rem 0;">• Real-time process visualization</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('automated-discovery')">Explore AI Discovery</button>
+                </div>
+
+                <div class="process-framework">
+                    <h3 class="framework-title">
+                        Bottleneck Detection
+                        <span class="efficiency-badge">Real-time Analysis</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Machine learning algorithms identify process bottlenecks, inefficiencies, and optimization opportunities through continuous monitoring and analysis.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Queue time analysis and wait detection</li>
+                        <li style="padding: 0.25rem 0;">• Resource utilization optimization</li>
+                        <li style="padding: 0.25rem 0;">• Capacity constraint identification</li>
+                        <li style="padding: 0.25rem 0;">• Performance trend analysis</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('bottleneck-detection')">Analyze Bottlenecks</button>
+                </div>
+
+                <div class="process-framework">
+                    <h3 class="framework-title">
+                        Automation Scoring
+                        <span class="automation-badge">Smart Prioritization</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">AI-driven scoring systems evaluate processes across multiple dimensions to identify the highest-value automation opportunities with measurable ROI potential.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Complexity assessment and feasibility scoring</li>
+                        <li style="padding: 0.25rem 0;">• ROI calculation and impact analysis</li>
+                        <li style="padding: 0.25rem 0;">• Risk evaluation and mitigation planning</li>
+                        <li style="padding: 0.25rem 0;">• Implementation timeline estimation</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('automation-scoring')">Calculate Scores</button>
+                </div>
+
+                <div class="process-framework">
+                    <h3 class="framework-title">
+                        Continuous Optimization
+                        <span class="efficiency-badge">Adaptive Learning</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Self-improving systems that continuously monitor process performance and automatically suggest optimizations based on changing business conditions.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Performance monitoring and alerting</li>
+                        <li style="padding: 0.25rem 0;">• Adaptive process recommendations</li>
+                        <li style="padding: 0.25rem 0;">• Predictive maintenance scheduling</li>
+                        <li style="padding: 0.25rem 0;">• Automated improvement implementation</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('continuous-optimization')">Monitor Performance</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Automated Discovery Details -->
+        <div id="automated-discovery" class="hidden-content">
+            <div class="content-section">
+                <div class="section-header">
+                    <div class="section-icon">🤖</div>
+                    <h2 class="section-title">Automated Process Discovery Implementation</h2>
+                </div>
+                
+                <p style="margin-bottom: 1.5rem;">AI-powered process discovery transforms how organizations understand their workflows by automatically extracting process information from existing systems and user interactions.</p>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Data Collection Setup</div>
+                    </div>
+                    <div class="step-content">
+                        Configure AI tools to collect data from multiple sources including ERP systems, CRM platforms, email communications, and user activity logs. This creates a comprehensive data foundation for process analysis.
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Pattern Recognition</div>
+                    </div>
+                    <div class="step-content">
+                        Machine learning algorithms analyze collected data to identify recurring patterns, workflow sequences, and process dependencies. This reveals actual process flows versus documented procedures.
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Process Visualization</div>
+                    </div>
+                    <div class="step-content">
+                        AI generates interactive process maps that visualize discovered workflows, showing process steps, decision points, handoffs, and performance metrics in real-time.
+                    </div>
+                </div>
+                
+                <div class="step-container">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Validation and Refinement</div>
+                    </div>
+                    <div class="step-content">
+                        Stakeholder review and validation of discovered processes, with AI continuously refining accuracy based on feedback and additional data sources.
+                    </div>
+                </div>
+                
+                <div class="process-diagram">
+# AI Process Discovery Example: Customer Onboarding
+
+## [Data Sources Analyzed:](pplx://action/followup)
+- CRM system interactions (Salesforce, HubSpot)
+- Email communication patterns
+- Document management system usage
+- Task completion timestamps
+- User login/logout patterns
+
+## [Discovered Process Flow:](pplx://action/followup)
+1. Lead Capture → CRM Entry (Avg: 2.3 hours)
+2. Initial Contact → Email/Phone (Avg: 4.7 hours)
+3. Qualification → Meeting Scheduling (Avg: 1.2 days)
+4. Proposal Creation → Document Generation (Avg: 3.1 days)
+5. Contract Negotiation → Multiple Iterations (Avg: 5.8 days)
+6. Onboarding Setup → Account Creation (Avg: 2.1 days)
+
+## [AI-Identified Bottlenecks:](pplx://action/followup)
+- Proposal creation: 67% of total cycle time
+- Manual document review: 23% delay factor
+- Approval workflows: 34% waiting time
+
+## [Optimization Opportunities:](pplx://action/followup)
+- Automated proposal generation: 60% time reduction
+- Digital signature integration: 40% faster contracts
+- Parallel approval workflows: 50% cycle time improvement
+                </div>
+                <button class="copy-button" onclick="copyProcessDiagram(this)">Copy Process Analysis</button>
+            </div>
+        </div>
+
+        <!-- Automation Opportunity Assessment -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🔍</div>
+                <h2 class="section-title">High-Value Automation Opportunity Assessment</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Systematic evaluation of business processes to identify automation opportunities with the highest potential for ROI, efficiency gains, and strategic impact.</p>
+            
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Process Category</th>
+                            <th>Automation Potential</th>
+                            <th>Implementation Complexity</th>
+                            <th>Expected ROI</th>
+                            <th>Priority Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Data Entry & Processing</strong></td>
+                            <td>95%</td>
+                            <td>Low</td>
+                            <td>300-500%</td>
+                            <td><span class="automation-score score-high">High</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Document Management</strong></td>
+                            <td>85%</td>
+                            <td>Medium</td>
+                            <td>200-400%</td>
+                            <td><span class="automation-score score-high">High</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Customer Communications</strong></td>
+                            <td>70%</td>
+                            <td>Medium</td>
+                            <td>150-300%</td>
+                            <td><span class="automation-score score-medium">Medium</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Financial Reporting</strong></td>
+                            <td>80%</td>
+                            <td>High</td>
+                            <td>250-450%</td>
+                            <td><span class="automation-score score-medium">Medium</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Quality Assurance</strong></td>
+                            <td>60%</td>
+                            <td>High</td>
+                            <td>100-250%</td>
+                            <td><span class="automation-score score-low">Low</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Strategic Planning</strong></td>
+                            <td>40%</td>
+                            <td>Very High</td>
+                            <td>50-150%</td>
+                            <td><span class="automation-score score-low">Low</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <button class="interactive-button" onclick="toggleContent('assessment-framework')">Launch Assessment Framework</button>
+            
+            <div id="assessment-framework" class="hidden-content">
+                <h4>Automation Opportunity Scoring Framework</h4>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin: 1rem 0;">
+                    <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h5 style="color: #1e293b; margin-bottom: 0.5rem;">📊 Volume & Frequency</h5>
+                        <p><strong>High Priority:</strong> Daily/hourly tasks with >100 instances per month</p>
+                        <p><strong>Medium Priority:</strong> Weekly tasks with 20-100 instances</p>
+                        <p><strong>Low Priority:</strong> Monthly tasks with <20 instances</p>
+                    </div>
+                    <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h5 style="color: #1e293b; margin-bottom: 0.5rem;">🎯 Standardization Level</h5>
+                        <p><strong>High Priority:</strong> Highly standardized, rule-based processes</p>
+                        <p><strong>Medium Priority:</strong> Semi-standardized with clear guidelines</p>
+                        <p><strong>Low Priority:</strong> Creative or highly variable processes</p>
+                    </div>
+                    <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h5 style="color: #1e293b; margin-bottom: 0.5rem;">⚡ Error Reduction Potential</h5>
+                        <p><strong>High Priority:</strong> >20% current error rate, high impact</p>
+                        <p><strong>Medium Priority:</strong> 5-20% error rate, medium impact</p>
+                        <p><strong>Low Priority:</strong> <5% error rate, low impact</p>
+                    </div>
+                    <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h5 style="color: #1e293b; margin-bottom: 0.5rem;">💰 Resource Investment</h5>
+                        <p><strong>High Priority:</strong> High labor costs, simple technology needs</p>
+                        <p><strong>Medium Priority:</strong> Medium costs, moderate complexity</p>
+                        <p><strong>Low Priority:</strong> Low costs, complex technology requirements</p>
+                    </div>
+                </div>
+                
+                <div class="alert info">
+                    <h5 style="margin-bottom: 0.5rem;">Automation Success Formula</h5>
+                    <p><strong>Automation Score = (Volume × Standardization × Error Impact) / Implementation Complexity</strong></p>
+                    <p>Processes scoring >75 are prime automation candidates with expected ROI >200%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Process Mapping Tool -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🛠️</div>
+                <h2 class="section-title">Interactive Process Mapping Workshop</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Map your business processes and identify automation opportunities using our AI-powered analysis tool.</p>
+            
+            <div class="mapping-interface">
+                <h3 style="margin-bottom: 1.5rem;">Business Process Mapper</h3>
+                
+                <div class="form-group">
+                    <label class="form-label">Select Business Function</label>
+                    <select id="business-function" class="form-select" onchange="loadProcessTemplates()">
+                        <option value="">Choose a business function...</option>
+                        <option value="sales">Sales & Lead Management</option>
+                        <option value="customer-service">Customer Service & Support</option>
+                        <option value="finance">Finance & Accounting</option>
+                        <option value="hr">Human Resources</option>
+                        <option value="operations">Operations & Fulfillment</option>
+                        <option value="marketing">Marketing & Content</option>
+                    </select>
+                </div>
+                
+                <div id="process-templates" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Specific Process</label>
+                        <select id="specific-process" class="form-select" onchange="loadProcessDetails()">
+                            <!-- Options will be populated based on business function -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Current Process Description</label>
+                        <textarea id="process-description" class="form-textarea" placeholder="Describe your current process in detail..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Process Characteristics</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <label class="form-label">Frequency</label>
+                                <select id="process-frequency" class="form-select">
+                                    <option value="hourly">Multiple times per hour</option>
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="quarterly">Quarterly</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="form-label">Complexity Level</label>
+                                <select id="process-complexity" class="form-select">
+                                    <option value="simple">Simple (1-3 steps)</option>
+                                    <option value="moderate">Moderate (4-7 steps)</option>
+                                    <option value="complex">Complex (8-15 steps)</option>
+                                    <option value="very-complex">Very Complex (15+ steps)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Pain Points & Challenges</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" id="time-consuming" style="margin-right: 0.5rem;">
+                                Time-consuming manual work
+                            </label>
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" id="error-prone" style="margin-right: 0.5rem;">
+                                High error rates
+                            </label>
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" id="bottlenecks" style="margin-right: 0.5rem;">
+                                Process bottlenecks
+                            </label>
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" id="inconsistent" style="margin-right: 0.5rem;">
+                                Inconsistent execution
+                            </label>
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" id="resource-intensive" style="margin-right: 0.5rem;">
+                                Resource intensive
+                            </label>
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" id="poor-visibility" style="margin-right: 0.5rem;">
+                                Poor process visibility
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 2rem 0;">
+                        <button class="interactive-button" onclick="analyzeProcess()">Analyze Process</button>
+                        <button class="interactive-button secondary" onclick="generateProcessMap()">Generate Process Map</button>
+                        <button class="interactive-button warning" onclick="calculateAutomationScore()">Calculate Automation Score</button>
+                    </div>
+                    
+                    <div id="process-analysis-results" style="display: none;">
+                        <h4 style="margin-bottom: 1rem;">Process Analysis Results</h4>
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-value" id="automation-potential">--</div>
+                                <div class="metric-label">Automation Potential</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="roi-estimate">--</div>
+                                <div class="metric-label">Estimated ROI</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="implementation-time">--</div>
+                                <div class="metric-label">Implementation Time</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="priority-score">--</div>
+                                <div class="metric-label">Priority Score</div>
+                            </div>
+                        </div>
+                        
+                        <div id="automation-recommendations" class="alert success" style="display: none;">
+                            <h5 style="margin-bottom: 0.5rem;">Automation Recommendations</h5>
+                            <p id="recommendations-text"><!-- Recommendations will be populated here --></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Process Visualization Canvas -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🎨</div>
+                <h2 class="section-title">Process Visualization Canvas</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Interactive canvas for visualizing and optimizing your business processes with AI-powered recommendations.</p>
+            
+            <div class="process-filter">
+                <button class="filter-button active" onclick="filterProcesses('all')">All Processes</button>
+                <button class="filter-button" onclick="filterProcesses('high-automation')">High Automation Potential</button>
+                <button class="filter-button" onclick="filterProcesses('quick-wins')">Quick Wins</button>
+                <button class="filter-button" onclick="filterProcesses('complex')">Complex Processes</button>
+            </div>
+            
+            <div class="process-canvas" id="process-canvas">
+                <div style="text-align: center; color: #64748b; margin-top: 8rem;">
+                    <h4>Process Canvas</h4>
+                    <p>Select a business function above to generate your process map</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 1rem;">
+                <div class="progress-indicator">
+                    <div class="progress-fill-animated" id="mapping-progress" style="width: 0%"></div>
+                </div>
+                <p style="text-align: center; color: #64748b; margin-top: 0.5rem;">Process Mapping Progress</p>
+            </div>
+        </div>
+
+        <!-- Automation Prioritization Framework -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">📋</div>
+                <h2 class="section-title">Automation Prioritization Framework</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Strategic framework for prioritizing automation initiatives based on business impact, implementation feasibility, and resource requirements.</p>
+            
+            <div class="process-grid">
+                <div class="process-framework">
+                    <h3 class="framework-title">
+                        Quick Wins
+                        <span class="automation-badge">0-3 Months</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">High-impact, low-complexity automations that deliver immediate value and build momentum for larger initiatives.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Email automation and scheduling</li>
+                        <li style="padding: 0.25rem 0;">• Data entry and form processing</li>
+                        <li style="padding: 0.25rem 0;">• Report generation and distribution</li>
+                        <li style="padding: 0.25rem 0;">• Basic customer communications</li>
+                    </ul>
+                    <div style="margin-top: 1rem;">
+                        <strong>Expected ROI:</strong> 200-400%<br>
+                        <strong>Implementation Cost:</strong> $5,000-$15,000
+                    </div>
+                </div>
+                
+                <div class="process-framework">
+                    <h3 class="framework-title">
+                        Strategic Improvements
+                        <span class="efficiency-badge">3-6 Months</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Medium-complexity automations that significantly improve operational efficiency and customer experience.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Customer onboarding workflows</li>
+                        <li style="padding: 0.25rem 0;">• Invoice processing and approval</li>
+                        <li style="padding: 0.25rem 0;">• Inventory management optimization</li>
+                        <li style="padding: 0.25rem 0;">• Quality assurance processes</li>
+                    </ul>
+                    <div style="margin-top: 1rem;">
+                        <strong>Expected ROI:</strong> 300-600%<br>
+                        <strong>Implementation Cost:</strong> $15,000-$50,000
+                    </div>
+                </div>
+                
+                <div class="process-framework">
+                    <h3 class="framework-title">
+                        Transformational Projects
+                        <span class="automation-badge">6-12 Months</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Complex, high-impact automations that fundamentally transform business operations and competitive positioning.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• End-to-end customer journey automation</li>
+                        <li style="padding: 0.25rem 0;">• Predictive analytics and forecasting</li>
+                        <li style="padding: 0.25rem 0;">• Intelligent document processing</li>
+                        <li style="padding: 0.25rem 0;">• Advanced decision support systems</li>
+                    </ul>
+                    <div style="margin-top: 1rem;">
+                        <strong>Expected ROI:</strong> 400-800%<br>
+                        <strong>Implementation Cost:</strong> $50,000-$200,000
+                    </div>
+                </div>
+            </div>
+            
+            <button class="interactive-button" onclick="toggleContent('prioritization-calculator')">Launch Prioritization Calculator</button>
+            
+            <div id="prioritization-calculator" class="hidden-content">
+                <h4>Automation Prioritization Calculator</h4>
+                
+                <div class="mapping-interface">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h5 style="margin-bottom: 1rem;">Process Evaluation</h5>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Business Impact (1-10)</label>
+                                <input type="range" id="business-impact" min="1" max="10" value="5" class="form-input" oninput="updatePrioritization()">
+                                <div style="text-align: center; margin-top: 0.5rem;">
+                                    <span id="impact-value">5</span>/10
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Implementation Ease (1-10)</label>
+                                <input type="range" id="implementation-ease" min="1" max="10" value="5" class="form-input" oninput="updatePrioritization()">
+                                <div style="text-align: center; margin-top: 0.5rem;">
+                                    <span id="ease-value">5</span>/10
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Resource Availability (1-10)</label>
+                                <input type="range" id="resource-availability" min="1" max="10" value="5" class="form-input" oninput="updatePrioritization()">
+                                <div style="text-align: center; margin-top: 0.5rem;">
+                                    <span id="resource-value">5</span>/10
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h5 style="margin-bottom: 1rem;">Prioritization Results</h5>
+                            
+                            <div class="metric-card">
+                                <div class="metric-value" id="priority-score-calc">50</div>
+                                <div class="metric-label">Priority Score</div>
+                            </div>
+                            
+                            <div style="margin-top: 1rem;">
+                                <div class="alert" id="priority-recommendation">
+                                    <h6 style="margin-bottom: 0.5rem;">Recommendation</h6>
+                                    <p id="priority-text">Medium priority - Consider for next planning cycle</p>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 1rem;">
+                                <h6 style="margin-bottom: 0.5rem;">Suggested Timeline:</h6>
+                                <p id="timeline-suggestion">3-6 months implementation</p>
+                                
+                                <h6 style="margin-bottom: 0.5rem; margin-top: 1rem;">Estimated Investment:</h6>
+                                <p id="investment-estimate">$15,000 - $50,000</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">💡</div>
+                <h2 class="section-title">Key Takeaways</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                <div class="alert success">
+                    <h4 style="margin-bottom: 0.5rem;">AI-Powered Mapping</h4>
+                    <p>AI-driven process mapping reduces documentation time by 70% while identifying optimization opportunities that manual methods miss, enabling data-driven automation decisions.</p>
+                </div>
+                
+                <div class="alert info">
+                    <h4 style="margin-bottom: 0.5rem;">Strategic Prioritization</h4>
+                    <p>Systematic automation scoring frameworks help prioritize initiatives based on ROI potential, implementation complexity, and business impact for maximum value delivery.</p>
+                </div>
+                
+                <div class="alert warning">
+                    <h4 style="margin-bottom: 0.5rem;">Continuous Optimization</h4>
+                    <p>Process mapping is an ongoing activity that requires regular updates and optimization. AI tools enable continuous monitoring and improvement of automated workflows.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleContent(elementId) {
+            const element = document.getElementById(elementId);
+            if (element.style.display === 'none' || element.style.display === '') {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        }
+        
+        function copyProcessDiagram(button) {
+            const diagram = button.previousElementSibling.textContent;
+            navigator.clipboard.writeText(diagram).then(() => {
+                button.textContent = 'Copied!';
+                button.style.background = '#10b981';
+                setTimeout(() => {
+                    button.textContent = 'Copy Process Analysis';
+                    button.style.background = '#64748b';
+                }, 2000);
+            });
+        }
+        
+        function loadProcessTemplates() {
+            const businessFunction = document.getElementById('business-function').value;
+            const specificProcess = document.getElementById('specific-process');
+            const templatesDiv = document.getElementById('process-templates');
+            
+            if (businessFunction) {
+                templatesDiv.style.display = 'block';
+                
+                const processOptions = {
+                    'sales': [
+                        'Lead qualification and scoring',
+                        'Proposal generation and approval',
+                        'Contract negotiation and signing',
+                        'Customer onboarding',
+                        'Sales pipeline management'
+                    ],
+                    'customer-service': [
+                        'Ticket routing and assignment',
+                        'Customer inquiry response',
+                        'Escalation management',
+                        'Knowledge base maintenance',
+                        'Customer satisfaction tracking'
+                    ],
+                    'finance': [
+                        'Invoice processing and approval',
+                        'Expense report management',
+                        'Financial reporting and analysis',
+                        'Budget planning and tracking',
+                        'Accounts receivable management'
+                    ],
+                    'hr': [
+                        'Employee onboarding',
+                        'Performance review process',
+                        'Leave request management',
+                        'Recruitment and hiring',
+                        'Training and development'
+                    ],
+                    'operations': [
+                        'Order processing and fulfillment',
+                        'Inventory management',
+                        'Quality control processes',
+                        'Vendor management',
+                        'Supply chain optimization'
+                    ],
+                    'marketing': [
+                        'Content creation and approval',
+                        'Campaign management',
+                        'Lead nurturing workflows',
+                        'Social media management',
+                        'Marketing analytics reporting'
+                    ]
+                };
+                
+                specificProcess.innerHTML = '<option value="">Select specific process...</option>';
+                processOptions[businessFunction].forEach(option => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = option.toLowerCase().replace(/\s+/g, '-');
+                    optionElement.textContent = option;
+                    specificProcess.appendChild(optionElement);
+                });
+            } else {
+                templatesDiv.style.display = 'none';
+            }
+        }
+        
+        function loadProcessDetails() {
+            const specificProcess = document.getElementById('specific-process').value;
+            const processDescription = document.getElementById('process-description');
+            
+            const processTemplates = {
+                'lead-qualification-and-scoring': 'Current process involves manual review of incoming leads, scoring based on predefined criteria, and assignment to sales representatives. Takes approximately 2-4 hours per lead with inconsistent scoring across team members.',
+                'invoice-processing-and-approval': 'Invoices are received via email, manually entered into accounting system, routed for approval based on amount thresholds, and processed for payment. Average processing time is 5-7 business days.',
+                'employee-onboarding': 'New employee setup includes account creation, equipment assignment, training scheduling, and documentation completion. Process typically takes 2-3 weeks with multiple manual touchpoints.',
+                'order-processing-and-fulfillment': 'Orders received through multiple channels are manually consolidated, inventory checked, picking lists generated, and shipments coordinated. Average fulfillment time is 3-5 business days.'
+            };
+            
+            if (specificProcess && processTemplates[specificProcess]) {
+                processDescription.value = processTemplates[specificProcess];
+            }
+        }
+        
+        function analyzeProcess() {
+            const businessFunction = document.getElementById('business-function').value;
+            const frequency = document.getElementById('process-frequency').value;
+            const complexity = document.getElementById('process-complexity').value;
+            
+            if (!businessFunction || !frequency || !complexity) {
+                alert('Please complete all required fields to analyze the process.');
+                return;
+            }
+            
+            // Simulate process analysis
+            const frequencyScores = {
+                'hourly': 10,
+                'daily': 8,
+                'weekly': 6,
+                'monthly': 4,
+                'quarterly': 2
+            };
+            
+            const complexityScores = {
+                'simple': 9,
+                'moderate': 7,
+                'complex': 5,
+                'very-complex': 3
+            };
+            
+            const baseScore = (frequencyScores[frequency] + complexityScores[complexity]) * 5;
+            const automationPotential = Math.min(95, baseScore + Math.floor(Math.random() * 10));
+            const roiEstimate = Math.floor(automationPotential * 3 + Math.random() * 100);
+            const implementationTime = complexity === 'simple' ? '2-4 weeks' : 
+                                     complexity === 'moderate' ? '1-2 months' : 
+                                     complexity === 'complex' ? '2-4 months' : '4-6 months';
+            const priorityScore = Math.floor(automationPotential * 0.8 + Math.random() * 20);
+            
+            document.getElementById('automation-potential').textContent = automationPotential + '%';
+            document.getElementById('roi-estimate').textContent = roiEstimate + '%';
+            document.getElementById('implementation-time').textContent = implementationTime;
+            document.getElementById('priority-score').textContent = priorityScore;
+            
+            document.getElementById('process-analysis-results').style.display = 'block';
+            
+            // Generate recommendations
+            let recommendations = '';
+            if (automationPotential > 80) {
+                recommendations = 'Excellent automation candidate! This process shows high potential for automation with significant ROI. Recommend immediate implementation planning.';
+            } else if (automationPotential > 60) {
+                recommendations = 'Good automation opportunity. Consider this process for the next automation phase with moderate investment and good returns expected.';
+            } else {
+                recommendations = 'Limited automation potential. Focus on process optimization before considering automation, or explore partial automation of specific steps.';
+            }
+            
+            document.getElementById('recommendations-text').textContent = recommendations;
+            document.getElementById('automation-recommendations').style.display = 'block';
+        }
+        
+        function generateProcessMap() {
+            const canvas = document.getElementById('process-canvas');
+            const progress = document.getElementById('mapping-progress');
+            
+            // Simulate process map generation
+            canvas.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                    <div class="process-node">Start: Input Received</div>
+                    <div style="font-size: 1.5rem; color: #06b6d4;">→</div>
+                    <div class="process-node decision">Validation Check</div>
+                    <div style="font-size: 1.5rem; color: #06b6d4;">→</div>
+                    <div class="process-node automation">AI Processing</div>
+                    <div style="font-size: 1.5rem; color: #06b6d4;">→</div>
+                    <div class="process-node">Review & Approval</div>
+                    <div style="font-size: 1.5rem; color: #06b6d4;">→</div>
+                    <div class="process-node automation">Output Generated</div>
+                </div>
+                <div style="margin-top: 2rem; text-align: center;">
+                    <p style="color: #64748b;">AI-Generated Process Map</p>
+                    <p style="font-size: 0.875rem; color: #64748b;">Green nodes indicate automation opportunities</p>
+                </div>
+            `;
+            
+            // Animate progress bar
+            progress.style.width = '100%';
+        }
+        
+        function calculateAutomationScore() {
+            const painPoints = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            const frequency = document.getElementById('process-frequency').value;
+            const complexity = document.getElementById('process-complexity').value;
+            
+            // Calculate automation score based on inputs
+            let score = 50; // Base score
+            
+            // Frequency impact
+            const frequencyMultiplier = {
+                'hourly': 1.5,
+                'daily': 1.3,
+                'weekly': 1.1,
+                'monthly': 0.9,
+                'quarterly': 0.7
+            };
+            score *= frequencyMultiplier[frequency] || 1;
+            
+            // Complexity impact (inverse relationship)
+            const complexityMultiplier = {
+                'simple': 1.4,
+                'moderate': 1.2,
+                'complex': 0.9,
+                'very-complex': 0.7
+            };
+            score *= complexityMultiplier[complexity] || 1;
+            
+            // Pain points boost
+            score += painPoints * 5;
+            
+            // Cap at 100
+            score = Math.min(100, Math.round(score));
+            
+            document.getElementById('priority-score').textContent = score;
+            
+            alert(`Automation Score: ${score}/100\n\nThis score indicates ${score > 75 ? 'high' : score > 50 ? 'medium' : 'low'} automation potential.`);
+        }
+        
+        function filterProcesses(filter) {
+            // Update active filter button
+            document.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter logic would be implemented here for a real application
+            console.log('Filtering processes by:', filter);
+        }
+        
+        function updatePrioritization() {
+            const impact = document.getElementById('business-impact').value;
+            const ease = document.getElementById('implementation-ease').value;
+            const resources = document.getElementById('resource-availability').value;
+            
+            document.getElementById('impact-value').textContent = impact;
+            document.getElementById('ease-value').textContent = ease;
+            document.getElementById('resource-value').textContent = resources;
+            
+            // Calculate priority score
+            const score = Math.round((parseInt(impact) * 0.4 + parseInt(ease) * 0.3 + parseInt(resources) * 0.3) * 10);
+            document.getElementById('priority-score-calc').textContent = score;
+            
+            // Update recommendation
+            const recommendation = document.getElementById('priority-recommendation');
+            const priorityText = document.getElementById('priority-text');
+            const timelineSuggestion = document.getElementById('timeline-suggestion');
+            const investmentEstimate = document.getElementById('investment-estimate');
+            
+            if (score >= 75) {
+                recommendation.className = 'alert success';
+                priorityText.textContent = 'High priority - Implement immediately';
+                timelineSuggestion.textContent = '0-3 months implementation';
+                investmentEstimate.textContent = '$5,000 - $25,000';
+            } else if (score >= 50) {
+                recommendation.className = 'alert warning';
+                priorityText
+        </script>
+    </body>
+  </html>  

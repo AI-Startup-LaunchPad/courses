@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workflow Design Principles and Architecture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #334155;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        .header {
+            background: #28263a;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(6, 182, 212, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .lesson-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .lesson-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #10b981);
+            width: 71.4%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .interactive-button {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .interactive-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3);
+        }
+        
+        .interactive-button.secondary {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .interactive-button.secondary:hover {
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .interactive-button.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .interactive-button.warning:hover {
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+        }
+        
+        .interactive-button.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .interactive-button.danger:hover {
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+        }
+        
+        .hidden-content {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #06b6d4;
+        }
+        
+        .design-framework {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .design-framework:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .framework-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .scalability-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .reliability-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .architecture-diagram {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .design-interface {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 2px dashed #06b6d4;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            resize: vertical;
+            font-size: 0.95rem;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: white;
+        }
+        
+        .design-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .principle-container {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .principle-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .principle-number {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .principle-title {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 1.1rem;
+        }
+        
+        .principle-content {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .architecture-canvas {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            min-height: 400px;
+            position: relative;
+        }
+        
+        .workflow-component {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        .workflow-component:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3);
+        }
+        
+        .workflow-component.trigger {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .workflow-component.decision {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .workflow-component.error-handler {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid;
+        }
+        
+        .alert.success {
+            background: #f0fdf4;
+            border-color: #10b981;
+            color: #065f46;
+        }
+        
+        .alert.warning {
+            background: #fffbeb;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+        
+        .alert.info {
+            background: #eff6ff;
+            border-color: #06b6d4;
+            color: #0c4a6e;
+        }
+        
+        .alert.danger {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .comparison-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .copy-button {
+            background: #64748b;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .copy-button:hover {
+            background: #475569;
+        }
+        
+        .pattern-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .pattern-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .pattern-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .pattern-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .pattern-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        
+        .pattern-benefits {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 3px solid #06b6d4;
+        }
+        
+        .workflow-builder {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+        }
+        
+        .builder-toolbar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+        
+        .tool-button:hover {
+            border-color: #06b6d4;
+            background: #f0f9ff;
+        }
+        
+        .tool-button.active {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            border-color: #0891b2;
+        }
+        
+        .progress-indicator {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+        
+        .progress-fill-animated {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #10b981);
+            border-radius: 3px;
+            transition: width 2s ease;
+        }
+        
+        .validation-panel {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .validation-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .validation-item:last-child {
+            border-bottom: none;
+        }
+        
+        .validation-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .validation-icon.pass {
+            background: #10b981;
+            color: white;
+        }
+        
+        .validation-icon.fail {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .validation-icon.pending {
+            background: #f59e0b;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="lesson-title">Workflow Design Principles and Architecture</h1>
+            <p class="lesson-subtitle">Section 5.2 • Master scalable workflow architecture and design patterns for robust AI automation</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">Progress: 71.4% Complete</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Learning Objectives -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2 class="section-title">Learning Objectives</h2>
+            </div>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Master modular workflow design principles for scalable AI automation systems
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Implement robust error handling and fault tolerance mechanisms
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Design scalable architectures that adapt to growing business demands
+                </li>
+                <li style="padding: 0.5rem 0; display: flex; align-items: center;">
+                    <span style="color: #10b981; margin-right: 0.5rem;">✓</span>
+                    Apply proven workflow patterns for common business automation scenarios
+                </li>
+            </ul>
+        </div>
+
+        <!-- Core Design Principles -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🏗️</div>
+                <h2 class="section-title">Fundamental Workflow Design Principles</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Effective workflow design follows proven architectural principles that ensure reliability, scalability, and maintainability. These principles form the foundation for building robust AI automation systems that can evolve with your business needs.</p>
+
+            <div class="design-grid">
+                <div class="design-framework">
+                    <h3 class="framework-title">
+                        Modularity & Reusability
+                        <span class="scalability-badge">FAIR Principles</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Design workflows as discrete, reusable components that can be combined and reconfigured for different use cases, following FAIR (Findable, Accessible, Interoperable, Reusable) principles.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Single responsibility components</li>
+                        <li style="padding: 0.25rem 0;">• Standardized input/output interfaces</li>
+                        <li style="padding: 0.25rem 0;">• Version control and documentation</li>
+                        <li style="padding: 0.25rem 0;">• Cross-workflow component sharing</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('modularity-details')">Explore Modularity</button>
+                </div>
+
+                <div class="design-framework">
+                    <h3 class="framework-title">
+                        Error Handling & Resilience
+                        <span class="reliability-badge">Fault Tolerant</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Implement comprehensive error handling strategies that ensure workflow continuity even when individual components fail or encounter unexpected conditions.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Graceful degradation strategies</li>
+                        <li style="padding: 0.25rem 0;">• Automatic retry mechanisms</li>
+                        <li style="padding: 0.25rem 0;">• Human escalation triggers</li>
+                        <li style="padding: 0.25rem 0;">• Rollback and recovery procedures</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('error-handling-details')">Design Error Handling</button>
+                </div>
+
+                <div class="design-framework">
+                    <h3 class="framework-title">
+                        Scalability & Performance
+                        <span class="scalability-badge">Auto-Scaling</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Architect workflows that automatically scale to handle increasing volumes while maintaining performance and cost efficiency through intelligent resource management.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Horizontal and vertical scaling</li>
+                        <li style="padding: 0.25rem 0;">• Load balancing and distribution</li>
+                        <li style="padding: 0.25rem 0;">• Resource optimization algorithms</li>
+                        <li style="padding: 0.25rem 0;">• Performance monitoring and alerting</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('scalability-details')">Plan Scalability</button>
+                </div>
+
+                <div class="design-framework">
+                    <h3 class="framework-title">
+                        Security & Compliance
+                        <span class="reliability-badge">Enterprise Grade</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Embed security and compliance considerations throughout workflow design, ensuring data protection and regulatory adherence at every step.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Data encryption and access controls</li>
+                        <li style="padding: 0.25rem 0;">• Audit trails and logging</li>
+                        <li style="padding: 0.25rem 0;">• Compliance validation checkpoints</li>
+                        <li style="padding: 0.25rem 0;">• Privacy-preserving processing</li>
+                    </ul>
+                    <button class="interactive-button" onclick="toggleContent('security-details')">Implement Security</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modularity Implementation Details -->
+        <div id="modularity-details" class="hidden-content">
+            <div class="content-section">
+                <div class="section-header">
+                    <div class="section-icon">🔧</div>
+                    <h2 class="section-title">Modular Workflow Architecture</h2>
+                </div>
+                
+                <p style="margin-bottom: 1.5rem;">Modular design enables workflow components to be developed, tested, and maintained independently while ensuring seamless integration and reusability across different business processes.</p>
+                
+                <div class="principle-container">
+                    <div class="principle-header">
+                        <div class="principle-number">1</div>
+                        <div class="principle-title">Component Isolation</div>
+                    </div>
+                    <div class="principle-content">
+                        Each workflow component should have a single, well-defined responsibility with clear boundaries. Components communicate through standardized interfaces, preventing tight coupling and enabling independent development and testing.
+                    </div>
+                </div>
+                
+                <div class="principle-container">
+                    <div class="principle-header">
+                        <div class="principle-number">2</div>
+                        <div class="principle-title">Interface Standardization</div>
+                    </div>
+                    <div class="principle-content">
+                        Establish consistent data formats, API contracts, and communication protocols across all components. This standardization enables seamless component substitution and workflow reconfiguration.
+                    </div>
+                </div>
+                
+                <div class="principle-container">
+                    <div class="principle-header">
+                        <div class="principle-number">3</div>
+                        <div class="principle-title">Configuration Management</div>
+                    </div>
+                    <div class="principle-content">
+                        Externalize configuration parameters to enable component reuse across different environments and use cases without code modifications. Use environment-specific configuration files and parameter injection.
+                    </div>
+                </div>
+                
+                <div class="principle-container">
+                    <div class="principle-header">
+                        <div class="principle-number">4</div>
+                        <div class="principle-title">Version Control & Documentation</div>
+                    </div>
+                    <div class="principle-content">
+                        Maintain comprehensive version control for all components with detailed documentation, change logs, and compatibility matrices. This enables safe component updates and rollbacks.
+                    </div>
+                </div>
+                
+                <div class="architecture-diagram">
+# Modular Workflow Architecture Example
+
+## [Component Library Structure](pplx://action/followup)
+workflow-components/
+├── data-processing/
+│   ├── data-validator/
+│   ├── data-transformer/
+│   └── data-enricher/
+├── ai-services/
+│   ├── text-analyzer/
+│   ├── image-processor/
+│   └── decision-engine/
+├── integrations/
+│   ├── crm-connector/
+│   ├── email-service/
+│   └── notification-hub/
+└── utilities/
+    ├── error-handler/
+    ├── logger/
+    └── metrics-collector/
+
+## [Component Interface Standard](pplx://action/followup)
+{
+  "component_id": "text-analyzer-v2.1",
+  "inputs": {
+    "text": "string",
+    "analysis_type": "enum[sentiment, intent, entities]",
+    "confidence_threshold": "float"
+  },
+  "outputs": {
+    "analysis_result": "object",
+    "confidence_score": "float",
+    "processing_time": "integer"
+  },
+  "error_handling": {
+    "retry_attempts": 3,
+    "fallback_strategy": "default_response",
+    "escalation_trigger": "confidence < 0.7"
+  }
+}
+
+## [Workflow Composition](pplx://action/followup)
+Customer_Support_Workflow:
+  1. data-validator(input: customer_message)
+  2. text-analyzer(input: validated_message, type: intent)
+  3. decision-engine(input: intent_analysis)
+  4. crm-connector(input: decision_output)
+  5. email-service(input: response_template)
+                </div>
+                <button class="copy-button" onclick="copyArchitectureDiagram(this)">Copy Architecture Template</button>
+            </div>
+        </div>
+
+        <!-- Workflow Pattern Library -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">📚</div>
+                <h2 class="section-title">Proven Workflow Patterns</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Leverage established workflow patterns that solve common business automation challenges. These patterns provide tested solutions for typical scenarios while maintaining flexibility for customization.</p>
+            
+            <div class="pattern-showcase">
+                <div class="pattern-card">
+                    <h4 class="pattern-title">Sequential Processing Pattern</h4>
+                    <p class="pattern-description">Linear workflow where each step depends on the previous step's completion. Ideal for document processing, approval workflows, and data transformation pipelines.</p>
+                    <div class="pattern-benefits">
+                        <strong>Benefits:</strong> Predictable execution, easy debugging, clear audit trail
+                        <br><strong>Use Cases:</strong> Invoice processing, content approval, data migration
+                    </div>
+                </div>
+                
+                <div class="pattern-card">
+                    <h4 class="pattern-title">Parallel Execution Pattern</h4>
+                    <p class="pattern-description">Multiple independent tasks execute simultaneously, improving throughput and reducing total processing time. Results are synchronized at completion.</p>
+                    <div class="pattern-benefits">
+                        <strong>Benefits:</strong> High throughput, resource efficiency, reduced latency
+                        <br><strong>Use Cases:</strong> Bulk data processing, multi-channel notifications, parallel analysis
+                    </div>
+                </div>
+                
+                <div class="pattern-card">
+                    <h4 class="pattern-title">Event-Driven Pattern</h4>
+                    <p class="pattern-description">Workflows triggered by specific events or conditions, enabling real-time responses and reactive automation systems.</p>
+                    <div class="pattern-benefits">
+                        <strong>Benefits:</strong> Real-time processing, scalable architecture, loose coupling
+                        <br><strong>Use Cases:</strong> Alert systems, real-time analytics, customer journey automation
+                    </div>
+                </div>
+                
+                <div class="pattern-card">
+                    <h4 class="pattern-title">Conditional Branching Pattern</h4>
+                    <p class="pattern-description">Dynamic workflow paths based on data analysis or business rules, enabling intelligent decision-making and adaptive processing.</p>
+                    <div class="pattern-benefits">
+                        <strong>Benefits:</strong> Intelligent routing, personalized processing, business rule enforcement
+                        <br><strong>Use Cases:</strong> Customer segmentation, risk assessment, personalized recommendations
+                    </div>
+                </div>
+                
+                <div class="pattern-card">
+                    <h4 class="pattern-title">Retry and Circuit Breaker Pattern</h4>
+                    <p class="pattern-description">Robust error handling with automatic retries and circuit breaker mechanisms to prevent cascade failures in distributed systems.</p>
+                    <div class="pattern-benefits">
+                        <strong>Benefits:</strong> Fault tolerance, system stability, graceful degradation
+                        <br><strong>Use Cases:</strong> API integrations, external service calls, distributed processing
+                    </div>
+                </div>
+                
+                <div class="pattern-card">
+                    <h4 class="pattern-title">Saga Pattern</h4>
+                    <p class="pattern-description">Long-running transactions across multiple services with compensation mechanisms for maintaining data consistency.</p>
+                    <div class="pattern-benefits">
+                        <strong>Benefits:</strong> Data consistency, transaction management, rollback capability
+                        <br><strong>Use Cases:</strong> Order processing, financial transactions, multi-step onboarding
+                    </div>
+                </div>
+            </div>
+            
+            <button class="interactive-button" onclick="toggleContent('pattern-implementation')">Interactive Pattern Builder</button>
+            
+            <div id="pattern-implementation" class="hidden-content">
+                <div class="workflow-builder">
+                    <h4 style="margin-bottom: 1rem;">Workflow Pattern Designer</h4>
+                    
+                    <div class="builder-toolbar">
+                        <button class="tool-button" onclick="selectPattern('sequential')">Sequential</button>
+                        <button class="tool-button" onclick="selectPattern('parallel')">Parallel</button>
+                        <button class="tool-button" onclick="selectPattern('event-driven')">Event-Driven</button>
+                        <button class="tool-button" onclick="selectPattern('conditional')">Conditional</button>
+                        <button class="tool-button" onclick="selectPattern('retry')">Retry/Circuit Breaker</button>
+                        <button class="tool-button" onclick="selectPattern('saga')">Saga</button>
+                    </div>
+                    
+                    <div class="architecture-canvas" id="pattern-canvas">
+                        <div style="text-align: center; color: #64748b; margin-top: 8rem;">
+                            <h4>Pattern Visualization</h4>
+                            <p>Select a pattern above to see its structure and implementation</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 1rem;">
+                        <button class="interactive-button" onclick="generatePatternCode()">Generate Implementation Code</button>
+                        <button class="interactive-button secondary" onclick="validatePattern()">Validate Pattern</button>
+                        <button class="interactive-button warning" onclick="optimizePattern()">Optimize Performance</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Handling and Resilience -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🛡️</div>
+                <h2 class="section-title">Error Handling and Resilience Strategies</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Robust error handling ensures workflow reliability and business continuity. Implement multiple layers of protection to handle various failure scenarios gracefully.</p>
+            
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Error Type</th>
+                            <th>Detection Method</th>
+                            <th>Response Strategy</th>
+                            <th>Recovery Approach</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Transient Failures</strong></td>
+                            <td>Timeout detection, status codes</td>
+                            <td>Automatic retry with backoff</td>
+                            <td>Exponential backoff, jitter</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Data Quality Issues</strong></td>
+                            <td>Validation rules, schema checks</td>
+                            <td>Data cleansing, format correction</td>
+                            <td>Alternative data sources</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Service Unavailability</strong></td>
+                            <td>Health checks, circuit breakers</td>
+                            <td>Fallback services, cached responses</td>
+                            <td>Service restoration monitoring</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Business Logic Errors</strong></td>
+                            <td>Rule validation, constraint checks</td>
+                            <td>Human escalation, manual review</td>
+                            <td>Rule refinement, process improvement</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Resource Exhaustion</strong></td>
+                            <td>Resource monitoring, thresholds</td>
+                            <td>Load shedding, priority queuing</td>
+                            <td>Auto-scaling, resource optimization</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <button class="interactive-button" onclick="toggleContent('error-handling-workshop')">Error Handling Workshop</button>
+            
+            <div id="error-handling-workshop" class="hidden-content">
+                <div class="design-interface">
+                    <h4 style="margin-bottom: 1.5rem;">Error Handling Strategy Designer</h4>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <div class="form-group">
+                                <label class="form-label">Workflow Criticality</label>
+                                <select id="workflow-criticality" class="form-select">
+                                    <option value="">Select criticality level...</option>
+                                    <option value="mission-critical">Mission Critical</option>
+                                    <option value="business-important">Business Important</option>
+                                    <option value="operational">Operational</option>
+                                    <option value="nice-to-have">Nice to Have</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Expected Failure Rate</label>
+                                <select id="failure-rate" class="form-select">
+                                    <option value="">Select expected failure rate...</option>
+                                    <option value="very-low">Very Low (<0.1%)</option>
+                                    <option value="low">Low (0.1-1%)</option>
+                                    <option value="moderate">Moderate (1-5%)</option>
+                                    <option value="high">High (>5%)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Recovery Time Objective (RTO)</label>
+                                <select id="rto" class="form-select">
+                                    <option value="">Select recovery time...</option>
+                                    <option value="immediate">Immediate (<1 minute)</option>
+                                    <option value="fast">Fast (1-5 minutes)</option>
+                                    <option value="moderate">Moderate (5-30 minutes)</option>
+                                    <option value="extended">Extended (>30 minutes)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="form-group">
+                                <label class="form-label">Error Handling Mechanisms</label>
+                                <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="automatic-retry" style="margin-right: 0.5rem;">
+                                        Automatic Retry with Backoff
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="circuit-breaker" style="margin-right: 0.5rem;">
+                                        Circuit Breaker Pattern
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="fallback-service" style="margin-right: 0.5rem;">
+                                        Fallback Service
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="human-escalation" style="margin-right: 0.5rem;">
+                                        Human Escalation
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="graceful-degradation" style="margin-right: 0.5rem;">
+                                        Graceful Degradation
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Monitoring and Alerting</label>
+                                <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="real-time-monitoring" style="margin-right: 0.5rem;">
+                                        Real-time Monitoring
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="error-aggregation" style="margin-right: 0.5rem;">
+                                        Error Aggregation
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="trend-analysis" style="margin-right: 0.5rem;">
+                                        Trend Analysis
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="automated-alerts" style="margin-right: 0.5rem;">
+                                        Automated Alerts
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 2rem 0;">
+                        <button class="interactive-button" onclick="generateErrorStrategy()">Generate Error Handling Strategy</button>
+                        <button class="interactive-button secondary" onclick="simulateFailures()">Simulate Failure Scenarios</button>
+                    </div>
+                    
+                    <div id="error-strategy-output" style="display: none;">
+                        <h4 style="margin-bottom: 1rem;">Recommended Error Handling Strategy</h4>
+                        <div class="architecture-diagram" id="error-strategy-code">
+                            <!-- Generated error handling strategy will appear here -->
+                        </div>
+                        <button class="copy-button" onclick="copyErrorStrategy()">Copy Strategy Implementation</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scalability Architecture -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">📈</div>
+                <h2 class="section-title">Scalability Architecture Design</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Design workflows that automatically adapt to changing demands while maintaining performance and cost efficiency. Scalability must be considered from the initial design phase.</p>
+            
+            <div class="design-grid">
+                <div class="design-framework">
+                    <h3 class="framework-title">
+                        Horizontal Scaling
+                        <span class="scalability-badge">Distributed</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Add more instances of workflow components to handle increased load, distributing work across multiple processing units.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Stateless component design</li>
+                        <li style="padding: 0.25rem 0;">• Load balancer integration</li>
+                        <li style="padding: 0.25rem 0;">• Auto-scaling triggers</li>
+                        <li style="padding: 0.25rem 0;">• Distributed data processing</li>
+                    </ul>
+                </div>
+                
+                <div class="design-framework">
+                    <h3 class="framework-title">
+                        Vertical Scaling
+                        <span class="scalability-badge">Resource Optimization</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Increase computational resources (CPU, memory, storage) for existing workflow components to handle higher workloads.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Dynamic resource allocation</li>
+                        <li style="padding: 0.25rem 0;">• Performance monitoring</li>
+                        <li style="padding: 0.25rem 0;">• Resource optimization algorithms</li>
+                        <li style="padding: 0.25rem 0;">• Cost-performance balancing</li>
+                    </ul>
+                </div>
+                
+                <div class="design-framework">
+                    <h3 class="framework-title">
+                        Elastic Scaling
+                        <span class="scalability-badge">Adaptive</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Automatically adjust resources based on real-time demand patterns, optimizing both performance and cost efficiency.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Predictive scaling algorithms</li>
+                        <li style="padding: 0.25rem 0;">• Demand pattern analysis</li>
+                        <li style="padding: 0.25rem 0;">• Cost optimization rules</li>
+                        <li style="padding: 0.25rem 0;">• Performance threshold management</li>
+                    </ul>
+                </div>
+                
+                <div class="design-framework">
+                    <h3 class="framework-title">
+                        Data Partitioning
+                        <span class="scalability-badge">Distributed Data</span>
+                    </h3>
+                    <p style="margin-bottom: 1rem;">Distribute data across multiple storage systems and processing units to enable parallel processing and reduce bottlenecks.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.25rem 0;">• Horizontal data partitioning</li>
+                        <li style="padding: 0.25rem 0;">• Consistent hashing strategies</li>
+                        <li style="padding: 0.25rem 0;">• Data locality optimization</li>
+                        <li style="padding: 0.25rem 0;">• Cross-partition query handling</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <button class="interactive-button" onclick="toggleContent('scalability-calculator')">Scalability Planning Calculator</button>
+            
+            <div id="scalability-calculator" class="hidden-content">
+                <div class="design-interface">
+                    <h4 style="margin-bottom: 1.5rem;">Workflow Scalability Planner</h4>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <div class="form-group">
+                                <label class="form-label">Current Processing Volume</label>
+                                <input type="number" id="current-volume" class="form-input" placeholder="Processes per hour" min="1">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Expected Growth Rate</label>
+                                <select id="growth-rate" class="form-select">
+                                    <option value="">Select growth rate...</option>
+                                    <option value="conservative">Conservative (2x per year)</option>
+                                    <option value="moderate">Moderate (5x per year)</option>
+                                    <option value="aggressive">Aggressive (10x per year)</option>
+                                    <option value="exponential">Exponential (20x+ per year)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Performance Requirements</label>
+                                <select id="performance-req" class="form-select">
+                                    <option value="">Select performance level...</option>
+                                    <option value="standard">Standard (95% SLA)</option>
+                                    <option value="high">High (99% SLA)</option>
+                                    <option value="critical">Critical (99.9% SLA)</option>
+                                    <option value="mission-critical">Mission Critical (99.99% SLA)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="form-group">
+                                <label class="form-label">Scaling Preferences</label>
+                                <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="horizontal-scaling" style="margin-right: 0.5rem;">
+                                        Horizontal Scaling (Distributed)
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="vertical-scaling" style="margin-right: 0.5rem;">
+                                        Vertical Scaling (Resource Increase)
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="elastic-scaling" style="margin-right: 0.5rem;">
+                                        Elastic Scaling (Auto-Adaptive)
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="checkbox" id="cost-optimization" style="margin-right: 0.5rem;">
+                                        Cost Optimization Priority
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Budget Constraints</label>
+                                <select id="budget-level" class="form-select">
+                                    <option value="">Select budget level...</option>
+                                    <option value="startup">Startup Budget (<$10k/month)</option>
+                                    <option value="small-business">Small Business ($10k-50k/month)</option>
+                                    <option value="enterprise">Enterprise ($50k-200k/month)</option>
+                                    <option value="unlimited">Unlimited Budget (>$200k/month)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 2rem 0;">
+                        <button class="interactive-button" onclick="calculateScalability()">Calculate Scaling Strategy</button>
+                        <button class="interactive-button secondary" onclick="generateArchitecture()">Generate Architecture</button>
+                    </div>
+                    
+                    <div id="scalability-results" style="display: none;">
+                        <h4 style="margin-bottom: 1rem;">Scalability Analysis Results</h4>
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-value" id="projected-volume">--</div>
+                                <div class="metric-label">Projected Volume (1 Year)</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="scaling-factor">--</div>
+                                <div class="metric-label">Required Scaling Factor</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="estimated-cost">--</div>
+                                <div class="metric-label">Estimated Monthly Cost</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="architecture-complexity">--</div>
+                                <div class="metric-label">Architecture Complexity</div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert info">
+                            <h5 style="margin-bottom: 0.5rem;">Recommended Scaling Strategy</h5>
+                            <p id="scaling-recommendation"><!-- Recommendation will be populated here --></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workflow Validation Framework -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">✅</div>
+                <h2 class="section-title">Workflow Validation and Quality Assurance</h2>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Implement comprehensive validation frameworks to ensure workflow reliability, performance, and compliance before deployment to production environments.</p>
+            
+            <div class="validation-panel">
+                <h4 style="margin-bottom: 1rem;">Workflow Quality Checklist</h4>
+                
+                <div class="validation-item">
+                    <div class="validation-icon pending">?</div>
+                    <div>
+                        <strong>Functional Validation:</strong> All workflow components execute correctly with expected inputs and produce accurate outputs
+                    </div>
+                </div>
+                
+                <div class="validation-item">
+                    <div class="validation-icon pending">?</div>
+                    <div>
+                        <strong>Performance Testing:</strong> Workflow meets performance requirements under normal and peak load conditions
+                    </div>
+                </div>
+                
+                <div class="validation-item">
+                    <div class="validation-icon pending">?</div>
+                    <div>
+                        <strong>Error Handling:</strong> All error scenarios are properly handled with appropriate recovery mechanisms
+                    </div>
+                </div>
+                
+                <div class="validation-item">
+                    <div class="validation-icon pending">?</div>
+                    <div>
+                        <strong>Security Compliance:</strong> Data protection and access controls meet security requirements and regulations
+                    </div>
+                </div>
+                
+                <div class="validation-item">
+                    <div class="validation-icon pending">?</div>
+                    <div>
+                        <strong>Scalability Readiness:</strong> Architecture supports expected growth without performance degradation
+                    </div>
+                </div>
+                
+                <div class="validation-item">
+                    <div class="validation-icon pending">?</div>
+                    <div>
+                        <strong>Documentation Completeness:</strong> All components, interfaces, and procedures are properly documented
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <button class="interactive-button" onclick="runValidation()">Run Comprehensive Validation</button>
+                    <button class="interactive-button secondary" onclick="generateValidationReport()">Generate Validation Report</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Takeaways -->
+        <div class="content-section">
+            <div class="section-header">
+                <div class="section-icon">💡</div>
+                <h2 class="section-title">Key Takeaways</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                <div class="alert success">
+                    <h4 style="margin-bottom: 0.5rem;">Modular Design Benefits</h4>
+                    <p>Modular workflow architecture following FAIR principles enables 70% faster development cycles and 90% component reusability across different business processes.</p>
+                </div>
+                
+                <div class="alert info">
+                    <h4 style="margin-bottom: 0.5rem;">Error Handling Impact</h4>
+                    <p>Comprehensive error handling strategies reduce system downtime by 85% and improve overall workflow reliability from 95% to 99.5% availability.</p>
+                </div>
+                
+                <div class="alert warning">
+                    <h4 style="margin-bottom: 0.5rem;">Scalability Planning</h4>
+                    <p>Proactive scalability design prevents performance bottlenecks and reduces scaling costs by 60% compared to reactive scaling approaches.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleContent(elementId) {
+            const element = document.getElementById(elementId);
+            if (element.style.display === 'none' || element.style.display === '') {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        }
+        
+        function copyArchitectureDiagram(button) {
+            const diagram = button.previousElementSibling.textContent;
+            navigator.clipboard.writeText(diagram).then(() => {
+                button.textContent = 'Copied!';
+                button.style.background = '#10b981';
+                setTimeout(() => {
+                    button.textContent = 'Copy Architecture Template';
+                    button.style.background = '#64748b';
+                }, 2000);
+            });
+        }
+        
+        function selectPattern(patternType) {
+            // Update active button
+            document.querySelectorAll('.tool-button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const canvas = document.getElementById('pattern-canvas');
+            
+            const patterns = {
+                'sequential': `
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                        <div class="workflow-component trigger">Input Data</div>
+                        <div style="font-size: 1.5rem; color: #06b6d4;">→</div>
+                        <div class="workflow-component">Process Step 1</div>
+                        <div style="font-size: 1.5rem; color: #06b6d4;">→</div>
+                        <div class="workflow-component">Process Step 2</div>
+                        <div style="font-size: 1.5rem; color: #06b6d4;">→</div>
+                        <div class="workflow-component">Process Step 3</div>
+                        <div style="font-size: 1.5rem; color: #06b6d4;">→</div>
+                        <div class="workflow-component">Output Result</div>
+                    </div>
+                    <div style="margin-top: 2rem; text-align: center;">
+                        <p style="color: #64748b;">Sequential Processing Pattern</p>
+                        <p style="font-size: 0.875rem; color: #64748b;">Each step waits for the previous step to complete</p>
+                    </div>
+                `,
+                'parallel': `
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                        <div class="workflow-component trigger">Input Data</div>
+                        <div style="font-size: 1.5rem; color: #06b6d4;">↓</div>
+                        <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+                            <div class="workflow-component">Parallel Task A</div>
+                            <div class="workflow-component">Parallel Task B</div>
+                            <div class="workflow-component">Parallel Task C</div>
+                        </div>
+                        <div style="font-size: 1.5rem; color: #06b6d4;">↓</div>
+                        <div class="workflow-component">Synchronization Point</div>
+                        <div style="font-size: 1.5rem; color: #06b6d4;">↓</div>
+                        <div class="workflow-component">Combined Output</div>
+                    </div>
+                    <div style="margin-top: 2rem; text-align: center;">
+                        <p style="color: #64748b;">Parallel Execution Pattern</p>
+                        <p style="font-size: 0.875rem; color: #64748b;">Multiple tasks execute simultaneously</p>
+                    </div>
+                `,
+                'event-driven': `
+                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: center;">
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div class="workflow-component trigger">Event Source 1</div
+       </script>
+    </body>
+  </html>  
